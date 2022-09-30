@@ -1,35 +1,41 @@
 package src;
 public class Plage {
 
-    private double longueur;
-    private double largeur;
-    private double profondeur;
+    private int longueur;
+    private int largeur;
+    private int profondeur;
     private int[][] matrice;
     private double temperature;
     private int vent;
+    private int mer;
 
-    Plage(double longueur, double largeur, double profondeur, double temperature, int vent) {
+    Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer) {
         this.longueur = longueur;
         this.largeur = largeur;
         this.profondeur = profondeur;
         this.temperature = temperature;
         this.vent = vent;
-        this.matrice = new int[(int)largeur][(int)profondeur];
+        this.matrice = new int[(int)largeur][(int)largeur];
+        this.mer = mer;
 
     }
-    public double getLongueur() {
+    public int getLongueur() {
         return longueur;
     }
 
-    public double getLargeur() {
+    public int getLargeur() {
         return largeur;
     }
 
-    public double getProfondeur() {
+    public int getProfondeur() {
         return profondeur;
     }
 
     public int[][] getMatrice() { return matrice; }
+    
+    public int mer() {
+        return mer;
+    }
 
     public boolean isFree(int x, int y) {
         // Si la case est vide
