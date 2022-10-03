@@ -1,5 +1,4 @@
-package src;
-public class Plage {
+public class Plage extends Thread {
 
     private int longueur;
     private int largeur;
@@ -68,7 +67,8 @@ public class Plage {
         return liste;
     }
 
-
+    public void run(){}
+    
 }
 
 

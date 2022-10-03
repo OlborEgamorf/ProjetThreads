@@ -1,31 +1,24 @@
-package ;
-
 public class Personne extends Thread {
-    private double age;
+    private int age;
     private double vitesse;
     private boolean estSauveteur;
     private boolean peutSauver;
     private double probaNoyade;
-    private double[][] position;
-    private Activité activite;
-    private double[][] positionPlage;
+    private int[] position;
+    private Activite activite;
+    private int[][] vision;
+    private BoiteCommu communication;
     
-    Personne(double age, double vitesse, boolean estSauveteur, boolean peutSauver, double probaNoyade, double[] postion, Activite activite, double[] positionPlage){
-        this.age= 0;
-        this.vitesse= 0;
-        this.estSauveteur= null;
-        this.peutSauver= null;
-        this.probaNoyade= 0;
-        this.position= [x,y]; //position spawn
+    Personne(int[] position, int vent, BoiteCommu communication){
+        this.position= position; //position spawn
         this.activite= Activite.deplacement;
-        this.positionPlage= null;
+        this.communication = communication;
         setAge();
-        setVitesse(getAge());
-        setEstSauveteur(getAge());
-        setPeutSauver(getAge());
-        setProbaNoyade(getAge());
+        setVitesse();
+        setEstSauveteur();
+        setPeutSauver();
+        setProbaNoyade(vent);
         setPositionPlage();
-        this.start();
     }
 
     public double getAge(){
@@ -36,9 +29,10 @@ public class Personne extends Thread {
         this.age= (int)(Math.random()*100);
     }
     
-    public void setPeutSauver(age){
-        if ((age < 15)||(age > 60)
+    public void setPeutSauver(){
+        if (age < 15 || age > 60) {
             this.peutSauver = false;
+        }
         else{
             double probaSauv= Math.random();
             if (probaSauv < 0.05)
@@ -49,17 +43,18 @@ public class Personne extends Thread {
     }
 
     public void setEstSauveteur(){
-        if (age>18 && age<60)
+        if (age>18 && age<60) {
             double probaSauveteur= Math.random();
             if (probaSauveteur<0.0005)
                 this.estSauveteur= true;
             else
                 this.estSauveteur= false;
+        }
         else
-            this.estSauveteur= false
+            this.estSauveteur = false;
     }
 
-    public void setVitesse(int age){
+    public void setVitesse(){
         if (age>=15 && age<60)
             this.vitesse= Math.floor(Math.random()*(1.43-1.31+1)+1.31); //vitesse moyenne de marche en m/s;
         else if (age>=60 && age<80) {
@@ -73,7 +68,7 @@ public class Personne extends Thread {
         bronzage, baignade, deplacement, sauvetage, seNoie, attente;
     }
 
-    public void setProbaNoyade(int age){
+    public void setProbaNoyade(int vent){
         if (age<=2){
             this.probaNoyade += 0.0004;
             if (this.position[2]>(-0.2)){
@@ -83,23 +78,24 @@ public class Personne extends Thread {
         else if (this.position[2]>(-1)){
             if (age>50){
                 this.probaNoyade += 0.0002;
-                for (int i = 50; i <= age; 1){
+                for (int i = 50; i <= age; i++){
                     this.probaNoyade += 0.00001;
                 }
             }
-            if (Systeme.meteo.vent>50)
+            if (vent>50)
                 this.probaNoyade *= 1.2;
-            else if (Systeme.meteo.vent > 65) {
+            else if (vent > 65) {
                 this.probaNoyade *= 1.5;
             }
         }
     }
 
     public void setPositionPlage(){
-        if (this.estSauveteur == false)
+        if (this.estSauveteur == false) {
             boolean trouve= false;
+        }
         else
-            while (position == plage and trouve == false){
+            while (position == plage && trouve == false){
                 //faire un truc pour verifier la disponibilité de l'espace sur la plage le plus proche de la mer
                 double[][] position = positionVerifiee; //prend la valeur de la position qui est en train d'etre vérifiée
                 trouve = true;
