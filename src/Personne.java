@@ -78,7 +78,7 @@ public class Personne extends Thread {
     public void setEstSauveteur(){
         if (age > 18 && age < 60) {
             double probaSauveteur = Math.random();
-            if (probaSauveteur<0.0005)
+            if (probaSauveteur < 0.0005)
                 this.estSauveteur = true;
             else
                 this.estSauveteur = false;
@@ -100,7 +100,7 @@ public class Personne extends Thread {
     public void setProbaNoyade(int vent){
         if (age <= 2){
             this.probaNoyade += 0.0004;
-            if (this.position[2]>(-0.2)){
+            if (this.position[2] > (-0.2)){
                 this.probaNoyade *= 1000;
             }
         }
@@ -135,33 +135,33 @@ public class Personne extends Thread {
     
     
     public void deplacement(positionArrivee){
-        double diffX = this.postion[0]-positionArrivee[0];
-        double diffY = this.position[1]-positionArrivée[1];
+        double diffX = this.postion[0] - positionArrivee[0];
+        double diffY = this.position[1] - positionArrivée[1];
         while (this.position != positionArrivée){
-            if(diffX>0)
+            if(diffX > 0)
                 this.position[0] += this.vitesse;
             else
                 this.position[0] -= this.vitesse;
-            diffX-=this.vitesse;
-            if (diffY>0)
+            diffX -= this.vitesse;
+            if (diffY > 0)
         }
     }
 
     public void baignade(){
         if (this.estSauveteur = false){
             if (this.position == plage){
-                double baignade= Math.random();
-                if (baignade<0.05){
-                    this.activité= Activite.deplacement;
+                double baignade = Math.random();
+                if (baignade < 0.05){
+                    this.activité = Activite.deplacement;
                     deplacement(); //mettre en paramètre un emplacement libre dans la mer
                 }
             }
             if (this.position == mer){
-                double baignade= Math.random;
-                if (baignade<0.05) {
+                double baignade = Math.random;
+                if (baignade < 0.05) {
                     this.activité = Activite.deplacement;
                     déplacement(positionPlage);
-                    this.activite= Activite.bronzage;
+                    this.activite = Activite.bronzage;
                 }
             }
         }
@@ -180,30 +180,30 @@ public class Personne extends Thread {
     }
 
     public void vaSauver(){
-        if ((((this.peutSauver == true) && ((Math.abs(this.position - Personne.position))<10)) || ((this.estSauveteur == true) && ((Math.abs(Personne.position) - this.position< 30))) && (Personne.seNoie() == true)){
+        if ((((this.peutSauver == true) && ((Math.abs(this.position - Personne.position)) < 10)) || ((this.estSauveteur == true) && ((Math.abs(Personne.position) - this.position < 30))) && (Personne.seNoie() == true)){
                 this.deplacement(Personne.position);
-                this.activite= Activite.sauvetage;
-                this.vitesse= this.vitesse / 2;
+                this.activite = Activite.sauvetage;
+                this.vitesse = this.vitesse / 2;
                 this.deplacement(); //point du bord de la plage le plus proche à mettre en paramètre
                 this.vitesse * 2;
                 Personne.activite = bronzage;
                 if (this.estSauveteur == True)
-                    this.activite= Activite.attente;
+                    this.activite = Activite.attente;
                 else
-                    this.activite= Activite.bronzage;
+                    this.activite = Activite.bronzage;
         }
     }
 
     public boolean estSauve(){
         if (this.position == plage)
-            this.activite= Activite.attente;
+            this.activite = Activite.attente;
             return true;
         return false;
     }
 
     public void quittePlage(){
-        double partir= Math.random();
-        if (partir<= 0.005)
+        double partir = Math.random();
+        if (partir <= 0.005)
             deplacement(positionPlage);
             Plage.pack()
             deplacement();      //endroit à définir où on part de la plage
