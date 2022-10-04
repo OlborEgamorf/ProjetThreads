@@ -13,25 +13,13 @@ public class Main {
 
         int nbMax = 1000;
 
-        Plage plage = new Plage(longueur, largeur, profondeur, temperature, vent, mer);
-        Personne[] threads = new Personne[nbMax];
+        Plage plage = new Plage(longueur, largeur, profondeur, temperature, vent, mer, nbMax);
+        plage.start();
 
         // Une Plage => 1 Thread.
         // Plusieurs personnes => 1 thread pour chaques personnes.
 
         // Il va nous nous falloir une boite de communications entre les threads
 
-        BoiteCommu outil = new BoiteCommu();
-
-        
-        Plage.start();
-        int[] posTest = {0,0};
-
-        for (int i = 0; i < nbMax; i++) {
-
-            threads[i] = new Personne(posTest,vent,outil);
-            threads[i].start();
-
-        }
     }
 }
