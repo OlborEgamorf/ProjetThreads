@@ -21,7 +21,7 @@ public class Personne extends Thread {
         setPositionPlage();
     }
 
-    public double getAge(){
+    public int getAge(){
         return age;
     }
 
