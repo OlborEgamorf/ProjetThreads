@@ -14,7 +14,7 @@ public class Plage extends Thread {
         this.profondeur = profondeur;
         this.temperature = temperature;
         this.vent = vent;
-        this.matrice = new int[(int)largeur][(int)largeur];
+        this.matrice = new int[(int)longueur][(int)largeur];
         this.mer = mer;
 
     }
