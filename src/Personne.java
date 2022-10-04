@@ -10,8 +10,8 @@ public class Personne extends Thread {
     private BoiteCommu communication;
     
     Personne(int[] position, int vent, BoiteCommu communication){
-        this.position= position; //position spawn
-        this.activite= Activite.deplacement;
+        this.position = position; //position spawn
+        this.activite = Activite.deplacement;
         this.communication = communication;
         setAge();
         setVitesse();
@@ -26,7 +26,7 @@ public class Personne extends Thread {
     }
 
     public void setAge(){
-        this.age= (int)(Math.random()*100);
+        this.age = (int)(Math.random() * 100);
     }
     
     public void setPeutSauver(){
@@ -34,7 +34,7 @@ public class Personne extends Thread {
             this.peutSauver = false;
         }
         else{
-            double probaSauv= Math.random();
+            double probaSauv = Math.random();
             if (probaSauv < 0.05)
                 this.peutSauver = true;
             else
@@ -43,25 +43,25 @@ public class Personne extends Thread {
     }
 
     public void setEstSauveteur(){
-        if (age>18 && age<60) {
-            double probaSauveteur= Math.random();
-            if (probaSauveteur<0.0005)
-                this.estSauveteur= true;
+        if (age > 18 && age < 60) {
+            double probaSauveteur = Math.random();
+            if (probaSauveteur < 0.0005)
+                this.estSauveteur = true;
             else
-                this.estSauveteur= false;
+                this.estSauveteur = false;
         }
         else
             this.estSauveteur = false;
     }
 
     public void setVitesse(){
-        if (age>=15 && age<60)
-            this.vitesse= Math.floor(Math.random()*(1.43-1.31+1)+1.31); //vitesse moyenne de marche en m/s;
-        else if (age>=60 && age<80) {
+        if (age >= 15 && age < 60)
+            this.vitesse= Math.floor(Math.random() * (1.43 - 1.31 + 1) + 1.31); //vitesse moyenne de marche en m/s;
+        else if (age >= 60 && age < 80) {
             this.vitesse = Math.floor(Math.random() * (1.34 - 1.13 + 1) + 1.13);
         }
         else
-            this.vitesse= Math.floor(Math.random()*(0.97-0.94+1)+0.94);
+            this.vitesse= Math.floor(Math.random() * (0.97 - 0.94 + 1) + 0.94);
     }
 
     public enum Activite{
@@ -69,20 +69,20 @@ public class Personne extends Thread {
     }
 
     public void setProbaNoyade(int vent){
-        if (age<=2){
+        if (age <= 2){
             this.probaNoyade += 0.0004;
-            if (this.position[2]>(-0.2)){
+            if (this.position[2] > (-0.2)){
                 this.probaNoyade *= 1000;
             }
         }
-        else if (this.position[2]>(-1)){
+        else if (this.position[2] > (-1)){
             if (age>50){
                 this.probaNoyade += 0.0002;
                 for (int i = 50; i <= age; i++){
                     this.probaNoyade += 0.00001;
                 }
             }
-            if (vent>50)
+            if (vent > 50)
                 this.probaNoyade *= 1.2;
             else if (vent > 65) {
                 this.probaNoyade *= 1.5;
@@ -106,33 +106,33 @@ public class Personne extends Thread {
     
     
     public void deplacement(positionArrivee){
-        double diffX= this.postion[0]-positionArrivee[0];
-        double diffY= this.position[1]-positionArrivée[1];
-        while (this.position != positionArrivée){
+        double diffX = this.postion[0] - positionArrivee[0];
+        double diffY = this.position[1] - positionArrivee[1];
+        while (this.position != positionArrivee){
             if(diffX>0)
-                this.position[0]+(this.vitesse/;
+                this.position[0] + (this.vitesse);
             else
-                this.position[0]-this.vitesse;
-            diffX-=this.vitesse;
-            if (diffY>0)
+                this.position[0] - this.vitesse;
+            diffX -= this.vitesse;
+            if (diffY > 0)
         }
     }
 
     public void baignade(){
         if (this.estSauveteur = false){
             if (this.position == plage){
-                double baignade= Math.random();
-                if (baignade<0.05){
-                    this.activité= Activite.deplacement;
+                double baignade = Math.random();
+                if (baignade < 0.05){
+                    this.activite = Activite.deplacement;
                     deplacement(); //mettre en paramètre un emplacement libre dans la mer
                 }
             }
             if (this.position == mer){
-                double baignade= Math.random;
+                double baignade = Math.random;
                 if (baignade<0.05) {
-                    this.activité = Activite.deplacement;
-                    déplacement(positionPlage);
-                    this.activite= Activite.bronzage;
+                    this.activite = Activite.deplacement;
+                    deplacement(positionPlage);
+                    this.activite = Activite.bronzage;
                 }
             }
         }
@@ -151,13 +151,13 @@ public class Personne extends Thread {
     }
 
     public void vaSauver(){
-        if ((((this.peutSauver== true) && ((Math.abs(this.position- Personne.position))<10)) || ((this.estSauveteur== true) && ((Math.abs(Personne.position)-this.position< 30))) && (Personne.seNoie()== true)){
-                this.déplacement(Personne.position);
+        if ((((this.peutSauver == true) && ((Math.abs(this.position - Personne.position))<10)) || ((this.estSauveteur == true) && ((Math.abs(Personne.position) - this.position< 30))) && (Personne.seNoie() == true)){
+                this.deplacement(Personne.position);
                 this.activite= Activite.sauvetage;
-                this.vitesse= this.vitesse/2;
+                this.vitesse= this.vitesse / 2;
                 this.deplacement(); //point du bord de la plage le plus proche à mettre en paramètre
-                this.vitesse*2;
-                Personne.activite= bronzage;
+                this.vitesse * 2;
+                Personne.activite = bronzage;
                 if (this.estSauveteur == True)
                     this.activite= Activite.attente;
                 else
@@ -167,14 +167,14 @@ public class Personne extends Thread {
 
     public boolean estSauve(){
         if (this.position == plage)
-            this.activite= Activite.attente;
+            this.activite = Activite.attente;
             return true;
         return false;
     }
 
     public void quittePlage(){
-        double partir= Math.random();
-        if (partir<= 0.005)
+        double partir = Math.random();
+        if (partir <= 0.005)
             deplacement(positionPlage);
             Plage.pack()
             deplacement();      //endroit à définir où on part de la plage
