@@ -10,6 +10,7 @@ public class Personne extends Thread {
     private int[] position;
     private int[] oldPosition;
     private Etat etat;
+    private Objectif objectif;
     private int[][] vision;
     private int id;
     
@@ -211,17 +212,18 @@ public class Personne extends Thread {
     }
 
     public void run(){
-        while (!Thread.currentThread().isInterrupted()){
-            this.baignade();
-            this.seNoie();
-            this.vaSauver();
-            this.quittePlage();
-        }
+        // Chaque personne a un Etat : ce qu'il fait, et un Objectif : ce qu'il voudrait faire
+        // Exemple : si une personne se déplace, son Etat est Etat.MOUVEMENT, et là où il va est dans son objectif : Objectif.BAIGNADE par exemple
+        // run() doit faire en sorte que la personne fasse ses actions.
+        // Si la personne se déplace, elle doit bouger jusqu'à ce qu'elle atteingne sa destination, case par case, en faisant attention à ce qui l'entoure.
+        // La personne va bouger de case en case dans une boucle tous les x millisecondes, avec un Thread.sleep(x) 
+        // Si la personne s'arrête quelque part, attendre y temps avant qu'il se remette à bouger
+        // A toi de déterminer comment tout se passe, en jouer avec Etat et Objectif et les différents attributs, tu peux en créer aussi si besoin
+        // Rappel des actions : se déplacer, se baigner, se reposer, se placer, partir (redoncances ?)
+        // Pour le placement, ce sera complété plus tard donc tu peux laisser vide
+        // La personne doit vivre ! LET THERE BE LIGHT
     }
 
-    public void interruption(){
-        Thread.currentThread().interrupt();
-    }
 }
 
 
