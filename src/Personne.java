@@ -6,6 +6,7 @@ public class Personne extends Thread {
     private boolean estSauveteur;
     private boolean peutSauver;
     private double probaNoyade;
+    private int[]positionPlage;
     
     private int[] position;
     private int[] oldPosition;
@@ -40,6 +41,14 @@ public class Personne extends Thread {
 
     public Etat getEtat() {
         return etat;
+    }
+
+    public boolean getEstSauveteur(){
+        return estSauveteur;
+    }
+
+    public int[] getPositionPlage(){
+        return positionPlage;
     }
 
     public void setPosition(int[] nextPosition){
@@ -122,14 +131,15 @@ public class Personne extends Thread {
 
     public void setPositionPlage(){
         if (this.estSauveteur == false) {
-            boolean trouve = false;
+            boolean trouve = true;
         }
-        else
+        else{
+            boolean trouve= false;
             while (position == plage && trouve == false){
                 //faire un truc pour verifier la disponibilité de l'espace sur la plage le plus proche de la mer
-                double[][] position = positionVerifiee; //prend la valeur de la position qui est en train d'etre vérifiée
+                double[][] positionPlage = positionVerifiee; //prend la valeur de la position qui est en train d'etre vérifiée
                 trouve = true;
-        }
+        }}
         this.positionPlage = position;
         Plage.unpack(positionVerifiee);
     }
@@ -157,8 +167,8 @@ public class Personne extends Thread {
                     deplacement(); //mettre en paramètre un emplacement libre dans la mer
                 }
             }
-            if (this.position == mer){
-                double baignade = Math.random;
+            if (this.position == Plage.mer){
+                double baignade = Math.random();
                 if (baignade < 0.05) {
                     this.etat = Etat.MOUVEMENT;
                     deplacement(positionPlage);
@@ -169,7 +179,7 @@ public class Personne extends Thread {
     }
 
     public void seNoie(){
-        if (this.position == mer) {
+        if (this.position == Plage.mer) {
             double noyade = Math.random();
             if (noyade < (0.005 * this.probaNoyade))
                 this.etat = Etat.NOYADE;
@@ -181,12 +191,12 @@ public class Personne extends Thread {
     }
 
     public void vaSauver(){
-        if ((((this.peutSauver == true) && ((Math.abs(this.position - Personne.position)) < 10)) || ((this.estSauveteur == true) && ((Math.abs(Personne.position) - this.position < 30))) && (Personne.seNoie() == true)){
+        if ((((this.peutSauver == true) && ((Math.abs(this.position - Personne.position)) < 10)) || ((this.estSauveteur == true) && ((Math.abs(Personne.position) - this.position < 30))) && (Personne.seNoie() == true))){
                 this.deplacement(Personne.position);
                 this.etat = Etat.SAUVETAGE;
                 this.vitesse = this.vitesse / 2;
-                this.deplacement(); //point du bord de la plage le plus proche à mettre en paramètre
-                this.vitesse * 2;
+                deplacement(); //point du bord de la plage le plus proche à mettre en paramètre
+                this.vitesse= this.vitesse * 2;
                 Personne.etat = Etat.BRONZAGE;
                 if (this.estSauveteur == True)
                     this.etat = Etat.ATTENTE;
@@ -206,7 +216,7 @@ public class Personne extends Thread {
         double partir = Math.random();
         if (partir <= 0.005)
             deplacement(positionPlage);
-            Plage.pack()
+            Plage.pack();
             deplacement();      //endroit à définir où on part de la plage
             interruption();
     }
