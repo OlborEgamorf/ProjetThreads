@@ -135,7 +135,7 @@ public class Personne extends Thread {
     }
     
     
-    public void deplacement(positionArrivee){
+    /*public void deplacement(positionArrivee){
         double diffX = this.postion[0] - positionArrivee[0];
         double diffY = this.position[1] - positionArrivée[1];
         while (this.position != positionArrivée){
@@ -146,23 +146,23 @@ public class Personne extends Thread {
             diffX -= this.vitesse;
             if (diffY > 0)
         }
-    }
+    }*/
 
     public void baignade(){
         if (this.estSauveteur = false){
             if (this.position == plage){
                 double baignade = Math.random();
                 if (baignade < 0.05){
-                    this.activité = Activite.deplacement;
+                    this.etat= Etat.MOUVEMENT;
                     deplacement(); //mettre en paramètre un emplacement libre dans la mer
                 }
             }
             if (this.position == mer){
                 double baignade = Math.random;
                 if (baignade < 0.05) {
-                    this.activité = Activite.deplacement;
+                    this.etat = Etat.MOUVEMENT;
                     deplacement(positionPlage);
-                    this.activite = Activite.bronzage;
+                    this.etat = Etat.REPOS;
                 }
             }
         }
@@ -172,7 +172,7 @@ public class Personne extends Thread {
         if (this.position == mer) {
             double noyade = Math.random();
             if (noyade < (0.005 * this.probaNoyade))
-                this.activite = Activite.seNoie;
+                this.etat = Etat.NOYADE;
                 while(estSauve() == false){
                     Thread.sleep();
 
@@ -183,21 +183,21 @@ public class Personne extends Thread {
     public void vaSauver(){
         if ((((this.peutSauver == true) && ((Math.abs(this.position - Personne.position)) < 10)) || ((this.estSauveteur == true) && ((Math.abs(Personne.position) - this.position < 30))) && (Personne.seNoie() == true)){
                 this.deplacement(Personne.position);
-                this.activite = Activite.sauvetage;
+                this.etat = Etat.SAUVETAGE;
                 this.vitesse = this.vitesse / 2;
                 this.deplacement(); //point du bord de la plage le plus proche à mettre en paramètre
                 this.vitesse * 2;
-                Personne.activite = bronzage;
+                Personne.etat = Etat.BRONZAGE;
                 if (this.estSauveteur == True)
-                    this.activite = Activite.attente;
+                    this.etat = Etat.ATTENTE;
                 else
-                    this.activite = Activite.bronzage;
+                    this.etat = Etat.REPOS;
         }
     }
 
     public boolean estSauve(){
         if (this.position == plage)
-            this.activite = Activite.attente;
+            this.etat = Etat.ATTENTE;
             return true;
         return false;
     }
