@@ -160,7 +160,7 @@ public class Personne extends Thread {
                 double baignade = Math.random;
                 if (baignade < 0.05) {
                     this.activité = Activite.deplacement;
-                    déplacement(positionPlage);
+                    deplacement(positionPlage);
                     this.activite = Activite.bronzage;
                 }
             }
