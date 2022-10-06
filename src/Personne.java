@@ -232,17 +232,30 @@ public class Personne extends Thread {
         // Rappel des actions : se déplacer, se baigner, se reposer, se placer, partir (redoncances ?)
         // Pour le placement, ce sera complété plus tard donc tu peux laisser vide
         // La personne doit vivre ! LET THERE BE LIGHT
+        
         Etat etat;
         Objectif objectif;
         Personne personne;
+        
         for (int i = 0; i < 100; i++) {
             etat = personne.getEtat();
             objectif = personne.getObjectif();
             if(etat == Etat.MOUVEMENT){
                 objectif = Objectif.BAIGNADE
-
+                baignade()
                 Thread.sleep(2000);
             }
+            
+           if(objectif == Objectif.BAIGNADE){
+               etat = Etat.BAIGNADE
+               if(estSauve == true){
+                   vaSauver()
+               else if (estSauve == false) {
+                   
+               }
+                   
+           }
+               
             if(etat == Etat.Attente){
                 Thread.sleep(3000);
                 etat = Etat.Mouvement
