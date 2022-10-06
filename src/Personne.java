@@ -246,7 +246,7 @@ public class Personne extends Thread {
                 etat = Etat.Repos;
                 Thread.sleep(2000);
             }
-            etat = Etat.BAIGNADE // La personne va se baigner
+            etat = Etat.BAIGNADE 
             objectif = Objectif.BAIGNADE
             baignade()
             if(seNoie() == true){
