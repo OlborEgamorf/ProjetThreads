@@ -235,33 +235,33 @@ public class Personne extends Thread {
         
         Etat etat;
         Objectif objectif;
+        double proba;
+        proba = math.random()
         
         for (int i = 0; i < 100; i++) {
-            
-            if(etat == Etat.MOUVEMENT){
-                objectif = Objectif.BAIGNADE
-                baignade()
+            etat = Etat.MOUVEMENT 
+            objectif = Objectif.PLACEMENT 
+            Thread.sleep(5000); 
+            while(proba < 0.9){ 
+                etat = Etat.Repos;
                 Thread.sleep(2000);
             }
+            etat = Etat.BAIGNADE // La personne va se baigner
+            objectif = Objectif.BAIGNADE
+            baignade()
+            if(seNoie() == true){
+                etat = Etat.NOYADE
+                vaSauver()
+            else {
+                etat = Etat.MOUVEMENT
+                }
+            objectif = Objectif.PARTIR
+            quittePlage()
+                
+                
             
-           if(objectif == Objectif.BAIGNADE){
-               etat = Etat.BAIGNADE
-               if(estSauve == true){
-                   vaSauver()
-               else if (estSauve == false) {
-                   
-               }
-                   
-           }
-               
-            if(etat == Etat.Attente){
-                Thread.sleep(3000);
-                etat = Etat.Mouvement
-            }
-        }
-
-
-
+                
+     
     }
 
 }
