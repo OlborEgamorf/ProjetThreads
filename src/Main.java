@@ -21,5 +21,10 @@ public class Main {
 
         // Il va nous nous falloir une boite de communications entre les threads
 
+        Interface Interface= new Interface(plage);
+        while(true){
+            Interface.turn();
+        }
+
     }
 }
