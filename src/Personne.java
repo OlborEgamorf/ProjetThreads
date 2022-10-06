@@ -235,11 +235,9 @@ public class Personne extends Thread {
         
         Etat etat;
         Objectif objectif;
-        Personne personne;
         
         for (int i = 0; i < 100; i++) {
-            etat = personne.getEtat();
-            objectif = personne.getObjectif();
+            
             if(etat == Etat.MOUVEMENT){
                 objectif = Objectif.BAIGNADE
                 baignade()
