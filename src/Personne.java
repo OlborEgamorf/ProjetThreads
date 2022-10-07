@@ -236,33 +236,36 @@ public class Personne extends Thread {
         Etat etat;
         Objectif objectif;
         double proba;
-        proba = math.random()
+        proba = math.random();
         
         for (int i = 0; i < 100; i++) {
-            etat = Etat.MOUVEMENT 
-            objectif = Objectif.PLACEMENT 
+            etat = Etat.MOUVEMENT;
+            objectif = Objectif.PLACEMENT;
             Thread.sleep(5000); 
             while(proba < 0.9){ 
                 etat = Etat.Repos;
                 Thread.sleep(2000);
             }
-            etat = Etat.BAIGNADE 
-            objectif = Objectif.BAIGNADE
-            baignade()
+            etat = Etat.BAIGNADE; 
+            objectif = Objectif.BAIGNADE;
+            baignade();
             if(seNoie() == true){
-                etat = Etat.NOYADE
-                vaSauver()
+                etat = Etat.NOYADE;
+                vaSauver();
+            }
             else {
-                etat = Etat.MOUVEMENT
-                }
-            objectif = Objectif.PARTIR
-            quittePlage()
+                etat = Etat.MOUVEMENT;
+            }
+                
+        objectif = Objectif.PARTIR;
+        quittePlage();
+        }
                 
                 
             
                 
      
-    }
+    
 
 }
 
