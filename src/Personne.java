@@ -221,7 +221,7 @@ public class Personne extends Thread {
             interruption();
     }
 
-    public void run(){
+    public void run() {
         // Chaque personne a un Etat : ce qu'il fait, et un Objectif : ce qu'il voudrait faire
         // Exemple : si une personne se déplace, son Etat est Etat.MOUVEMENT, et là où il va est dans son objectif : Objectif.BAIGNADE par exemple
         // run() doit faire en sorte que la personne fasse ses actions.
@@ -232,34 +232,67 @@ public class Personne extends Thread {
         // Rappel des actions : se déplacer, se baigner, se reposer, se placer, partir (redoncances ?)
         // Pour le placement, ce sera complété plus tard donc tu peux laisser vide
         // La personne doit vivre ! LET THERE BE LIGHT
-        
+
         Etat etat;
         Objectif objectif;
         double proba;
         proba = math.random();
-        
+
         for (int i = 0; i < 100; i++) {
             etat = Etat.MOUVEMENT;
             objectif = Objectif.PLACEMENT;
-            Thread.sleep(5000); 
-            while(proba < 0.9){ 
+            Thread.sleep(5000);
+            while (proba < 0.9) {
                 etat = Etat.Repos;
                 Thread.sleep(2000);
             }
-            etat = Etat.BAIGNADE; 
+            etat = Etat.BAIGNADE;
             objectif = Objectif.BAIGNADE;
             baignade();
-            if(seNoie() == true){
+            if (seNoie() == true) {
                 etat = Etat.NOYADE;
                 vaSauver();
-            }
-            else {
+            } else {
                 etat = Etat.MOUVEMENT;
             }
-                
-        objectif = Objectif.PARTIR;
-        quittePlage();
+
+            objectif = Objectif.PARTIR;
+            quittePlage();
         }
+    }
+    //la fonction n'est pas encore completement fini.
+    public void deplacer(Personne personne){
+        int[] position;
+        int[] oldposistion;
+        int[][] vision;
+        Etat etat;
+        Objectif object;
+        int x = Math.floor(Math.random()) * Plage.longueur;
+        int y = Math.floor(Math.random()) * Plage.largeur;
+
+        //Tant que la position n'est pas celle d'arrivee.
+        while (this.position!=position.arrive) {
+            // Si la case est vide
+            if (isFree(x, y) == true) {
+                etat = Etat.MOUVEMENT;                   //La persone est en mouvement
+                object = Objectif.PLACEMENT;             // avec l'objectif de se placer
+                // Si la personne est arrivé
+                if (this.position == position.arrive) {
+                    etat = Etat.PLACEMENT;               // Elle se met alors a se placer
+                    unpack(x, y);                        // La Plage considere donc que la case est occupe et vaut 2
+                    this.position = position.arrive;     // La boucle prend fin
+                }
+            }
+            // Si la case est occupe alors on redemande de nouvelle coordonées pour relancer la boucle
+            else{
+                x = Math.floor(Math.random()) * Plage.longueur;
+                y = Math.floor(Math.random()) * Plage.largeur;
+            }
+        }
+
+
+
+    }
                 
                 
             
