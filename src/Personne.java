@@ -261,38 +261,37 @@ public class Personne extends Thread {
         }
     }
 
-    public boolean caselibre(int x, int y, Plage p){
-        return p[x][y] == 0;
+    public boolean caselibre(int x, int y){
+        return this.matrice[x][y] == 0;
     }
 
-    public void seplacer(int x, int y, Plage pl, int[][] place){
+    public void seplacer(int x, int y){
         Etat etat1;
-
-
-
+        etat1 = Etat.PLACEMENT;
+        this.matrice[x][y] = 2;
     }
 
-    public void deplacer(Personne personne, Plage pla){
+    public void deplacer(Personne personne){
         Etat etat;
         Objectif object;
         int x = Math.floor(Math.random()) * this.longueur;
         int y = Math.floor(Math.random()) * this.largeur;
 
         //Tant que la position n'est pas celle d'arrivee.
-        while (this.position!=pla[x][y]) {
+        while (this.position!=this.matrice[x][y]) {
             // Si la case est vide
-            if (caselibre(x, y, pla)) {
+            if (caselibre(x, y)) {
                 etat = Etat.MOUVEMENT;                   //La persone est en mouvement
                 object = Objectif.PLACEMENT;             // avec l'objectif de se placer
                 // Si la personne est arrivé
-                if (this.position == pla[x][y]) {
-                    etat = Etat.PLACEMENT;               // Elle se met alors a se placer
-                    unpack(x, y);                        // La Plage considere donc que la case est occupe et vaut 2
-                    this.position = pla[x][y];         // La boucle prend fin
+                if (this.position == this.matrice[x][y]) {
+                    seplacer(x,y);                        // La Plage considere donc que la case est occupe et vaut 2
+                    this.position = this.matrice[x][y];         // La boucle prend fin
                 }
             }
             // Si la case est occupe alors on redemande de nouvelle coordonées pour relancer la boucle
             else{
+                etat = Etat.ATTENTE;
                 x = Math.floor(Math.random()) * this.longueur;
                 y = Math.floor(Math.random()) * this.largeur;
             }
