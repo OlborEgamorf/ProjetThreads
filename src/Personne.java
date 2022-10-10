@@ -261,32 +261,40 @@ public class Personne extends Thread {
         }
     }
 
-    public void deplacer(Personne personne){
-        int[] position;
-        int[] oldposistion;
-        int[][] vision;
+    public boolean caselibre(int x, int y, Plage p){
+        return p[x][y] == 0;
+    }
+
+    public void seplacer(int x, int y, Plage pl, int[][] place){
+        Etat etat1;
+
+
+
+    }
+
+    public void deplacer(Personne personne, Plage pla){
         Etat etat;
         Objectif object;
-        int x = Math.floor(Math.random()) * Plage.longueur;
-        int y = Math.floor(Math.random()) * Plage.largeur;
+        int x = Math.floor(Math.random()) * this.longueur;
+        int y = Math.floor(Math.random()) * this.largeur;
 
         //Tant que la position n'est pas celle d'arrivee.
-        while (this.position!=position.arrive) {
+        while (this.position!=pla[x][y]) {
             // Si la case est vide
-            if (isFree(x, y) == true) {
+            if (caselibre(x, y, pla)) {
                 etat = Etat.MOUVEMENT;                   //La persone est en mouvement
                 object = Objectif.PLACEMENT;             // avec l'objectif de se placer
                 // Si la personne est arrivé
-                if (this.position == position.arrive) {
+                if (this.position == pla[x][y]) {
                     etat = Etat.PLACEMENT;               // Elle se met alors a se placer
                     unpack(x, y);                        // La Plage considere donc que la case est occupe et vaut 2
-                    this.position = position.arrive;     // La boucle prend fin
+                    this.position = pla[x][y];         // La boucle prend fin
                 }
             }
             // Si la case est occupe alors on redemande de nouvelle coordonées pour relancer la boucle
             else{
-                x = Math.floor(Math.random()) * Plage.longueur;
-                y = Math.floor(Math.random()) * Plage.largeur;
+                x = Math.floor(Math.random()) * this.longueur;
+                y = Math.floor(Math.random()) * this.largeur;
             }
         }
 
