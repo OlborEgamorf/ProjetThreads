@@ -5,10 +5,10 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class InteractionMenu extends JFrame implements ActionListener {
-    private JLabel intituléNom = new JLabel("Longueur plage :");
-    private Saisie nom = new Saisie("");
-    private JLabel intituléPrénom = new JLabel("Largeur plage :");
-    private Saisie prénom = new Saisie("");
+    private JLabel intituléLongueur = new JLabel("Longueur plage :");
+    private Saisie Longueur = new Saisie("");
+    private JLabel intituléLargeur = new JLabel("Largeur plage :");
+    private Saisie largeur = new Saisie("");
     private JLabel intituléPersonne = new JLabel("Nombre de personne max :");
     private Saisie personne = new Saisie("");
 
@@ -32,8 +32,8 @@ public class InteractionMenu extends JFrame implements ActionListener {
 
     private class Saisie extends JTextField {
         public Saisie(String texte) {
-            super(texte, 10);
-            setFont(new Font("Verdana", Font.BOLD, 16));
+            super(texte, 20);
+            setFont(new Font("Verdana", Font.BOLD, 20));
             setMargin(new Insets(0, 3, 0, 0));
         }
     }
@@ -45,25 +45,38 @@ public class InteractionMenu extends JFrame implements ActionListener {
         groupe.setAutoCreateGaps(true);
         GroupLayout.ParallelGroup horzGroupe = groupe.createParallelGroup();
         GroupLayout.SequentialGroup vertGroupe = groupe.createSequentialGroup();
-        horzGroupe.addComponent(intituléNom).addComponent(nom).addComponent(intituléPrénom).addComponent(prénom).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent).addComponent(intituléTemperature).addComponent(temperature);
-        horzGroupe.addComponent(validation).addComponent(résultat);
-        vertGroupe.addComponent(intituléNom).addComponent(nom).addComponent(intituléPrénom).addComponent(prénom).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent).addComponent(intituléTemperature).addComponent(temperature);
-        vertGroupe.addComponent(validation).addComponent(résultat);
-        vertGroupe.addComponent(intituléPersonne).addComponent(nom).addComponent(intituléPrénom).addComponent(prénom).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent).addComponent(intituléTemperature).addComponent(temperature);
-        vertGroupe.addComponent(validation).addComponent(résultat);
-        vertGroupe.addComponent(intituléTemperature).addComponent(temperature).addComponent(intituléPrénom).addComponent(prénom).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent).addComponent(intituléTemperature).addComponent(temperature);
-        vertGroupe.addComponent(validation).addComponent(résultat);
-        vertGroupe.addComponent(intituléVent).addComponent(vent).addComponent(intituléPrénom).addComponent(prénom).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent).addComponent(intituléTemperature).addComponent(temperature);
-        vertGroupe.addComponent(validation).addComponent(résultat);
+        horzGroupe.addComponent(intituléLongueur).addComponent(Longueur).addComponent(intituléLargeur).addComponent(largeur).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent).addComponent(intituléTemperature).addComponent(temperature);
+        horzGroupe.addComponent(validation);
+        vertGroupe.addComponent(intituléLargeur).addComponent(largeur).addComponent(intituléLongueur).addComponent(Longueur).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent).addComponent(intituléTemperature).addComponent(temperature);
+        vertGroupe.addComponent(validation);
+        vertGroupe.addComponent(intituléPersonne).addComponent(personne).addComponent(intituléLongueur).addComponent(Longueur).addComponent(intituléLargeur).addComponent(largeur).addComponent(intituléTemperature).addComponent(temperature).addComponent(intituléVent).addComponent(vent);
+        vertGroupe.addComponent(validation);
+        vertGroupe.addComponent(intituléTemperature).addComponent(temperature).addComponent(intituléLongueur).addComponent(Longueur).addComponent(intituléLargeur).addComponent(largeur).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent);
+        vertGroupe.addComponent(validation);
+        vertGroupe.addComponent(intituléVent).addComponent(vent).addComponent(intituléLongueur).addComponent(Longueur).addComponent(intituléLargeur).addComponent(largeur).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléTemperature).addComponent(temperature);
+        vertGroupe.addComponent(validation);
         groupe.setHorizontalGroup(horzGroupe);
         groupe.setVerticalGroup(vertGroupe);
     }
 
     public void actionPerformed(ActionEvent e) {
-        résultat.setText(prénom.getText() + ' ' + nom.getText() + ' ' + personne.getText() + ' ' + vent.getText() + ' ' + temperature.getText());
+        System.out.println(largeur.getText());
+        System.out.println(Longueur.getText());
+        System.out.println(personne.getText());
+        System.out.println(temperature.getText());
+        System.out.println(vent.getText());
+
+        /*
+        prénom.getText() =
+        nom.getText() =
+        personne.getText() =
+        temperature.getText() =
+        vent.getText() =
+         */
     }
 
     public static void main(String[] args) {
         new Champ();
     }
+
 }
