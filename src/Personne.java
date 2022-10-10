@@ -260,7 +260,7 @@ public class Personne extends Thread {
             quittePlage();
         }
     }
-    //la fonction n'est pas encore completement fini.
+
     public void deplacer(Personne personne){
         int[] position;
         int[] oldposistion;
