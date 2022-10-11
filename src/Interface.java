@@ -25,22 +25,22 @@ public class Interface extends JPanel {
         g.setColor(Color.blue);
         g.fillRect(0,(plage.getLargeur()-plage.getMer()+1), plage.getLargeur(),plage.getLongueur()-plage.getMer());
 
-        for (int i=0;i<=nbPersonnes; i++){
-            Personne tmp= ;//trouver un truc pour parcourir les ID actifs
-            if (tmp.getEstSauveteur()){
+        for (Personne personne : plage.getThreads()) {
+            
+            if (personne.getEstSauveteur()){
                 g.setColor(Color.red);
-                g.fillOval(tmp.getPosition()[0], tmp.getPosition()[1], pixel, pixel);
+                g.fillOval(personne.getPosition()[0], personne.getPosition()[1], pixel, pixel);
             }
             else{
-                if (tmp.getEtat()== Etat.NOYADE){
+                if (personne.getEtat()== Etat.NOYADE){
                     g.setColor(Color.white);
-                    g.fillOval(tmp.getPosition()[0], tmp.getPosition()[1], pixel, pixel);
+                    g.fillOval(personne.getPosition()[0], personne.getPosition()[1], pixel, pixel);
                 }
                 else{
                     g.setColor(Color.gray);
-                    g.fillOval(tmp.getPosition()[0], tmp.getPosition()[1], pixel, pixel);
+                    g.fillOval(personne.getPosition()[0], personne.getPosition()[1], pixel, pixel);
                     g.setColor(Color.black);
-                    g.fillRect(tmp.getPositionPlage()[0], tmp.getPositionPlage()[1], pixel, pixel);
+                    g.fillRect(personne.getPositionPlage()[0], personne.getPositionPlage()[1], pixel, pixel);
                 }
             }
         }

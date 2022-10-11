@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Plage {
+public class Plage extends Thread {
 
     private int longueur;
     private int largeur;
@@ -42,8 +42,12 @@ public class Plage {
 
     public Case[][] getMatrice() { return matrice; }
     
-    public int mer() {
+    public int getMer() {
         return mer;
+    }
+
+    public Personne[] getThreads() {
+        return threads;
     }
 
     public boolean isFree(int x, int y) {
@@ -51,27 +55,31 @@ public class Plage {
         return matrice[x][y].getType() == Type.VIDE;
     }
 
-    public void unpack(int x, int y) {
+    public boolean unpack(int x, int y) {
         //desormais la case n'est plus vide.
-        matrice[x][y].type = Type.PERSONNE;
         // on met la case a 2 + celles aux alentours
-        matrice[x][y] = 2;
-        matrice[x][y-1] = 2;
-        matrice[x-1][y] = 2;
-        matrice[x-1][y-1] = 2;
-        matrice[x+1][y+1] = 2;
-        matrice[x+1][y] = 2;
-        matrice[x][y+1] = 2;
+
+        if (matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE) {
+            return false;
+        }
+
+        for (int i=0; i<2; i++) {
+            for (int j=0;j<3;j++) {
+                matrice[x+i][y+j].type = Type.AFFAIRES;
+            }
+        }
+
+        return true;
     }
         // La personne pose ses affaires, les cases vaudront 2
 
 
-    public void pack(int[][] coords) {
+    /* public void pack(int[][] coords) {
         // La personne s'en va et remballe ses affaires
         for (int i = 0;i< coords.length;i++) {
             matrice[coords[i][0]][coords[i][1]] = 0;
         }
-    }
+    } */
 
     public static int[] coordToArray(int x, int y) {
         int[] liste = {x, y};
@@ -99,17 +107,18 @@ public class Plage {
         personne.setVision(vision);
     }
 
-    public void start () throws InterruptedException {
-        int[] posTest = {0,1};
+    public void run () {
+        
         for (int i = 0; i < threads.length; i++) {
+            int[] posTest = {0,(int)Math.random()*largeur};
             threads[i] = new Personne(i,posTest,vent);
             threads[i].start();
+            threads[i].placement(longueur, largeur);
+            System.out.println("OUI C'EST CREE");
         }
         
         int[] actPos;
         int[] oldPos;
-        int x;
-        int y;
         Etat etat;
         Personne personne;
         
@@ -133,10 +142,18 @@ public class Plage {
                         }
                     }
                 } else if (etat == Etat.PLACEMENT) {
-                    unpack(x, y);
+                    actPos = personne.getPosition();
+                    if (!unpack(actPos[0], actPos[1])) {
+                        personne.placement(longueur, largeur);
+                    };
                 }
             }
-            Thread.sleep(100);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
     

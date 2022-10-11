@@ -1,15 +1,24 @@
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Scanner scan = new Scanner(System.in);
-        int largeur = scan.nextInt();
+        /*int largeur = scan.nextInt();
         int longueur = scan.nextInt();
         int profondeur = scan.nextInt();
         double temperature = scan.nextDouble();
         int vent = scan.nextInt();
-        int mer = scan.nextInt();
+        int mer = scan.nextInt();*/
+
+        int largeur = 600;
+        int longueur = 600;
+        int profondeur = 23;
+        double temperature = 98;
+        int vent = 123;
+        int mer = 450;
+
+        scan.close();
 
         int nbMax = 1000;
 
@@ -21,6 +30,7 @@ public class Main {
 
         // Il va nous nous falloir une boite de communications entre les threads
 
+        System.out.println("J'ARRIVE ICI HIHIKIKK");
         Interface Interface= new Interface(plage);
         while(true){
             Interface.turn();
