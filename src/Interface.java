@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Interface extends JPanel {
-    private final int pixel = 2;
+    private final int pixel = 5;
     private int longueur;
     private int largeur;
     private int mer;
@@ -29,24 +29,24 @@ public class Interface extends JPanel {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.setColor(Color.decode("##FFE333"));
+        g.setColor(Color.decode("#FFE333"));
         g.fillRect(0,0, largeur, longueur);
-        g.setColor(Color.decode("##338AFF"));
+        g.setColor(Color.decode("#338AFF"));
         g.fillRect(0, mer, largeur, longueur-mer);
 
         for (Personne personne : threads) {
             if (personne.getEstSauveteur()){
                 g.setColor(Color.red);
-                g.fillOval(personne.getPosition()[0], personne.getPosition()[1], pixel, pixel);
+                g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
             }
             else{
                 if (personne.getEtat()== Etat.NOYADE){
                     g.setColor(Color.white);
-                    g.fillOval(personne.getPosition()[0], personne.getPosition()[1], pixel, pixel);
+                    g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
                 }
                 else{
                     g.setColor(Color.gray);
-                    g.fillOval(personne.getPosition()[0], personne.getPosition()[1], pixel, pixel);
+                    g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
                     
                 }
                 g.setColor(Color.black);

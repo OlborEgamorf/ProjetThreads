@@ -20,10 +20,10 @@ public class Main {
 
         scan.close();
 
-        int nbMax = 1;
+        int nbMax = 150;
 
         Plage plage = new Plage(longueur, largeur, profondeur, temperature, vent, mer, nbMax);
-        plage.start();
+
 
         // Une Plage => 1 Thread.
         // Plusieurs personnes => 1 thread pour chaques personnes.
@@ -33,7 +33,9 @@ public class Main {
         System.out.println("J'ARRIVE ICI HIHIKIKK");
         Interface interfaced = new Interface(plage);
         while(true){
+            plage.turn();
             interfaced.turn();
+            Thread.sleep(10);
         }
 
     }

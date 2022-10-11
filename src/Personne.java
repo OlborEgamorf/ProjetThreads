@@ -15,6 +15,8 @@ public class Personne extends Thread {
     private Objectif objectif;
     private int[][] vision = {{0,0,0},{0,0,0},{0,0,0}};
     private int id;
+
+    private boolean oath = true;
     
     Personne(int id, int[] position, int vent){
         this.position = position; //position spawn
@@ -97,6 +99,10 @@ public class Personne extends Thread {
         }
         else
             this.estSauveteur = false;
+    }
+
+    public void setOath(boolean oath) {
+        this.oath = oath;
     }
 
     public void setVitesse(){
@@ -219,6 +225,8 @@ public class Personne extends Thread {
                 } else {
                     int x = position[0];
                     int y = position[1];
+
+
                     int ecartX = objPosition[0]-position[0];
                     int ecartY = objPosition[1]-position[1];
 
@@ -228,35 +236,38 @@ public class Personne extends Thread {
                     
                     if (ecartY != 0) {
                         ecartY = ecartY/Math.abs(ecartY);
-                    }
+                    }                    
                     
-                    
-                    if (vision[x+ecartX][y+ecartY] == 0) {
+                    if (vision[1+ecartX][1+ecartY] == 0) {
                         int[] newPos = {x+ecartX,y+ecartY};
                         setPosition(newPos);
-                    } else if (vision[x][y+ecartY] == 0) {
+                    } else if (vision[1][1+ecartY] == 0) {
                         int[] newPos = {x,y+ecartY};
                         setPosition(newPos);
-                    } else if (vision[x+ecartX][y] == 0) {
+                    } else if (vision[1+ecartX][1] == 0) {
                         int[] newPos = {x+ecartX,y};
                         setPosition(newPos);
-                    } else if (vision[x+ecartX][y-1] == 0) {
+                    } else if (vision[1+ecartX][0] == 0) {
                         int[] newPos = {x+ecartX,y-1};
                         setPosition(newPos);
-                    } else if (vision[x-1][y+ecartY] == 0) {
+                    } else if (vision[0][1+ecartY] == 0) {
                         int[] newPos = {x-1,y+ecartY};
                         setPosition(newPos);
                     } else {
+                        System.out.println("DOMMAGE");
                         int[] newPos = position;
                         setPosition(newPos);
                     }
+                    //System.out.println(position[0]+" "+position[1]);
 
-                    
-                    try {
-                        Thread.sleep(150);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    oath = false;
+                    while (!oath) {
+                        try {
+                            Thread.sleep(350);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 }
                 
@@ -283,10 +294,10 @@ public class Personne extends Thread {
     
     }
 
-    public void placement(int longueur, int largeur){
+    public void placement(int longueur, int largeur, int mer){
     
-        int x = (int)(Math.floor(Math.random()) * longueur);
-        int y = (int)(Math.floor(Math.random()) * largeur);
+        int x = (int)(Math.floor(Math.random() * (longueur-mer)));
+        int y = (int)(Math.floor(Math.random() * largeur));
 
         etat = Etat.MOUVEMENT;                   //La persone est en mouvement
         objectif = Objectif.PLACEMENT;
