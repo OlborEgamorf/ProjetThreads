@@ -66,13 +66,13 @@ public class InteractionMenu extends JFrame implements ActionListener {
         System.out.println(temperature.getText());
         System.out.println(vent.getText());
 
-        /*
-        prénom.getText() =
-        nom.getText() =
+
+        longueur.getText() =
+        largeur.getText() =
         personne.getText() =
         temperature.getText() =
         vent.getText() =
-         */
+
     }
 
     public static void main(String[] args) {
