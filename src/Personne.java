@@ -14,6 +14,8 @@ public class Personne extends Thread {
     private Objectif objectif;
     private int[][] vision;
     private int id;
+
+    private int[] place;
     
     Personne(int id, int[] position, int vent){
         this.position = position; //position spawn
@@ -262,36 +264,40 @@ public class Personne extends Thread {
     }
 
     public boolean caselibre(int x, int y){
-        return this.matrice[x][y] == 0;
+        return vision[x][y] == 0;
     }
 
     public void seplacer(int x, int y){
         Etat etat1;
         etat1 = Etat.PLACEMENT;
-        this.matrice[x][y] = 2;
     }
 
-    public void deplacer(Personne personne){
+    public boolean verificationvision(int x, int y, int[][] vision){
+        return (((((vision[x][y - 1] == 0)&&(vision[x][y+1] == 0)&&(vision[x+1][y+1] == 0)&&(vision[x+1][y]==0)&&(vision[x-1][y+1]==0)))));
+        }
+
+
+
+    public void placement(){
         Etat etat;
         Objectif object;
         int x = Math.floor(Math.random()) * this.longueur;
         int y = Math.floor(Math.random()) * this.largeur;
 
         //Tant que la position n'est pas celle d'arrivee.
-        while (this.position!=this.matrice[x][y]) {
+        while (this.position != positionPlage) {
             // Si la case est vide
             if (caselibre(x, y)) {
                 etat = Etat.MOUVEMENT;                   //La persone est en mouvement
                 object = Objectif.PLACEMENT;             // avec l'objectif de se placer
-                // Si la personne est arrivé
-                if (this.position == this.matrice[x][y]) {
+                // Si la personne est arrive
+                if ((this.position == positionPlage)&&(verificationvision(x,y,this.vision([x][y]))){
                     seplacer(x,y);                        // La Plage considere donc que la case est occupe et vaut 2
-                    this.position = this.matrice[x][y];         // La boucle prend fin
+                    this.position = positionPlage;        // La boucle prend fin
                 }
             }
             // Si la case est occupe alors on redemande de nouvelle coordonées pour relancer la boucle
             else{
-                etat = Etat.ATTENTE;
                 x = Math.floor(Math.random()) * this.longueur;
                 y = Math.floor(Math.random()) * this.largeur;
             }

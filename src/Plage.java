@@ -52,8 +52,19 @@ public class Plage {
     }
 
     public void unpack(int x, int y) {
-        // La personne pose ses affaires, les cases vaudront 2
+        //desormais la case n'est plus vide.
+        matrice[x][y].type = Type.PERSONNE;
+        // on met la case a 2 + celles aux alentours
+        matrice[x][y] = 2;
+        matrice[x][y-1] = 2;
+        matrice[x-1][y] = 2;
+        matrice[x-1][y-1] = 2;
+        matrice[x+1][y+1] = 2;
+        matrice[x+1][y] = 2;
+        matrice[x][y+1] = 2;
     }
+        // La personne pose ses affaires, les cases vaudront 2
+
 
     public void pack(int[][] coords) {
         // La personne s'en va et remballe ses affaires
@@ -97,6 +108,8 @@ public class Plage {
         
         int[] actPos;
         int[] oldPos;
+        int x;
+        int y;
         Etat etat;
         Personne personne;
         
@@ -119,6 +132,8 @@ public class Plage {
                             modifVision(personne, actPos[0], actPos[1], oldPos[0], oldPos[1]);
                         }
                     }
+                } else if (etat == Etat.PLACEMENT) {
+                    unpack(x, y);
                 }
             }
             Thread.sleep(100);
