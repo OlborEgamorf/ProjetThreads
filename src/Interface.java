@@ -12,14 +12,14 @@ public class Interface extends JPanel {
 
     public Interface(Plage plage){
         setVisible(true);
-        JFrame frame= new JFrame("Plage");
-        frame.setSize(plage.getLargeur(),plage.getLongueur());
+        JFrame frame = new JFrame("Plage");
+        frame.setSize(plage.getLargeur(), plage.getLongueur());
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setLocation(0,0);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(this);
-        
+
         mer = plage.getMer();
         longueur = plage.getLongueur();
         largeur = plage.getLargeur();
@@ -29,10 +29,10 @@ public class Interface extends JPanel {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.setColor(Color.yellow);
-        g.fillRect(0,0, largeur, longueur-mer);
-        g.setColor(Color.blue);
-        g.fillRect(0,(largeur-mer+1), largeur,longueur-mer);
+        g.setColor(Color.decode("##FFE333"));
+        g.fillRect(0,0, largeur, longueur);
+        g.setColor(Color.decode("##338AFF"));
+        g.fillRect(0, mer, largeur, longueur-mer);
 
         for (Personne personne : threads) {
             if (personne.getEstSauveteur()){
