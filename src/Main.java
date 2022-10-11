@@ -11,16 +11,16 @@ public class Main {
         int vent = scan.nextInt();
         int mer = scan.nextInt();*/
 
-        int largeur = 600;
-        int longueur = 600; 
+        int largeur = 1000;
+        int longueur = 500; 
         int profondeur = 23;
         double temperature = 98;
         int vent = 123;
-        int mer = 450;
+        int mer = 300;
 
         scan.close();
 
-        int nbMax = 150;
+        int nbMax = 500;
 
         Plage plage = new Plage(longueur, largeur, profondeur, temperature, vent, mer, nbMax);
 
@@ -30,7 +30,6 @@ public class Main {
 
         // Il va nous nous falloir une boite de communications entre les threads
 
-        System.out.println("J'ARRIVE ICI HIHIKIKK");
         Interface interfaced = new Interface(plage);
         while(true){
             plage.turn();

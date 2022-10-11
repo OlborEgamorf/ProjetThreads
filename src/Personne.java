@@ -247,10 +247,10 @@ public class Personne extends Thread {
                     } else if (vision[1+ecartX][1] == 0) {
                         int[] newPos = {x+ecartX,y};
                         setPosition(newPos);
-                    } else if (vision[1+ecartX][0] == 0) {
+                    } else if (vision[1+ecartX][0] == 0 && y > 0) {
                         int[] newPos = {x+ecartX,y-1};
                         setPosition(newPos);
-                    } else if (vision[0][1+ecartY] == 0) {
+                    } else if (vision[0][1+ecartY] == 0 && x > 0) {
                         int[] newPos = {x-1,y+ecartY};
                         setPosition(newPos);
                     } else {
@@ -263,7 +263,7 @@ public class Personne extends Thread {
                     oath = false;
                     while (!oath) {
                         try {
-                            Thread.sleep(350);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

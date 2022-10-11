@@ -22,4 +22,9 @@ public class Case {
     public Type getType() {
         return type;
     }
+
+    public int[] getCoords() {
+        int[] coords = {x,y};
+        return coords;
+    }
 }

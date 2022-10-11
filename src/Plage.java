@@ -110,9 +110,11 @@ public class Plage {
                         vision[i+1][j+1] = 1; 
                     }
                     if (emplacement.type == Type.PERSONNE) {
-                        //System.out.println(i+" "+x+" / "+j+" "+y);
-                        //threads[emplacement.id].setVisionCase(x+,j-1-y,1);
-                        //threads[emplacement.id].setVisionCase(i-1-oldX,j-1-oldY,0);
+                        int[] coords = emplacement.getCoords();
+                        threads[emplacement.id].setVisionCase(coords[0]-x+1,coords[1]-y+1,1);
+                        if (coords[0]-oldX+1 >= 0 && coords[0]-oldX+1 <= 2 && coords[1]-oldY+1 >= 0 && coords[1]-oldY+1 <= 2) {
+                            threads[emplacement.id].setVisionCase(coords[0]-oldX+1,coords[1]-oldY+1,0);
+                        }
                     }
                 }
             }
