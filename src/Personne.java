@@ -51,6 +51,10 @@ public class Personne extends Thread {
         return estSauveteur;
     }
 
+    public int[][] getVision(){
+        return vision;
+    }
+
     public int[] getPositionPlage(){
         return positionPlage;
     }
@@ -58,6 +62,10 @@ public class Personne extends Thread {
     public void setPosition(int[] nextPosition){
         oldPosition = position;
         position = nextPosition;
+    }
+
+    public void setObjPosition(int[] nextPosition){
+        objPosition = nextPosition;
     }
 
     public void immobilisation() {
