@@ -17,12 +17,16 @@ public class Personne extends Thread {
     private int id;
 
     private boolean oath = true;
+    private boolean alive = false;
+
+    private final int timing;
     
-    Personne(int id, int[] position, int vent){
+    Personne(int id, int[] position, int vent, int timing){
         this.position = position; //position spawn
         this.oldPosition = position;
         this.etat = Etat.ATTENTE;
         this.id = id;
+        this.timing = timing;
         
         setAge();
         setVitesse();
@@ -57,6 +61,14 @@ public class Personne extends Thread {
 
     public int[] getPositionPlage(){
         return positionPlage;
+    }
+
+    public boolean getAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean isAlive) {
+        alive = isAlive;
     }
 
     public void setPosition(int[] nextPosition){
@@ -214,6 +226,14 @@ public class Personne extends Thread {
     } */
 
     public void run() {
+        try {
+            Thread.sleep(timing);
+        } catch (InterruptedException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        alive = true;
 
         while (!Thread.interrupted()) {
 

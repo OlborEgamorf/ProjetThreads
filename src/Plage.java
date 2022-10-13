@@ -1,4 +1,3 @@
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Plage {
@@ -28,9 +27,11 @@ public class Plage {
         this.mer = mer;
         this.threads = new Personne[nbMax];
 
+        int coeff = 500; // coefficient de vitesse d'apparition, en ms
         for (int i = 0; i < threads.length; i++) {
             int[] posTest = {0,(int)(Math.floor(Math.random() * largeur))};
-            threads[i] = new Personne(i,posTest,vent);
+            threads[i] = new Personne(i,posTest,vent,coeff*i);
+            modifVision(threads[i],posTest[0],posTest[1],longueur+500,largeur+500);
             threads[i].placement(longueur, largeur, mer);
             threads[i].start();
         }
@@ -165,7 +166,7 @@ public class Plage {
             personne.setOath(true);
         }
 
-        for (Personne pers : threads) {
+        /* for (Personne pers : threads) {
             System.out.println(pers.getPosition()[0]+" "+pers.getPosition()[1]);
             int[][] vis = pers.getVision();
             for (int i=0;i<3;i++) {
@@ -173,7 +174,7 @@ public class Plage {
             }
         }
         System.out.println("");
-        System.out.println("------\n\n");
+        System.out.println("------\n\n"); */
     }
 }
     
