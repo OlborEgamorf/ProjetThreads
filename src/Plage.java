@@ -10,6 +10,7 @@ public class Plage {
     private double temperature;
     private int vent;
     private int mer;
+    private int[] zones;
     private Personne[] threads;
     private ArrayList<Integer> intoWater;
 
@@ -24,7 +25,9 @@ public class Plage {
             for (int j=0;j<largeur;j++) {
                 matrice[i][j] = new Case(i,j);
             }
-        } 
+        }
+
+        setZones();
         this.mer = mer;
         this.threads = new Personne[nbMax];
 
@@ -36,6 +39,9 @@ public class Plage {
         }
 
 
+    }
+    public  int[] getZones(){
+        return zones;
     }
     public int getLongueur() {
         return longueur;
@@ -63,7 +69,12 @@ public class Plage {
         // Si la case est vide
         return matrice[x][y].getType() == Type.VIDE;
     }
-
+    public void setZones(){
+        this.zones = new int[3];
+        this.zones[0]= this.longueur/3;
+        this.zones[1]= 2*(this.longueur/3);
+        this.zones[2]= this.longueur;
+    }
     public boolean unpack(int x, int y) {
         //desormais la case n'est plus vide.
         // on met la case a 2 + celles aux alentours
@@ -82,6 +93,15 @@ public class Plage {
     }
         // La personne pose ses affaires, les cases vaudront 2
 
+    public boolean check4x4(int x, int y){
+        for (int i=(x-2); i<(x+2); i++){
+            for (int j=(y-2); j<(y+2); j++){
+                if (!isFree(i, j))
+                    return false;
+            }
+        }
+        return true;
+    }
 
     /* public void pack(int[][] coords) {
         // La personne s'en va et remballe ses affaires
@@ -123,6 +143,22 @@ public class Plage {
         personne.setVision(vision);
     }
 
+    public void Placement(Personne personne){
+        int[] zones= getZones();
+        for (int i= zones.length-1; i> -1; i--){
+            for (int j=zones[i]; j>zones[i-1]; j--){
+                for (int k=0; k<getLargeur(); k++){
+                    if (isFree(k,j) && (isFree(k,j-1) && isFree(k,j+1) && isFree(k-1,j) && isFree(k+1,j) && isFree(k+1,j+1)&& isFree(k+1,j-1)&& isFree(k-1,j+1)&& isFree(k-1,j-1))
+                        && check4x4(k,j)){
+                            unpack(k,j);
+                            personne.setPositionPlage(k,j);
+                        }
+                    }
+                }
+            }
+        }
+
+
     public void turn () {
                 
         int[] actPos;
@@ -157,9 +193,11 @@ public class Plage {
                 }
             } else if (etat == Etat.PLACEMENT) {
                 actPos = personne.getPosition();
-                if (!unpack(actPos[0], actPos[1])) {
+                Placement(personne);
+
+                /*if (!unpack(actPos[0], actPos[1])) {
                     personne.placement(longueur, largeur, mer);
-                };
+                };*/
             }
 
             personne.setOath(true);

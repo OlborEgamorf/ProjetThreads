@@ -89,6 +89,10 @@ public class Personne extends Thread {
         }
     }
 
+    public void setPositionPlage(int x, int y){
+        this.positionPlage= new int[]{x, y};
+    }
+
     public void setEstSauveteur(){
         if (age > 18 && age < 60) {
             double probaSauveteur = Math.random();
@@ -136,20 +140,6 @@ public class Personne extends Thread {
             }
         }
     }
-    
-    
-    /*public void deplacement(positionArrivee){
-        double diffX = this.postion[0] - positionArrivee[0];
-        double diffY = this.position[1] - positionArrivée[1];
-        while (this.position != positionArrivée){
-            if(diffX > 0)
-                this.position[0] += this.vitesse;
-            else
-                this.position[0] -= this.vitesse;
-            diffX -= this.vitesse;
-            if (diffY > 0)
-        }
-    }*/
 
     /*public void baignade(){
         if (this.estSauveteur = false){
@@ -295,7 +285,7 @@ public class Personne extends Thread {
     }
 
     public void placement(int longueur, int largeur, int mer){
-    
+
         int x = (int)(Math.floor(Math.random() * (longueur-mer)));
         int y = (int)(Math.floor(Math.random() * largeur));
 
