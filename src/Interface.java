@@ -35,26 +35,27 @@ public class Interface extends JPanel {
         g.fillRect(0, mer, largeur, longueur-mer);
 
         for (Personne personne : threads) {
-            if (personne.getEstSauveteur()){
-                g.setColor(Color.red);
-                g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
-            }
-            else{
-                if (personne.getEtat()== Etat.NOYADE){
-                    g.setColor(Color.white);
+            if (personne.getAlive()) {
+                if (personne.getEstSauveteur()){
+                    g.setColor(Color.red);
                     g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
                 }
                 else{
-                    g.setColor(Color.gray);
-                    g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
-                    
+                    if (personne.getEtat()== Etat.NOYADE){
+                        g.setColor(Color.white);
+                        g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
+                    }
+                    else{
+                        g.setColor(Color.gray);
+                        g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
+                        
+                    }
+                    g.setColor(Color.black);
+                    int[] posPlage = personne.getPositionPlage();
+                    if (posPlage != null) {
+                        g.fillRect(posPlage[0], posPlage[1], pixel, pixel);
+                    }
                 }
-                g.setColor(Color.black);
-                int[] posPlage = personne.getPositionPlage();
-                if (posPlage != null) {
-                    g.fillRect(posPlage[0], posPlage[1], pixel, pixel);
-                }
-                
             }
         }
     }

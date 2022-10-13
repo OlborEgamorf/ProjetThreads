@@ -1,4 +1,3 @@
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Plage {
@@ -31,9 +30,11 @@ public class Plage {
         this.mer = mer;
         this.threads = new Personne[nbMax];
 
+        int coeff = 500; // coefficient de vitesse d'apparition, en ms
         for (int i = 0; i < threads.length; i++) {
             int[] posTest = {0,(int)(Math.floor(Math.random() * largeur))};
-            threads[i] = new Personne(i,posTest,vent);
+            threads[i] = new Personne(i,posTest,vent,coeff*i);
+            modifVision(threads[i],posTest[0],posTest[1],longueur+500,largeur+500);
             threads[i].placement(longueur, largeur, mer);
             threads[i].start();
         }
@@ -131,9 +132,9 @@ public class Plage {
                     }
                     if (emplacement.type == Type.PERSONNE) {
                         int[] coords = emplacement.getCoords();
-                        threads[emplacement.id].setVisionCase(coords[0]-x+1,coords[1]-y+1,1);
+                        threads[emplacement.id].setVisionCase(Math.abs(x-coords[0]+1),Math.abs(y-coords[1]+1),1);
                         if (coords[0]-oldX+1 >= 0 && coords[0]-oldX+1 <= 2 && coords[1]-oldY+1 >= 0 && coords[1]-oldY+1 <= 2) {
-                            threads[emplacement.id].setVisionCase(coords[0]-oldX+1,coords[1]-oldY+1,0);
+                            threads[emplacement.id].setVisionCase(Math.abs(oldX-coords[0]+1),Math.abs(oldY-coords[1]+1),0);
                         }
                     }
                 }
@@ -179,7 +180,7 @@ public class Plage {
 
                     if (matrice[actPos[0]][actPos[1]].type != Type.VIDE) {
                         // Si la personne s'est déplacé sur sa case avant
-                        System.out.println(matrice[actPos[0]][actPos[1]].type+" "+actPos[0]+" "+actPos[1]);
+                        System.out.println(matrice[actPos[0]][actPos[1]].type+" "+actPos[0]+" "+actPos[1]+" -- "+i);
                         personne.setPosition(oldPos);
                     } else {
                         // Si la personne peut aller sur la case
@@ -202,6 +203,16 @@ public class Plage {
 
             personne.setOath(true);
         }
+
+        /* for (Personne pers : threads) {
+            System.out.println(pers.getPosition()[0]+" "+pers.getPosition()[1]);
+            int[][] vis = pers.getVision();
+            for (int i=0;i<3;i++) {
+                System.out.println(vis[i][0]+" "+vis[i][1]+" "+vis[i][2]);
+            }
+        }
+        System.out.println("");
+        System.out.println("------\n\n"); */
     }
 }
     
