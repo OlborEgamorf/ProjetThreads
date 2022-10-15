@@ -11,6 +11,7 @@ public class Personne extends Thread {
     private int[] oldPosition;
     private int[] objPosition;
 
+
     private Etat etat;
     private Objectif objectif;
     private int[][] vision = {{0,0,0},{0,0,0},{0,0,0}};
@@ -66,6 +67,8 @@ public class Personne extends Thread {
         return positionPlage;
     }
 
+
+
     public boolean getAlive() {
         return alive;
     }
@@ -98,7 +101,9 @@ public class Personne extends Thread {
     public void setAge(){
         this.age= (int)(Math.random() * 100);
     }
-    
+
+
+
     public void setPeutSauver(){
         if (age < 15 || age > 60) {
             this.peutSauver = false;
@@ -326,6 +331,7 @@ public class Personne extends Thread {
         objPosition = posi;      // avec l'objectif de se placer
             // Si la personne est arrive
     }
+    
     public void placementDebut(){
         etat= Etat.PLACEMENT;
         objectif= Objectif.PLACEMENT;
@@ -333,6 +339,35 @@ public class Personne extends Thread {
     public void placementFini(){
         etat= Etat.REPOS;
         objectif= Objectif.REPOS;
+    }
+
+
+    public boolean veutsebaigner(){
+        return this.objectif == Objectif.BAIGNADE;
+    }
+
+    public boolean veutsereposer(){
+        return this.objectif == Objectif.REPOS && this.etat == Etat.BAIGNADE;
+    }
+
+
+
+    public void goBaignade(int[] mere){
+        if (veutsebaigner()) {
+            etat = Etat.MOUVEMENT;
+            objectif = Objectif.BAIGNADE;
+            if (this.position == mere){
+                etat = Etat.BAIGNADE;
+            }
+        } else if (veutsereposer()) {
+            etat = Etat.MOUVEMENT;
+            objectif = Objectif.REPOS;
+            if (this.position == this.positionPlage) {
+                etat = Etat.PLACEMENT;
+                etat = Etat.REPOS;
+            }
+
+        }
     }
 }
 
