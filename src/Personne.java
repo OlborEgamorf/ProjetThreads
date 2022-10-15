@@ -42,6 +42,9 @@ public class Personne extends Thread {
     public int[] getPosition(){
         return position;
     }
+    public int[] getObjPosition(){
+        return objPosition;
+    }
 
     public int[] getOldPosition () {
         return oldPosition;
@@ -109,14 +112,14 @@ public class Personne extends Thread {
         }
     }
 
-    public void setPositionPlage(int x, int y){
-        this.positionPlage= new int[]{x, y};
+    public void setPositionPlage(int[] positionPlage){
+        this.positionPlage= positionPlage;
     }
 
     public void setEstSauveteur(){
         if (age > 18 && age < 60) {
             double probaSauveteur = Math.random();
-            if (probaSauveteur < 0.0005)
+            if (probaSauveteur < 0.005)
                 this.estSauveteur = true;
             else
                 this.estSauveteur = false;
@@ -272,7 +275,7 @@ public class Personne extends Thread {
                         int[] newPos = {x-1,y+ecartY};
                         setPosition(newPos);
                     } else {
-                        System.out.println("DOMMAGE");
+                        //System.out.println("DOMMAGE");
                         int[] newPos = position;
                         setPosition(newPos);
                     }
@@ -322,8 +325,15 @@ public class Personne extends Thread {
         int[] posi = {x,y};
         objPosition = posi;      // avec l'objectif de se placer
             // Si la personne est arrive
-    }                
-
+    }
+    public void placementDebut(){
+        etat= Etat.PLACEMENT;
+        objectif= Objectif.PLACEMENT;
+    }
+    public void placementFini(){
+        etat= Etat.REPOS;
+        objectif= Objectif.REPOS;
+    }
 }
 
 

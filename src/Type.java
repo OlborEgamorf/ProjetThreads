@@ -1,3 +1,3 @@
 public enum Type {
-    PERSONNE, AFFAIRES, VIDE;
+    PERSONNE, AFFAIRES, VIDE, TEMPORAIRE;
 }

@@ -9,11 +9,12 @@ public class Interface extends JPanel {
     private int largeur;
     private int mer;
     private Personne[] threads;
+    private Case[][] matrice;
 
     public Interface(Plage plage){
         setVisible(true);
         JFrame frame = new JFrame("Plage");
-        frame.setSize(plage.getLargeur(), plage.getLongueur());
+        frame.setSize(plage.getLargeur(), plage.getLongueur()+plage.getMer());
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setLocation(0,0);
@@ -24,6 +25,7 @@ public class Interface extends JPanel {
         longueur = plage.getLongueur();
         largeur = plage.getLargeur();
         threads = plage.getThreads();
+        matrice = plage.getMatrice();
 
     }
 
@@ -32,7 +34,7 @@ public class Interface extends JPanel {
         g.setColor(Color.decode("#FFE333"));
         g.fillRect(0,0, largeur, longueur);
         g.setColor(Color.decode("#338AFF"));
-        g.fillRect(0, mer, largeur, longueur-mer);
+        g.fillRect(0, longueur, largeur, mer);
 
         for (Personne personne : threads) {
             if (personne.getAlive()) {
@@ -51,10 +53,25 @@ public class Interface extends JPanel {
                         
                     }
                     g.setColor(Color.black);
-                    int[] posPlage = personne.getPositionPlage();
-                    if (posPlage != null) {
-                        g.fillRect(posPlage[0], posPlage[1], pixel, pixel);
-                    }
+                    /*if (personne.getPositionPlage() != null) {
+                        g.fillRect(personne.getPositionPlage()[1], personne.getPositionPlage()[0], pixel, pixel);
+                    }*/
+                }
+            }
+        }
+        /*for (int i= 0; i<longueur; i++){
+            for (int j= 0; j<largeur; j++){
+                if (matrice [i][j].type== Type.TEMPORAIRE){
+                    g.setColor(Color.red);
+                    g.fillRect(j, i, pixel, pixel);
+                }
+            }
+        }*/
+        for (int i= 0; i<longueur; i++){
+            for (int j= 0; j<largeur; j++){
+                if (matrice [i][j].type== Type.AFFAIRES){
+                    g.setColor(Color.black);
+                    g.fillRect(j, i, pixel, pixel);
                 }
             }
         }

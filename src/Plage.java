@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Plage {
 
@@ -9,7 +10,7 @@ public class Plage {
     private double temperature;
     private int vent;
     private int mer;
-    private int[] zones;
+    private int[] zones= setZones();
     private Personne[] threads;
     private ArrayList<Integer> intoWater;
 
@@ -25,9 +26,8 @@ public class Plage {
                 matrice[i][j] = new Case(i,j);
             }
         }
-
-        setZones();
         this.mer = mer;
+        setZones();
         this.threads = new Personne[nbMax];
 
         int coeff = 500; // coefficient de vitesse d'apparition, en ms
@@ -70,33 +70,35 @@ public class Plage {
         // Si la case est vide
         return matrice[x][y].getType() == Type.VIDE;
     }
-    public void setZones(){
-        this.zones = new int[3];
-        this.zones[0]= this.longueur/3;
-        this.zones[1]= 2*(this.longueur/3);
-        this.zones[2]= this.longueur;
+    public int[] setZones(){
+        zones = new int[3];
+        zones[0]= this.longueur/3;
+        zones[1]= 2*(this.longueur/3);
+        zones[2]= this.longueur;
+        return zones;
     }
-    public boolean unpack(int x, int y) {
+    public void unpack(int x, int y) {
         //desormais la case n'est plus vide.
         // on met la case a 2 + celles aux alentours
 
-        if (matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE) {
+        /*if (matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE) {
             return false;
-        }
+        }*/
 
         for (int i=0; i<2; i++) {
             for (int j=0;j<3;j++) {
                 matrice[x+i][y+j].type = Type.AFFAIRES;
+                System.out.println("oui2Unpackboucles");
             }
         }
 
-        return true;
+        /*return true;*/
     }
         // La personne pose ses affaires, les cases vaudront 2
 
-    public boolean check4x4(int x, int y){
-        for (int i=(x-2); i<(x+2); i++){
-            for (int j=(y-2); j<(y+2); j++){
+    public boolean check6x6(int x, int y){
+        for (int i=(x-3); i<(x+3); i++){
+            for (int j=(y-3); j<(y+3); j++){
                 if (!isFree(i, j))
                     return false;
             }
@@ -144,23 +146,43 @@ public class Plage {
         personne.setVision(vision);
     }
 
-    public void Placement(Personne personne){
-        int[] zones= getZones();
-        for (int i= zones.length-1; i> -1; i--){
-            for (int j=zones[i]; j>zones[i-1]; j--){
-                for (int k=0; k<getLargeur(); k++){
-                    if (isFree(k,j) && (isFree(k,j-1) && isFree(k,j+1) && isFree(k-1,j) && isFree(k+1,j) && isFree(k+1,j+1)&& isFree(k+1,j-1)&& isFree(k-1,j+1)&& isFree(k-1,j-1))
-                        && check4x4(k,j)){
-                            unpack(k,j);
-                            personne.setPositionPlage(k,j);
-                        }
+    public void PlacementPlage(Personne personne){
+        /*for (int i= getZones().length-1; i>0; i--){*/
+        int i= getZones().length-1;
+        int t=0;
+        int a= 4;
+        while (i>0){
+            int x = (int)(Math.random() * ((getZones()[i]-3)-(getZones()[i-1]+3))+(getZones()[i-1]+3));
+            int y = (int)(Math.floor(Math.random() * (((getLargeur()-3)-(getLargeur()-(getLargeur()-3)))+(getLargeur()-(getLargeur()-3)))));
+            while (y<3){
+                y = (int)(Math.floor(Math.random() * (((getLargeur()-3)-(getLargeur()-(getLargeur()-3)))+(getLargeur()-(getLargeur()-3)))));
+            }
+            if (isFree(x,y) && (isFree(x,y-1) && isFree(x,y+1) && isFree(x-1,y) && isFree(x+1,y) && isFree(x+1,y+1)&& isFree(x+1,y-1)&& isFree(x-1,y+1)&& isFree(x-1,y-1))
+                    && check6x6(x,y)){
+                int [] pos= {x,y};
+                personne.setPositionPlage(pos);
+                int [] pos2= {x+3,y+3};
+                personne.setObjPosition(pos2);
+                for (int l=0; l<2; l++) {
+                    for (int m=0;m<3;m++) {
+                        System.out.println("1: x: "+personne.getPositionPlage()[0]+" y: "+personne.getPositionPlage()[1]+ " x: "+personne.getObjPosition()[0]+ " y: "+personne.getObjPosition()[1]);
+                        matrice[x+l][y+m].type = Type.TEMPORAIRE;
                     }
+                    return ;
                 }
             }
+            else{
+                t++;
+                if (t== 15 && i>1){
+                    t=0;
+                    i--;
+                }
+            }
+
         }
+    }
 
-
-    public void turn () {
+    public void turn() {
                 
         int[] actPos;
         int[] oldPos;
@@ -171,6 +193,11 @@ public class Plage {
 
             personne = threads[i];
             etat = personne.getEtat();
+
+            if (personne.getPositionPlage() == null){
+                PlacementPlage(personne);
+            }
+
             if (etat == Etat.MOUVEMENT) {
             
                 actPos = personne.getPosition();
@@ -178,9 +205,9 @@ public class Plage {
 
                 if (actPos != oldPos) {
 
-                    if (matrice[actPos[0]][actPos[1]].type != Type.VIDE) {
+                    if ((matrice[actPos[0]][actPos[1]].type != Type.VIDE) && (matrice[actPos[0]][actPos[1]].type != Type.TEMPORAIRE)) {
                         // Si la personne s'est déplacé sur sa case avant
-                        System.out.println(matrice[actPos[0]][actPos[1]].type+" "+actPos[0]+" "+actPos[1]+" -- "+i);
+                        //System.out.println(matrice[actPos[0]][actPos[1]].type+" "+actPos[0]+" "+actPos[1]+" -- "+i);
                         personne.setPosition(oldPos);
                     } else {
                         // Si la personne peut aller sur la case
@@ -192,9 +219,13 @@ public class Plage {
                         personne.immobilisation();
                     }
                 }
-            } else if (etat == Etat.PLACEMENT) {
-                actPos = personne.getPosition();
-                Placement(personne);
+                if (((actPos[0] == personne.getPositionPlage()[0]+3) && (actPos[1] == personne.getPositionPlage()[1]+3)) && (matrice [personne.getPositionPlage()[0]][personne.getPositionPlage()[1]].type== Type.TEMPORAIRE)){
+                    personne.placementDebut();
+                    unpack(personne.getPositionPlage()[0], personne.getPositionPlage()[1]);
+                    personne.placementFini();
+                }
+            /*} else if (etat == Etat.PLACEMENT) {
+                actPos = personne.getPosition();*/
 
                 /*if (!unpack(actPos[0], actPos[1])) {
                     personne.placement(longueur, largeur, mer);
@@ -204,7 +235,7 @@ public class Plage {
             personne.setOath(true);
         }
 
-        /* for (Personne pers : threads) {
+         /*for (Personne pers : threads) {
             System.out.println(pers.getPosition()[0]+" "+pers.getPosition()[1]);
             int[][] vis = pers.getVision();
             for (int i=0;i<3;i++) {
@@ -212,7 +243,7 @@ public class Plage {
             }
         }
         System.out.println("");
-        System.out.println("------\n\n"); */
+        System.out.println("------\n\n");*/
     }
 }
     

@@ -20,7 +20,7 @@ public class Main {
 
         scan.close();
 
-        int nbMax = 500;
+        int nbMax = 100;
 
         Plage plage = new Plage(longueur, largeur, profondeur, temperature, vent, mer, nbMax);
 
