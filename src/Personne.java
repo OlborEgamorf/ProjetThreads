@@ -1,32 +1,39 @@
-import java.util.stream.IntStream.IntMapMultiConsumer;
-
 public class Personne extends Thread {
     private int age;
     private double vitesse;
     private boolean estSauveteur;
     private boolean peutSauver;
     private double probaNoyade;
-    private int[]positionPlage;
+     
+    private int[] positionPlage;
     
     private int[] position;
     private int[] oldPosition;
+    private int[] objPosition;
+
+
     private Etat etat;
     private Objectif objectif;
-    private int[][] vision;
+    private int[][] vision = {{0,0,0},{0,0,0},{0,0,0}};
     private int id;
 
-    private int[] place;
+    private boolean oath = true;
+    private boolean alive = false;
+
+    private final int timing;
     
-    Personne(int id, int[] position, int vent){
+    Personne(int id, int[] position, int vent, int timing){
         this.position = position; //position spawn
+        this.oldPosition = position;
         this.etat = Etat.ATTENTE;
         this.id = id;
+        this.timing = timing;
+        
         setAge();
         setVitesse();
         setEstSauveteur();
         setPeutSauver();
-        setProbaNoyade(vent);
-        setPositionPlage();
+        // setProbaNoyade(vent);
     }
 
     public double getAge(){
@@ -35,6 +42,9 @@ public class Personne extends Thread {
 
     public int[] getPosition(){
         return position;
+    }
+    public int[] getObjPosition(){
+        return objPosition;
     }
 
     public int[] getOldPosition () {
@@ -49,13 +59,31 @@ public class Personne extends Thread {
         return estSauveteur;
     }
 
+    public int[][] getVision(){
+        return vision;
+    }
+
     public int[] getPositionPlage(){
         return positionPlage;
+    }
+
+
+
+    public boolean getAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean isAlive) {
+        alive = isAlive;
     }
 
     public void setPosition(int[] nextPosition){
         oldPosition = position;
         position = nextPosition;
+    }
+
+    public void setObjPosition(int[] nextPosition){
+        objPosition = nextPosition;
     }
 
     public void immobilisation() {
@@ -73,7 +101,9 @@ public class Personne extends Thread {
     public void setAge(){
         this.age= (int)(Math.random() * 100);
     }
-    
+
+
+
     public void setPeutSauver(){
         if (age < 15 || age > 60) {
             this.peutSauver = false;
@@ -87,16 +117,24 @@ public class Personne extends Thread {
         }
     }
 
+    public void setPositionPlage(int[] positionPlage){
+        this.positionPlage= positionPlage;
+    }
+
     public void setEstSauveteur(){
         if (age > 18 && age < 60) {
             double probaSauveteur = Math.random();
-            if (probaSauveteur < 0.0005)
+            if (probaSauveteur < 0.005)
                 this.estSauveteur = true;
             else
                 this.estSauveteur = false;
         }
         else
             this.estSauveteur = false;
+    }
+
+    public void setOath(boolean oath) {
+        this.oath = oath;
     }
 
     public void setVitesse(){
@@ -131,36 +169,7 @@ public class Personne extends Thread {
         }
     }
 
-    public void setPositionPlage(){
-        if (this.estSauveteur == false) {
-            boolean trouve = true;
-        }
-        else{
-            boolean trouve= false;
-            while (position == plage && trouve == false){
-                //faire un truc pour verifier la disponibilité de l'espace sur la plage le plus proche de la mer
-                double[][] positionPlage = positionVerifiee; //prend la valeur de la position qui est en train d'etre vérifiée
-                trouve = true;
-        }}
-        this.positionPlage = position;
-        Plage.unpack(positionVerifiee);
-    }
-    
-    
-    /*public void deplacement(positionArrivee){
-        double diffX = this.postion[0] - positionArrivee[0];
-        double diffY = this.position[1] - positionArrivée[1];
-        while (this.position != positionArrivée){
-            if(diffX > 0)
-                this.position[0] += this.vitesse;
-            else
-                this.position[0] -= this.vitesse;
-            diffX -= this.vitesse;
-            if (diffY > 0)
-        }
-    }*/
-
-    public void baignade(){
+    /*public void baignade(){
         if (this.estSauveteur = false){
             if (this.position == plage){
                 double baignade = Math.random();
@@ -192,7 +201,7 @@ public class Personne extends Thread {
         }
     }
 
-    public void vaSauver(){
+     public void vaSauver(){
         if ((((this.peutSauver == true) && ((Math.abs(this.position - Personne.position)) < 10)) || ((this.estSauveteur == true) && ((Math.abs(Personne.position) - this.position < 30))) && (Personne.seNoie() == true))){
                 this.deplacement(Personne.position);
                 this.etat = Etat.SAUVETAGE;
@@ -212,107 +221,154 @@ public class Personne extends Thread {
             this.etat = Etat.ATTENTE;
             return true;
         return false;
-    }
-
-    public void quittePlage(){
-        double partir = Math.random();
-        if (partir <= 0.005)
-            deplacement(positionPlage);
-            Plage.pack();
-            deplacement();      //endroit à définir où on part de la plage
-            interruption();
-    }
+    } */
 
     public void run() {
-        // Chaque personne a un Etat : ce qu'il fait, et un Objectif : ce qu'il voudrait faire
-        // Exemple : si une personne se déplace, son Etat est Etat.MOUVEMENT, et là où il va est dans son objectif : Objectif.BAIGNADE par exemple
-        // run() doit faire en sorte que la personne fasse ses actions.
-        // Si la personne se déplace, elle doit bouger jusqu'à ce qu'elle atteingne sa destination, case par case, en faisant attention à ce qui l'entoure.
-        // La personne va bouger de case en case dans une boucle tous les x millisecondes, avec un Thread.sleep(x) 
-        // Si la personne s'arrête quelque part, attendre y temps avant qu'il se remette à bouger
-        // A toi de déterminer comment tout se passe, en jouer avec Etat et Objectif et les différents attributs, tu peux en créer aussi si besoin
-        // Rappel des actions : se déplacer, se baigner, se reposer, se placer, partir (redoncances ?)
-        // Pour le placement, ce sera complété plus tard donc tu peux laisser vide
-        // La personne doit vivre ! LET THERE BE LIGHT
-
-        Etat etat;
-        Objectif objectif;
-        double proba;
-        proba = math.random();
-
-        for (int i = 0; i < 100; i++) {
-            etat = Etat.MOUVEMENT;
-            objectif = Objectif.PLACEMENT;
-            Thread.sleep(5000);
-            while (proba < 0.9) {
-                etat = Etat.Repos;
-                Thread.sleep(2000);
-            }
-            etat = Etat.BAIGNADE;
-            objectif = Objectif.BAIGNADE;
-            baignade();
-            if (seNoie() == true) {
-                etat = Etat.NOYADE;
-                vaSauver();
-            } else {
-                etat = Etat.MOUVEMENT;
-            }
-
-            objectif = Objectif.PARTIR;
-            quittePlage();
-        }
-    }
-
-    public boolean caselibre(int x, int y){
-        return vision[x][y] == 0;
-    }
-
-    public void seplacer(int x, int y){
-        Etat etat1;
-        etat1 = Etat.PLACEMENT;
-    }
-
-    public boolean verificationvision(int x, int y, int[][] vision){
-        return (((((vision[x][y - 1] == 0)&&(vision[x][y+1] == 0)&&(vision[x+1][y+1] == 0)&&(vision[x+1][y]==0)&&(vision[x-1][y+1]==0)))));
+        try {
+            Thread.sleep(timing);
+        } catch (InterruptedException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
         }
 
+        alive = true;
+
+        while (!Thread.interrupted()) {
+
+            if (etat == Etat.MOUVEMENT) {
+
+                if (position.equals(objPosition)) {
+                    if (objectif == Objectif.PLACEMENT) {
+                        etat = Etat.PLACEMENT;
+                    } else if (objectif == Objectif.BAIGNADE) {
+                        etat = Etat.BAIGNADE;
+                    } else if (objectif == Objectif.REPOS) {
+                        etat = Etat.REPOS;
+                    } else if (objectif == Objectif.PARTIR) {
+                        etat = Etat.PARTI;
+                    }
+
+                } else {
+                    int x = position[0];
+                    int y = position[1];
 
 
-    public void placement(){
-        Etat etat;
-        Objectif object;
-        int x = Math.floor(Math.random()) * this.longueur;
-        int y = Math.floor(Math.random()) * this.largeur;
+                    int ecartX = objPosition[0]-position[0];
+                    int ecartY = objPosition[1]-position[1];
 
-        //Tant que la position n'est pas celle d'arrivee.
-        while (this.position != positionPlage) {
-            // Si la case est vide
-            if (caselibre(x, y)) {
-                etat = Etat.MOUVEMENT;                   //La persone est en mouvement
-                object = Objectif.PLACEMENT;             // avec l'objectif de se placer
-                // Si la personne est arrive
-                if ((this.position == positionPlage)&&(verificationvision(x,y,this.vision([x][y]))){
-                    seplacer(x,y);                        // La Plage considere donc que la case est occupe et vaut 2
-                    this.position = positionPlage;        // La boucle prend fin
+                    if (ecartX != 0) {
+                        ecartX = ecartX/Math.abs(ecartX);
+                    }
+                    
+                    if (ecartY != 0) {
+                        ecartY = ecartY/Math.abs(ecartY);
+                    }                    
+                    
+                    if (vision[1+ecartX][1+ecartY] == 0) {
+                        int[] newPos = {x+ecartX,y+ecartY};
+                        setPosition(newPos);
+                    } else if (vision[1][1+ecartY] == 0) {
+                        int[] newPos = {x,y+ecartY};
+                        setPosition(newPos);
+                    } else if (vision[1+ecartX][1] == 0) {
+                        int[] newPos = {x+ecartX,y};
+                        setPosition(newPos);
+                    } else if (vision[1+ecartX][0] == 0 && y > 0) {
+                        int[] newPos = {x+ecartX,y-1};
+                        setPosition(newPos);
+                    } else if (vision[0][1+ecartY] == 0 && x > 0) {
+                        int[] newPos = {x-1,y+ecartY};
+                        setPosition(newPos);
+                    } else {
+                        //System.out.println("DOMMAGE");
+                        int[] newPos = position;
+                        setPosition(newPos);
+                    }
+                    //System.out.println(position[0]+" "+position[1]);
+
+                    oath = false;
+                    while (!oath) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
                 }
+                
+            } else if (etat == Etat.BAIGNADE) {
+                try {
+                    Thread.sleep(60000);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                etat = Etat.MOUVEMENT;
+                objectif = Objectif.REPOS;
+                objPosition = positionPlage;
+
+            } else if (etat == Etat.REPOS) {
+
+            } else if (etat == Etat.PLACEMENT) {
+
+            } else if (etat == Etat.NOYADE) {
+
             }
-            // Si la case est occupe alors on redemande de nouvelle coordonées pour relancer la boucle
-            else{
-                x = Math.floor(Math.random()) * this.longueur;
-                y = Math.floor(Math.random()) * this.largeur;
-            }
+
         }
-
-
-
-    }
-                
-                
-            
-                
-     
     
+    }
 
+    public void placement(int longueur, int largeur, int mer){
+
+        int x = (int)(Math.floor(Math.random() * (longueur-mer)));
+        int y = (int)(Math.floor(Math.random() * largeur));
+
+        etat = Etat.MOUVEMENT;                   //La persone est en mouvement
+        objectif = Objectif.PLACEMENT;
+        int[] posi = {x,y};
+        objPosition = posi;      // avec l'objectif de se placer
+            // Si la personne est arrive
+    }
+    
+    public void placementDebut(){
+        etat= Etat.PLACEMENT;
+        objectif= Objectif.PLACEMENT;
+    }
+    public void placementFini(){
+        etat= Etat.REPOS;
+        objectif= Objectif.REPOS;
+    }
+
+
+    public boolean veutsebaigner(){
+        return this.objectif == Objectif.BAIGNADE;
+    }
+
+    public boolean veutsereposer(){
+        return this.objectif == Objectif.REPOS && this.etat == Etat.BAIGNADE;
+    }
+
+
+
+    public void goBaignade(int[] mere){
+        if (veutsebaigner()) {
+            etat = Etat.MOUVEMENT;
+            objectif = Objectif.BAIGNADE;
+            if (this.position == mere){
+                etat = Etat.BAIGNADE;
+            }
+        } else if (veutsereposer()) {
+            etat = Etat.MOUVEMENT;
+            objectif = Objectif.REPOS;
+            if (this.position == this.positionPlage) {
+                etat = Etat.PLACEMENT;
+                etat = Etat.REPOS;
+            }
+
+        }
+    }
 }
 
 
