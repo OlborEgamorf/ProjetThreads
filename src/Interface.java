@@ -32,7 +32,7 @@ public class Interface extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.decode("#FFE333"));
-        g.fillRect(0,0, largeur, longueur);
+        g.fillRect(0, 0, largeur, longueur);
         g.setColor(Color.decode("#338AFF"));
         g.fillRect(0, longueur, largeur, mer);
 
@@ -43,7 +43,7 @@ public class Interface extends JPanel {
                     g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
                 }
                 else{
-                    if (personne.getEtat()== Etat.NOYADE){
+                    if (personne.getEtat() == Etat.NOYADE){
                         g.setColor(Color.white);
                         g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
                     }
@@ -59,17 +59,17 @@ public class Interface extends JPanel {
                 }
             }
         }
-        /*for (int i= 0; i<longueur; i++){
-            for (int j= 0; j<largeur; j++){
-                if (matrice [i][j].type== Type.TEMPORAIRE){
+        /*for (int i = 0; i < longueur; i++){
+            for (int j = 0; j < largeur; j++){
+                if (matrice [i][j].type == Type.TEMPORAIRE){
                     g.setColor(Color.red);
                     g.fillRect(j, i, pixel, pixel);
                 }
             }
         }*/
-        for (int i= 0; i<longueur; i++){
-            for (int j= 0; j<largeur; j++){
-                if (matrice [i][j].type== Type.AFFAIRES){
+        for (int i = 0; i < longueur; i++){
+            for (int j = 0; j < largeur; j++){
+                if (matrice [i][j].type == Type.AFFAIRES){
                     g.setColor(Color.black);
                     g.fillRect(j, i, pixel, pixel);
                 }
