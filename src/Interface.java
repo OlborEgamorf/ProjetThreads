@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Interface extends JPanel {
-    private final int pixel = 5;
+    private final int pixel = 4;
     private int longueur;
     private int largeur;
     private int mer;
@@ -32,7 +32,7 @@ public class Interface extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.decode("#FFE333"));
-        g.fillRect(0,0, largeur, longueur);
+        g.fillRect(0, 0, largeur, longueur);
         g.setColor(Color.decode("#338AFF"));
         g.fillRect(0, longueur, largeur, mer);
 
@@ -43,7 +43,7 @@ public class Interface extends JPanel {
                     g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
                 }
                 else{
-                    if (personne.getEtat()== Etat.NOYADE){
+                    if (personne.getEtat() == Etat.NOYADE){
                         g.setColor(Color.white);
                         g.fillOval(personne.getPosition()[1], personne.getPosition()[0], pixel, pixel);
                     }
@@ -57,19 +57,29 @@ public class Interface extends JPanel {
                         g.fillRect(personne.getPositionPlage()[1], personne.getPositionPlage()[0], pixel, pixel);
                     }*/
                 }
+                /*if (personne.isPlace()) {
+                    int[] positionPlage = personne.getPositionPlage();
+                    g.setColor(Color.black);
+                    g.fillRect(positionPlage[0], positionPlage[1], pixel, pixel);
+                    g.fillRect(positionPlage[0], positionPlage[1]-1, pixel, pixel);
+                    g.fillRect(positionPlage[0]-1, positionPlage[1], pixel, pixel);
+                    g.fillRect(positionPlage[0]-1, positionPlage[1]-1, pixel, pixel);
+                    g.fillRect(positionPlage[0]-2, positionPlage[1], pixel, pixel);
+                    g.fillRect(positionPlage[0]-2, positionPlage[1]-1, pixel, pixel);
+                }*/
             }
         }
-        /*for (int i= 0; i<longueur; i++){
-            for (int j= 0; j<largeur; j++){
-                if (matrice [i][j].type== Type.TEMPORAIRE){
+        /*for (int i = 0; i < longueur; i++){
+            for (int j = 0; j < largeur; j++){
+                if (matrice [i][j].type == Type.TEMPORAIRE){
                     g.setColor(Color.red);
                     g.fillRect(j, i, pixel, pixel);
                 }
             }
         }*/
-        for (int i= 0; i<longueur; i++){
-            for (int j= 0; j<largeur; j++){
-                if (matrice [i][j].type== Type.AFFAIRES){
+        for (int i = 0; i < longueur; i++){
+            for (int j = 0; j < largeur; j++){
+                if (matrice [i][j].type == Type.AFFAIRES){
                     g.setColor(Color.black);
                     g.fillRect(j, i, pixel, pixel);
                 }
