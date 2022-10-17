@@ -333,12 +333,12 @@ public class Personne extends Thread {
     }
     
     public void placementDebut(){
-        etat= Etat.PLACEMENT;
-        objectif= Objectif.PLACEMENT;
+        etat = Etat.PLACEMENT;
+        objectif = Objectif.PLACEMENT;
     }
     public void placementFini(){
-        etat= Etat.REPOS;
-        objectif= Objectif.REPOS;
+        etat = Etat.REPOS;
+        objectif = Objectif.REPOS;
     }
 
 
