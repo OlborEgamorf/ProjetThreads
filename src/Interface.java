@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Interface extends JPanel {
-    private final int pixel = 5;
+    private final int pixel = 4;
     private int longueur;
     private int largeur;
     private int mer;
@@ -57,6 +57,16 @@ public class Interface extends JPanel {
                         g.fillRect(personne.getPositionPlage()[1], personne.getPositionPlage()[0], pixel, pixel);
                     }*/
                 }
+                /*if (personne.isPlace()) {
+                    int[] positionPlage = personne.getPositionPlage();
+                    g.setColor(Color.black);
+                    g.fillRect(positionPlage[0], positionPlage[1], pixel, pixel);
+                    g.fillRect(positionPlage[0], positionPlage[1]-1, pixel, pixel);
+                    g.fillRect(positionPlage[0]-1, positionPlage[1], pixel, pixel);
+                    g.fillRect(positionPlage[0]-1, positionPlage[1]-1, pixel, pixel);
+                    g.fillRect(positionPlage[0]-2, positionPlage[1], pixel, pixel);
+                    g.fillRect(positionPlage[0]-2, positionPlage[1]-1, pixel, pixel);
+                }*/
             }
         }
         /*for (int i = 0; i < longueur; i++){

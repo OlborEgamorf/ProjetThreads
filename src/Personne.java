@@ -19,6 +19,7 @@ public class Personne extends Thread {
 
     private boolean oath = true;
     private boolean alive = false;
+    private boolean place = false;
 
     private final int timing;
     
@@ -137,6 +138,12 @@ public class Personne extends Thread {
         this.oath = oath;
     }
 
+    
+
+    public boolean isPlace() {
+        return place;
+    }
+
     public void setVitesse(){
         if (age >= 15 && age < 60)
             this.vitesse= Math.floor(Math.random() * (1.43 - 1.31 + 1) + 1.31); //vitesse moyenne de marche en m/s;
@@ -232,12 +239,14 @@ public class Personne extends Thread {
         }
 
         alive = true;
+        etat = Etat.ARRIVEE;
 
         while (!Thread.interrupted()) {
 
             if (etat == Etat.MOUVEMENT) {
 
-                if (position.equals(objPosition)) {
+                if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
+                    //System.out.println("OUI JE SUI LA");
                     if (objectif == Objectif.PLACEMENT) {
                         etat = Etat.PLACEMENT;
                     } else if (objectif == Objectif.BAIGNADE) {
@@ -280,7 +289,7 @@ public class Personne extends Thread {
                         int[] newPos = {x-1,y+ecartY};
                         setPosition(newPos);
                     } else {
-                        //System.out.println("DOMMAGE");
+                        System.out.println("DOMMAGE");
                         int[] newPos = position;
                         setPosition(newPos);
                     }
@@ -289,7 +298,7 @@ public class Personne extends Thread {
                     oath = false;
                     while (!oath) {
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(50);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -319,26 +328,15 @@ public class Personne extends Thread {
         }
     
     }
-
-    public void placement(int longueur, int largeur, int mer){
-
-        int x = (int)(Math.floor(Math.random() * (longueur-mer)));
-        int y = (int)(Math.floor(Math.random() * largeur));
-
-        etat = Etat.MOUVEMENT;                   //La persone est en mouvement
-        objectif = Objectif.PLACEMENT;
-        int[] posi = {x,y};
-        objPosition = posi;      // avec l'objectif de se placer
-            // Si la personne est arrive
-    }
     
     public void placementDebut(){
-        etat = Etat.PLACEMENT;
-        objectif = Objectif.PLACEMENT;
+        etat= Etat.MOUVEMENT;
+        objectif= Objectif.PLACEMENT;
     }
     public void placementFini(){
-        etat = Etat.REPOS;
-        objectif = Objectif.REPOS;
+        place = true;
+        etat= Etat.REPOS;
+        objectif= Objectif.REPOS;
     }
 
 
