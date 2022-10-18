@@ -11,12 +11,12 @@ public class Main {
         int vent = scan.nextInt();
         int mer = scan.nextInt();*/
 
-        int largeur = 1000;
-        int longueur = 500; 
+        int largeur = 500;
+        int longueur = 250;
         int profondeur = 23;
         double temperature = 98;
         int vent = 123;
-        int mer = 300;
+        int mer = 150;
 
         scan.close();
 
@@ -34,7 +34,7 @@ public class Main {
         while(true){
             plage.turn();
             interfaced.turn();
-            Thread.sleep(10);
+            Thread.sleep(20);
         }
 
     }

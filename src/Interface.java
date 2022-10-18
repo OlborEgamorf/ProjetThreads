@@ -17,7 +17,10 @@ public class Interface extends JPanel {
         frame.setSize(plage.getLargeur(), plage.getLongueur()+plage.getMer());
         frame.setVisible(true);
         frame.setResizable(false);
-        frame.setLocation(0,0);
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+        frame.setLocation(x, y);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(this);
 

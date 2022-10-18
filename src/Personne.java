@@ -298,7 +298,7 @@ public class Personne extends Thread {
                     oath = false;
                     while (!oath) {
                         try {
-                            Thread.sleep(50);
+                            Thread.sleep(100); // Vitesse déplacement
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
