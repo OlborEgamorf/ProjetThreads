@@ -1,7 +1,17 @@
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         InteractionMenu menu = new InteractionMenu();
+        // Ajustement taille de la fenêtre
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - menu.getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - menu.getHeight()) / 2);
+        menu.setLocation(x, y);
+
         while (!menu.isDone()) {
             Thread.sleep(500);
         }
