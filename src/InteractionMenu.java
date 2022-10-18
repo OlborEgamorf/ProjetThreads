@@ -31,9 +31,31 @@ public class InteractionMenu extends JFrame implements ActionListener {
         setResizable(false);
         setVisible(true);
         validation.addActionListener(this);
-
-
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - getHeight()) / 2);
+        setLocation(x, y);
+        final ImageIcon icon = new ImageIcon("plage.png");
+        JTextArea text = new JTextArea()
+        {
+            Image img = icon.getImage();
+            // initialiseur d'instance
+            {setOpaque(false);}
+            public void paintComponent(Graphics graphics)
+            {
+                graphics.drawImage(img, 0, 0, this);
+                super.paintComponent(graphics);
+            }
+        };
+        JScrollPane pane = new JScrollPane(text);
+        Container content = getContentPane();
+        content.add(pane, BorderLayout.CENTER);
+        setDefaultCloseOperation(3);
+        setSize(400, 300);
+        setVisible(true);
     }
+
+
 
     private class Saisie extends JTextField {
         public Saisie(String texte) {
