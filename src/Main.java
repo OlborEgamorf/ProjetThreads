@@ -1,26 +1,20 @@
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        Scanner scan = new Scanner(System.in);
-        /*int largeur = scan.nextInt();
-        int longueur = scan.nextInt();
-        int profondeur = scan.nextInt();
-        double temperature = scan.nextDouble();
-        int vent = scan.nextInt();
-        int mer = scan.nextInt();*/
+        InteractionMenu menu = new InteractionMenu();
+        while (!menu.isDone()) {
+            Thread.sleep(500);
+        }
+        menu.dispose();
 
-        int largeur = 500;
-        int longueur = 250;
+        int largeur = menu.getLargeur();
+        int longueur = menu.getLongueur();
         int profondeur = 23;
-        double temperature = 98;
-        int vent = 123;
+        int temperature = menu.getTemperature();
+        int vent = menu.getVent();
         int mer = 150;
 
-        scan.close();
-
-        int nbMax = 100;
+        int nbMax = menu.getPersonne();
 
         Plage plage = new Plage(longueur, largeur, profondeur, temperature, vent, mer, nbMax);
 

@@ -1,23 +1,25 @@
-package src;
+//package src;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class InteractionMenu extends JFrame implements ActionListener {
-    private JLabel intituléLongueur = new JLabel("Longueur plage :");
-    private Saisie Longueur = new Saisie("");
-    private JLabel intituléLargeur = new JLabel("Largeur plage :");
+    private JLabel intituleLongueur = new JLabel("Longueur plage :");
+    private Saisie longueur = new Saisie("");
+    private JLabel intituleLargeur = new JLabel("Largeur plage :");
     private Saisie largeur = new Saisie("");
-    private JLabel intituléPersonne = new JLabel("Nombre de personne max :");
+    private JLabel intitulePersonne = new JLabel("Nombre de personne max :");
     private Saisie personne = new Saisie("");
 
-    private JLabel intituléTemperature = new JLabel("Température :");
+    private JLabel intituleTemperature = new JLabel("Température :");
     private Saisie temperature = new Saisie("");
-    private JLabel intituléVent = new JLabel("Vent :");
+    private JLabel intituleVent = new JLabel("Vent :");
     private Saisie vent = new Saisie("");
     private JButton validation = new JButton("Valider");
     private Saisie résultat = new Saisie("Résultat");
+
+    private boolean done = false;
 
     public InteractionMenu() {
         super("Saisie des paramètres");
@@ -45,32 +47,67 @@ public class InteractionMenu extends JFrame implements ActionListener {
         groupe.setAutoCreateGaps(true);
         GroupLayout.ParallelGroup horzGroupe = groupe.createParallelGroup();
         GroupLayout.SequentialGroup vertGroupe = groupe.createSequentialGroup();
-        horzGroupe.addComponent(intituléLongueur).addComponent(Longueur).addComponent(intituléLargeur).addComponent(largeur).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent).addComponent(intituléTemperature).addComponent(temperature);
+        horzGroupe.addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
         horzGroupe.addComponent(validation);
-        vertGroupe.addComponent(intituléLargeur).addComponent(largeur).addComponent(intituléLongueur).addComponent(Longueur).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent).addComponent(intituléTemperature).addComponent(temperature);
+        vertGroupe.addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
         vertGroupe.addComponent(validation);
-        vertGroupe.addComponent(intituléPersonne).addComponent(personne).addComponent(intituléLongueur).addComponent(Longueur).addComponent(intituléLargeur).addComponent(largeur).addComponent(intituléTemperature).addComponent(temperature).addComponent(intituléVent).addComponent(vent);
+        vertGroupe.addComponent(intitulePersonne).addComponent(personne).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleVent).addComponent(vent);
         vertGroupe.addComponent(validation);
-        vertGroupe.addComponent(intituléTemperature).addComponent(temperature).addComponent(intituléLongueur).addComponent(Longueur).addComponent(intituléLargeur).addComponent(largeur).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléVent).addComponent(vent);
+        vertGroupe.addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent);
         vertGroupe.addComponent(validation);
-        vertGroupe.addComponent(intituléVent).addComponent(vent).addComponent(intituléLongueur).addComponent(Longueur).addComponent(intituléLargeur).addComponent(largeur).addComponent(intituléPersonne).addComponent(personne).addComponent(intituléTemperature).addComponent(temperature);
+        vertGroupe.addComponent(intituleVent).addComponent(vent).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleTemperature).addComponent(temperature);
         vertGroupe.addComponent(validation);
         groupe.setHorizontalGroup(horzGroupe);
         groupe.setVerticalGroup(vertGroupe);
     }
 
     public void actionPerformed(ActionEvent e) {
-        System.out.println(largeur.getText());
-        System.out.println(Longueur.getText());
-        System.out.println(personne.getText());
-        System.out.println(temperature.getText());
-        System.out.println(vent.getText());
 
-
+        done = isNumber(largeur.getText()) && isNumber(longueur.getText()) && isNumber(personne.getText()) && isNumber(temperature.getText()) && isNumber(vent.getText());
+    
     }
 
-    public static void main(String[] args) {
-        new InteractionMenu();
+    public boolean isDone() {
+        return done;
     }
 
+    public static boolean isNumber(String number) {
+        // Cette fonction vérifie si un String donné est bien un nombre
+        if (number.length() == 0) {
+            return false;
+        }
+        int i = 0;
+        boolean flag = true;
+
+        while (flag && i<number.length()) {
+            if (!Character.isDigit(number.charAt(i))) {
+                flag = false;
+            }
+            i ++;
+        }
+
+        return flag;
+    }
+
+    public int getLongueur() {
+        return Integer.valueOf(longueur.getText());
+    }
+
+    public int getLargeur() {
+        return Integer.valueOf(largeur.getText());
+    }
+
+    public int getPersonne() {
+        return Integer.valueOf(personne.getText());
+    }
+
+    public int getTemperature() {
+        return Integer.valueOf(temperature.getText());
+    }
+
+    public int getVent() {
+        return Integer.valueOf(vent.getText());
+    }
+
+    
 }
