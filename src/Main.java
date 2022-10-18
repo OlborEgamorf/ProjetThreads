@@ -13,13 +13,19 @@ public class Main {
         int temperature = menu.getTemperature();
         int vent = menu.getVent();
         int mer = 150;
+        int vitesse = 20;
+        int coefficient = 1;
+
 
         int nbMax = menu.getPersonne();
 
         Plage plage = new Plage(longueur, largeur, profondeur, temperature, vent, mer, nbMax);
 
 
-        // Une Plage => 1 Thread.
+
+
+
+                // Une Plage => 1 Thread.
         // Plusieurs personnes => 1 thread pour chaques personnes.
 
         // Il va nous nous falloir une boite de communications entre les threads
@@ -28,7 +34,7 @@ public class Main {
         while(true){
             plage.turn();
             interfaced.turn();
-            Thread.sleep(20);
+            Thread.sleep(vitesse * coefficient);
         }
 
     }

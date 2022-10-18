@@ -64,6 +64,17 @@ public class Plage {
         return threads;
     }
 
+    /*
+    public int getCoefficient() {
+        return coefficient;
+    }
+
+    public void setCoefficient(int coefficient) {
+        this.coefficient = coefficient;
+    }
+    */
+
+
     public boolean isFree(int x, int y) {
         // Si la case est vide
         return matrice[x][y].getType() == Type.VIDE;

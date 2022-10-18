@@ -298,7 +298,8 @@ public class Personne extends Thread {
                     oath = false;
                     while (!oath) {
                         try {
-                            Thread.sleep(100); // Vitesse déplacement
+                            ///Thread.sleep(100 * coefficient);
+                            Thread.sleep(100);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -308,6 +309,7 @@ public class Personne extends Thread {
                 
             } else if (etat == Etat.BAIGNADE) {
                 try {
+                    ///Thread.sleep(60000 * coefficient);
                     Thread.sleep(60000);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
