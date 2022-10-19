@@ -1,14 +1,12 @@
-package src;
-
 public class Personne extends Thread {
     private int age;
     private double vitesse;
     private boolean estSauveteur;
     private boolean peutSauver;
     private double probaNoyade;
-
+     
     private int[] positionPlage;
-
+    
     private int[] position;
     private int[] oldPosition;
     private int[] objPosition;
@@ -16,7 +14,7 @@ public class Personne extends Thread {
 
     private Etat etat;
     private Objectif objectif;
-    private int[][] vision = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    private int[][] vision = {{0,0,0},{0,0,0},{0,0,0}};
     private int id;
 
     private boolean oath = true;
@@ -24,14 +22,14 @@ public class Personne extends Thread {
     private boolean place = false;
 
     private final int timing;
-
-    Personne(int id, int[] position, int vent, int timing) {
+    
+    Personne(int id, int[] position, int vent, int timing){
         this.position = position; //position spawn
         this.oldPosition = position;
         this.etat = Etat.ATTENTE;
         this.id = id;
         this.timing = timing;
-
+        
         setAge();
         setVitesse();
         setEstSauveteur();
@@ -39,19 +37,18 @@ public class Personne extends Thread {
         // setProbaNoyade(vent);
     }
 
-    public double getAge() {
+    public double getAge(){
         return age;
     }
 
-    public int[] getPosition() {
+    public int[] getPosition(){
         return position;
     }
-
-    public int[] getObjPosition() {
+    public int[] getObjPosition(){
         return objPosition;
     }
 
-    public int[] getOldPosition() {
+    public int[] getOldPosition () {
         return oldPosition;
     }
 
@@ -59,17 +56,18 @@ public class Personne extends Thread {
         return etat;
     }
 
-    public boolean getEstSauveteur() {
+    public boolean getEstSauveteur(){
         return estSauveteur;
     }
 
-    public int[][] getVision() {
+    public int[][] getVision(){
         return vision;
     }
 
-    public int[] getPositionPlage() {
+    public int[] getPositionPlage(){
         return positionPlage;
     }
+
 
 
     public boolean getAlive() {
@@ -80,12 +78,12 @@ public class Personne extends Thread {
         alive = isAlive;
     }
 
-    public void setPosition(int[] nextPosition) {
+    public void setPosition(int[] nextPosition){
         oldPosition = position;
         position = nextPosition;
     }
 
-    public void setObjPosition(int[] nextPosition) {
+    public void setObjPosition(int[] nextPosition){
         objPosition = nextPosition;
     }
 
@@ -101,15 +99,17 @@ public class Personne extends Thread {
         vision[x][y] = val;
     }
 
-    public void setAge() {
-        this.age = (int) (Math.random() * 100);
+    public void setAge(){
+        this.age= (int)(Math.random() * 100);
     }
 
 
-    public void setPeutSauver() {
+
+    public void setPeutSauver(){
         if (age < 15 || age > 60) {
             this.peutSauver = false;
-        } else {
+        }
+        else{
             double probaSauv = Math.random();
             if (probaSauv < 0.05)
                 this.peutSauver = true;
@@ -118,18 +118,19 @@ public class Personne extends Thread {
         }
     }
 
-    public void setPositionPlage(int[] positionPlage) {
-        this.positionPlage = positionPlage;
+    public void setPositionPlage(int[] positionPlage){
+        this.positionPlage= positionPlage;
     }
 
-    public void setEstSauveteur() {
+    public void setEstSauveteur(){
         if (age > 18 && age < 60) {
             double probaSauveteur = Math.random();
             if (probaSauveteur < 0.005)
                 this.estSauveteur = true;
             else
                 this.estSauveteur = false;
-        } else
+        }
+        else
             this.estSauveteur = false;
     }
 
@@ -137,30 +138,33 @@ public class Personne extends Thread {
         this.oath = oath;
     }
 
+    
 
     public boolean isPlace() {
         return place;
     }
 
-    public void setVitesse() {
+    public void setVitesse(){
         if (age >= 15 && age < 60)
-            this.vitesse = Math.floor(Math.random() * (1.43 - 1.31 + 1) + 1.31); //vitesse moyenne de marche en m/s;
-        else if (age >= 60 && age < 80) {
+            this.vitesse= Math.floor(Math.random() * (1.43 - 1.31 + 1) + 1.31); //vitesse moyenne de marche en m/s;
+        else if (age>=60 && age<80) {
             this.vitesse = Math.floor(Math.random() * (1.34 - 1.13 + 1) + 1.13);
-        } else
-            this.vitesse = Math.floor(Math.random() * (0.97 - 0.94 + 1) + 0.94);
+        }
+        else
+            this.vitesse= Math.floor(Math.random() * (0.97 - 0.94 + 1) + 0.94);
     }
 
-    public void setProbaNoyade(int vent) {
-        if (age <= 2) {
+    public void setProbaNoyade(int vent){
+        if (age <= 2){
             this.probaNoyade += 0.0004;
-            if (this.position[2] > (-0.2)) {
+            if (this.position[2] > (-0.2)){
                 this.probaNoyade *= 1000;
             }
-        } else if (this.position[2] > (-1)) {
-            if (age > 50) {
+        }
+        else if (this.position[2] > (-1)){
+            if (age > 50){
                 this.probaNoyade += 0.0002;
-                for (int i = 50; i <= age; i++) {
+                for (int i = 50; i <= age; i++){
                     this.probaNoyade += 0.00001;
                 }
             }
@@ -258,31 +262,31 @@ public class Personne extends Thread {
                     int y = position[1];
 
 
-                    int ecartX = objPosition[0] - position[0];
-                    int ecartY = objPosition[1] - position[1];
+                    int ecartX = objPosition[0]-position[0];
+                    int ecartY = objPosition[1]-position[1];
 
                     if (ecartX != 0) {
-                        ecartX = ecartX / Math.abs(ecartX);
+                        ecartX = ecartX/Math.abs(ecartX);
                     }
-
+                    
                     if (ecartY != 0) {
-                        ecartY = ecartY / Math.abs(ecartY);
-                    }
-
-                    if (vision[1 + ecartX][1 + ecartY] == 0) {
-                        int[] newPos = {x + ecartX, y + ecartY};
+                        ecartY = ecartY/Math.abs(ecartY);
+                    }                    
+                    
+                    if (vision[1+ecartX][1+ecartY] == 0) {
+                        int[] newPos = {x+ecartX,y+ecartY};
                         setPosition(newPos);
-                    } else if (vision[1][1 + ecartY] == 0) {
-                        int[] newPos = {x, y + ecartY};
+                    } else if (vision[1][1+ecartY] == 0) {
+                        int[] newPos = {x,y+ecartY};
                         setPosition(newPos);
-                    } else if (vision[1 + ecartX][1] == 0) {
-                        int[] newPos = {x + ecartX, y};
+                    } else if (vision[1+ecartX][1] == 0) {
+                        int[] newPos = {x+ecartX,y};
                         setPosition(newPos);
-                    } else if (vision[1 + ecartX][0] == 0 && y > 0) {
-                        int[] newPos = {x + ecartX, y - 1};
+                    } else if (vision[1+ecartX][0] == 0 && y > 0) {
+                        int[] newPos = {x+ecartX,y-1};
                         setPosition(newPos);
-                    } else if (vision[0][1 + ecartY] == 0 && x > 0) {
-                        int[] newPos = {x - 1, y + ecartY};
+                    } else if (vision[0][1+ecartY] == 0 && x > 0) {
+                        int[] newPos = {x-1,y+ecartY};
                         setPosition(newPos);
                     } else {
                         System.out.println("DOMMAGE");
@@ -301,10 +305,10 @@ public class Personne extends Thread {
                         }
                     }
                 }
+                
             } else if (etat == Etat.BAIGNADE) {
-
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(60000);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -315,13 +319,6 @@ public class Personne extends Thread {
 
             } else if (etat == Etat.REPOS) {
 
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
             } else if (etat == Etat.PLACEMENT) {
 
             } else if (etat == Etat.NOYADE) {
@@ -329,29 +326,48 @@ public class Personne extends Thread {
             }
 
         }
-
+    
     }
-
-    public void placementDebut() {
-        etat = Etat.MOUVEMENT;
-        objectif = Objectif.PLACEMENT;
+    
+    public void placementDebut(){
+        etat= Etat.MOUVEMENT;
+        objectif= Objectif.PLACEMENT;
     }
-
-    public void placementFini() {
+    public void placementFini(){
         place = true;
-        etat = Etat.REPOS;
-        objectif = Objectif.REPOS;
+        etat= Etat.REPOS;
+        objectif= Objectif.REPOS;
     }
 
-    public void goBaignade(int mer, int longueur, int[] zones) {
-        int y = objPosition[1];
-        objPosition = new int[] {longueur +(int) (Math.random() * (mer)),y};
-        etat = Etat.MOUVEMENT;
-        objectif = Objectif.BAIGNADE;
-        System.out.println(objPosition[0]+" "+objPosition[1]+" "+etat);
 
-        //(((zones[2]-mer)-(zones[2]-(zones[1])))+(zones[3]-(zones[1])))),y};
+    public boolean veutsebaigner(){
+        return this.objectif == Objectif.BAIGNADE;
+    }
+
+    public boolean veutsereposer(){
+        return this.objectif == Objectif.REPOS && this.etat == Etat.BAIGNADE;
+    }
+
+
+
+    public void goBaignade(int[] mere){
+        if (veutsebaigner()) {
+            etat = Etat.MOUVEMENT;
+            objectif = Objectif.BAIGNADE;
+            if (this.position == mere){
+                etat = Etat.BAIGNADE;
+            }
+        } else if (veutsereposer()) {
+            etat = Etat.MOUVEMENT;
+            objectif = Objectif.REPOS;
+            if (this.position == this.positionPlage) {
+                etat = Etat.PLACEMENT;
+                etat = Etat.REPOS;
+            }
+
+        }
     }
 }
+
 
 
