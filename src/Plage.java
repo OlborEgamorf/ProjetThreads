@@ -1,3 +1,5 @@
+package src;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -216,6 +218,7 @@ public class Plage {
             } else if (etat == Etat.PLACEMENT) {
                 unpack(personne.getPositionPlage()[0], personne.getPositionPlage()[1]);
                 personne.placementFini();
+                personne.goBaignade(mer, longueur, zones);
             } else if (etat == Etat.ARRIVEE) {
                 modifVision(personne,position[0],position[1],longueur+500,largeur+500);
                 placementPlage(personne);
