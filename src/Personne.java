@@ -1,3 +1,6 @@
+package src;
+
+
 public class Personne extends Thread {
     private int age;
     private double vitesse;
@@ -347,34 +350,16 @@ public class Personne extends Thread {
         objectif= Objectif.REPOS;
     }
 
-
-    public boolean veutsebaigner(){
-        return this.objectif == Objectif.BAIGNADE;
+    public void goBaignade(int mer, int longeuur, int[] zones){
+        int y = objPosition[1];
+        objPosition = new int[] {longeuur+ (int) (Math.random()*mer),y};
+        etat = Etat.MOUVEMENT;
+        objectif = Objectif.BAIGNADE;
+        System.out.println(objPosition[0]+" "+objPosition[1]+" "+etat);
     }
 
-    public boolean veutsereposer(){
-        return this.objectif == Objectif.REPOS && this.etat == Etat.BAIGNADE;
-    }
 
 
-
-    public void goBaignade(int[] mere){
-        if (veutsebaigner()) {
-            etat = Etat.MOUVEMENT;
-            objectif = Objectif.BAIGNADE;
-            if (this.position == mere){
-                etat = Etat.BAIGNADE;
-            }
-        } else if (veutsereposer()) {
-            etat = Etat.MOUVEMENT;
-            objectif = Objectif.REPOS;
-            if (this.position == this.positionPlage) {
-                etat = Etat.PLACEMENT;
-                etat = Etat.REPOS;
-            }
-
-        }
-    }
 }
 
 
