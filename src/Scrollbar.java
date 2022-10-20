@@ -1,11 +1,11 @@
-package src;
+//package src;
 
 import java.awt.*;
 import java.awt.event.*;
 
 
-public class test2 {
-    test2() {
+public class Scrollbar {
+    Scrollbar() {
         Frame f = new Frame("Vitesse");
         final Label label = new Label();
         label.setAlignment(Label.CENTER);
