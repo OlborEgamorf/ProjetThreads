@@ -70,6 +70,51 @@ public class InteractionMenu extends JFrame implements ActionListener {
         vertGroupe.addComponent(validation);
         groupe.setHorizontalGroup(horzGroupe);
         groupe.setVerticalGroup(vertGroupe);
+/*
+        Object[] elements = new Object[]{"Rien","Grande plage", "Moyenne plage", "Grande plage"};
+        Object[] elements1 = new Object[]{"Rien","Délimitation basse", "Délimitation au milieu", "Délimitation haute"};
+        Object[] elements2 = new Object[]{"Rien","Peu d'individus", "Individus moyen", "Beaucoup d'individu"};
+        Object[] elements3 = new Object[]{"Rien","Température haute", "Température moyenne", "Température haute"};
+        Object[] elements4 = new Object[]{"Rien","Vent fort", "Vent moyen", "Vent faible"};
+
+        JComboBox<String> liste = new JComboBox(elements);
+        JComboBox<String> liste2 = new JComboBox(elements1);
+        JComboBox<String> liste3 = new JComboBox(elements2);
+        JComboBox<String> liste4 = new JComboBox(elements3);
+        JComboBox<String> liste5 = new JComboBox(elements4);
+
+        liste.setBounds(10, 440, 120, 23);
+        liste2.setBounds(150, 440, 120, 23);
+        liste3.setBounds(290, 440, 120, 23);
+        liste4.setBounds(10, 550, 120, 23);
+        liste5.setBounds(150, 550, 120, 23);
+
+        add(liste);
+        add(liste2);
+        add(liste3);
+        add(liste4);
+        add(liste5);
+
+
+        JLabel label = new JLabel("Taille de la plage");
+        add(label);
+        label.setBounds(10, 400, 250, 50);
+        JLabel label2 = new JLabel("Délimitation plage");
+        add(label2);
+        label2.setBounds(150, 400, 250, 50);
+        JLabel label3 = new JLabel("Nombre d'individus");
+        add(label3);
+        label3.setBounds(290, 400, 250, 50);
+        JLabel label4 = new JLabel("Température");
+        add(label4);
+        label4.setBounds(10, 510, 250, 50);
+        JLabel label5 = new JLabel("Vent");
+        add(label5);
+        label5.setBounds(150, 510, 250, 50);
+
+
+ */
+
     }
 
     public void actionPerformed(ActionEvent e) {
