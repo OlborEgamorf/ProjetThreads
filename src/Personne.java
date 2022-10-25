@@ -25,11 +25,12 @@ public class Personne extends Thread {
     private boolean place = false;
 
     private final int timing;
+    private int nbFoisEau = 0;
     
     Personne(int id, int[] position, int vent, int timing){
         this.position = position; //position spawn
         this.oldPosition = position;
-        this.etat = Etat.ATTENTE;
+        this.etat = Etat.ARRIVEE;
         this.id = id;
         this.timing = timing;
         
@@ -69,6 +70,14 @@ public class Personne extends Thread {
 
     public int[] getPositionPlage(){
         return positionPlage;
+    }
+
+    public int getIdPersonne(){
+        return id;
+    }
+
+    public int getNbFoisEau() {
+        return nbFoisEau;
     }
 
 
@@ -242,7 +251,6 @@ public class Personne extends Thread {
         }
 
         alive = true;
-        etat = Etat.ARRIVEE;
 
         while (!Thread.interrupted()) {
 
@@ -315,7 +323,6 @@ public class Personne extends Thread {
                     ///Thread.sleep(60000 * coefficient);
                     Thread.sleep(60000);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 etat = Etat.MOUVEMENT;
@@ -324,16 +331,21 @@ public class Personne extends Thread {
 
             } else if (etat == Etat.REPOS) {
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(60000);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-
+                etat = Etat.ATTENTE;
             } else if (etat == Etat.PLACEMENT) {
 
             } else if (etat == Etat.NOYADE) {
 
+            } else if (etat == Etat.ATTENTE) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
         }
@@ -346,7 +358,7 @@ public class Personne extends Thread {
     }
     public void placementFini(){
         place = true;
-        etat= Etat.REPOS;
+        etat= Etat.ATTENTE;
         objectif= Objectif.REPOS;
     }
 
@@ -355,6 +367,7 @@ public class Personne extends Thread {
         objPosition = new int[] {longeuur+ (int) (Math.random()*mer),y};
         etat = Etat.MOUVEMENT;
         objectif = Objectif.BAIGNADE;
+        nbFoisEau ++;
         System.out.println(objPosition[0]+" "+objPosition[1]+" "+etat);
     }
 

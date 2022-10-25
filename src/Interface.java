@@ -1,3 +1,5 @@
+package src;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -82,7 +84,7 @@ public class Interface extends JPanel {
         }*/
         for (int i = 0; i < longueur; i++){
             for (int j = 0; j < largeur; j++){
-                if (matrice [i][j].type == Type.AFFAIRES){
+                if (matrice [i][j].getType() == Type.AFFAIRES){
                     g.setColor(Color.black);
                     g.fillRect(j, i, pixel, pixel);
                 }
