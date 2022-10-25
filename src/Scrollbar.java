@@ -1,12 +1,10 @@
-//package src;
-
 import java.awt.*;
 import java.awt.event.*;
 
 
 public class Scrollbar {
     Scrollbar() {
-        Frame f = new Frame("Vitesse");
+        Frame f = new Frame("Nombre de population");
         final Label label = new Label();
         label.setAlignment(Label.CENTER);
         // Position texte
@@ -17,23 +15,24 @@ public class Scrollbar {
         int y = (int) ((dimension.getHeight() - f.getHeight()) / 2);
         f.setLocation(x, y);
         // Parametre Scrollbar
-        final Scrollbar vitesse = new Scrollbar(Adjustable.HORIZONTAL, 0, 0, 0, 2000);
-        // Position Scrollbar
-        vitesse.setBounds(50, 0, 200, 50);
-        f.add(vitesse);
+        final java.awt.Scrollbar population = new java.awt.Scrollbar(Adjustable.HORIZONTAL, 0, 0, 0, 2000);
+        // Position Scrollbar ///////
+        population.setBounds(50, 0, 200, 50);
+        f.add(population);
         f.add(label);
         // Taille de la fenetre
         f.setSize(300, 125);
         f.setLayout(null);
         f.setVisible(true);
-        vitesse.addAdjustmentListener(new AdjustmentListener() {
+        population.addAdjustmentListener(new AdjustmentListener() {
             public void adjustmentValueChanged(AdjustmentEvent e) {
-                label.setText("Vitesse de la simulation : "+ vitesse.getValue());
+                label.setText("Nombre de personne : "+ population.getValue());
             }
         });
     }
 
+    // main method
     public static void main(String args[]){
-        new test2();
+        new Scrollbar();
     }
-}
+}    
