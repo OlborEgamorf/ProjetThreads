@@ -321,7 +321,7 @@ public class Personne extends Thread {
             } else if (etat == Etat.BAIGNADE) {
                 try {
                     ///Thread.sleep(60000 * coefficient);
-                    Thread.sleep(60000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -331,7 +331,7 @@ public class Personne extends Thread {
 
             } else if (etat == Etat.REPOS) {
                 try {
-                    Thread.sleep(60000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

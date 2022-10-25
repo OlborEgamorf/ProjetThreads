@@ -203,12 +203,14 @@ public class Plage {
         
                     oldPos = personne.getOldPosition();
     
-                    if (position != oldPos) {
+                    if (position[0] != oldPos[0] && position[1] != oldPos[1]) {
     
                         if ((matrice[position[0]][position[1]].getType() != Type.VIDE) && (matrice[position[0]][position[1]].getType() != Type.TEMPORAIRE)) {
                             // Si la personne s'est déplacé sur sa case avant
                             //System.out.println(matrice[actPos[0]][actPos[1]].type+" "+actPos[0]+" "+actPos[1]+" -- "+i);
                             personne.setPosition(oldPos);
+                            modifVision(personne, oldPos[0], oldPos[1], oldPos[0], oldPos[1]);
+                            System.out.println("DENIED");
                         } else {
                             // Si la personne peut aller sur la case
     
@@ -232,9 +234,12 @@ public class Plage {
                 } else if (etat == Etat.ATTENTE) {
                     if (personne.getNbFoisEau() == 0) {
                         personne.goBaignade(mer, longueur, zones);
-                    } else if ((int)Math.random()*personne.getNbFoisEau() == 1) { // proba en fonction du nb fois qu'il y est allé
+                    } else if (Math.floor(Math.random()*(personne.getNbFoisEau()+1)) == 1) { // proba en fonction du nb fois qu'il y est allé
                         personne.goBaignade(mer, longueur, zones);
+                        System.out.println("RETOUR");
                     } else {
+                        System.out.println("DEPART");
+                        
                         // s'en va
                     }
                 }
