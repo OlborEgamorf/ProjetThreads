@@ -6,6 +6,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         InteractionMenu menu = new InteractionMenu();
+
         while (!menu.isDone()) {
             Thread.sleep(500);
         }
@@ -35,6 +36,7 @@ public class Main {
         // Il va nous nous falloir une boite de communications entre les threads
 
         Interface interfaced = new Interface(plage);
+        new Scrollbar();
         while(true){
             plage.turn();
             interfaced.turn();

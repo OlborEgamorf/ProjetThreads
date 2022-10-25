@@ -4,8 +4,33 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 
 public class Interface extends JPanel {
+
+
+
+       /*
+
+        // Parametre Scrollbar
+        final java.awt.Scrollbar population = new java.awt.Scrollbar(Adjustable.HORIZONTAL, 0, 0, 0, 10);
+        // Position Scrollbar ///////
+        population.setBounds(50, 0, 200, 50);
+        f.add(population);
+        f.add(label);
+        // Taille de la fenetre
+        f.setSize(300, 125);
+        f.setLayout(null);
+        f.setVisible(true);
+        population.addAdjustmentListener(new AdjustmentListener() {
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                label.setText("Vitesse : "+ population.getValue());
+            }
+        });
+    }
+
+        */
     private final int pixel = 4;
     private int longueur;
     private int largeur;
@@ -25,6 +50,8 @@ public class Interface extends JPanel {
         frame.setLocation(x, y);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(this);
+
+
 
         mer = plage.getMer();
         longueur = plage.getLongueur();
