@@ -112,6 +112,43 @@ public class InteractionMenu extends JFrame implements ActionListener {
         add(label5);
         label5.setBounds(150, 510, 250, 50);
 
+        liste.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(liste.getSelectedItem().toString());
+            }
+        });
+
+        liste2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(liste2.getSelectedItem().toString());
+            }
+        });
+
+        liste3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(liste3.getSelectedItem().toString());
+            }
+        });
+
+        liste4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(liste4.getSelectedItem().toString());
+            }
+        });
+
+        liste5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(liste5.getSelectedItem().toString());
+            }
+        });
+
+
+
 
  */
 
