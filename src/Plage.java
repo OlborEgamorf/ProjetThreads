@@ -1,7 +1,6 @@
 package src;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Plage {
 
@@ -22,8 +21,8 @@ public class Plage {
         this.profondeur = profondeur;
         this.temperature = temperature;
         this.vent = vent;
-        this.matrice = new Case[(int)longueur][(int)largeur];
-        for (int i=0;i<longueur;i++) {
+        this.matrice = new Case[(int)longueur+mer][(int)largeur];
+        for (int i=0;i<longueur+mer;i++) {
             for (int j=0;j<largeur;j++) {
                 matrice[i][j] = new Case(i,j);
             }
@@ -92,20 +91,13 @@ public class Plage {
         //desormais la case n'est plus vide.
         // on met la case a 2 + celles aux alentours
 
-        /*if (matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE && matrice[x][y-1].type == Type.VIDE) {
-            return false;
-        }*/
-
         for (int i=0; i<2; i++) {
             for (int j=0;j<3;j++) {
                 matrice[x+i][y+j].type = Type.AFFAIRES;
                 //System.out.println("oui2Unpackboucles");
             }
         }
-
-        /*return true;*/
     }
-        // La personne pose ses affaires, les cases vaudront 2
 
     public boolean check6x6(int x, int y){
         for (int i=(x-3); i<(x+3); i++){
@@ -136,7 +128,7 @@ public class Plage {
         for (int i=-1;i<2;i++) {
             for (int j=-1;j<2;j++) {
 
-                if (x+i < 0 || y+j < 0 || x+i == longueur || y+j == largeur) {
+                if (x+i < 0 || y+j < 0 || x+i == longueur+mer || y+j == largeur) {
 
                 } else {
                     emplacement = matrice[x+i][y+j];
@@ -153,12 +145,10 @@ public class Plage {
                 }
             }
         }
-
         personne.setVision(vision);
     }
 
     public void placementPlage(Personne personne){
-        /*for (int i= getZones().length-1; i>0; i--){*/
         int i= getZones().length-1;
         int t=0;
         while (i>0){
