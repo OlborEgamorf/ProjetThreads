@@ -1,8 +1,8 @@
 public class Case {
-    int x;
-    int y;
-    int id;
-    Type type;
+    private int x;
+    private int y;
+    private int id;
+    private Type type;
 
     Case (int x, int y) {
         this.x = x;
