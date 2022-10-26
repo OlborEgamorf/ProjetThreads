@@ -11,7 +11,6 @@ public class Personne extends Thread {
     private int[] oldPosition;
     private int[] objPosition;
 
-
     private Etat etat;
     private Objectif objectif;
     private int[][] vision = {{0,0,0},{0,0,0},{0,0,0}};
@@ -185,27 +184,7 @@ public class Personne extends Thread {
         }
     }
 
-    /*public void baignade(){
-        if (this.estSauveteur = false){
-            if (this.position == plage){
-                double baignade = Math.random();
-                if (baignade < 0.05){
-                    this.etat= Etat.MOUVEMENT;
-                    deplacement(); //mettre en paramètre un emplacement libre dans la mer
-                }
-            }
-            if (this.position == Plage.mer){
-                double baignade = Math.random();
-                if (baignade < 0.05) {
-                    this.etat = Etat.MOUVEMENT;
-                    deplacement(positionPlage);
-                    this.etat = Etat.REPOS;
-                }
-            }
-        }
-    }
-
-    public void seNoie(){
+    /*public void seNoie(){
         if (this.position == Plage.mer) {
             double noyade = Math.random();
             if (noyade < (0.005 * this.probaNoyade))
@@ -243,7 +222,6 @@ public class Personne extends Thread {
         try {
             Thread.sleep(timing);
         } catch (InterruptedException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 
@@ -309,7 +287,6 @@ public class Personne extends Thread {
                             ///Thread.sleep(100 * coefficient);
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }

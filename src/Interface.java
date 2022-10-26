@@ -84,7 +84,7 @@ public class Interface extends JPanel {
                     }
                     else{
                         g.setColor(Color.gray);
-                        g.fillOval((int) (personne.getPosition()[1]*ratio[1]), (int) (personne.getPosition()[0]*ratio[0], pixel, pixel));
+                        g.fillOval((int) (personne.getPosition()[1]*ratio[1]), (int) (personne.getPosition()[0]*ratio[0]), pixel, pixel);
                         
                     }
                     g.setColor(Color.black);

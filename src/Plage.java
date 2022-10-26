@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+//package src;
 
 public class Plage {
 
@@ -11,7 +11,6 @@ public class Plage {
     private int mer;
     private int[] zones= setZones();
     private Personne[] threads;
-    private ArrayList<Integer> intoWater;
 
     Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax) {
         this.longueur = longueur;
@@ -114,10 +113,6 @@ public class Plage {
         }
     } */
 
-    public static int[] coordToArray(int x, int y) {
-        int[] liste = {x, y};
-        return liste;
-    }
 
     public void modifVision(Personne personne, int x, int y, int oldX, int oldY) {
         Case emplacement;
@@ -180,6 +175,17 @@ public class Plage {
             }
 
         }
+    }
+
+    public String fetchMatrice(){
+        String s = "";
+        for (int i=0;i<longueur+mer;i++) {
+            for (int j=0;j<largeur;j++) {
+                s+=matrice[i][j];
+            }
+            s+="\n";
+        }
+        return s;
     }
 
     public void turn() {
@@ -257,22 +263,3 @@ public class Plage {
         System.out.println("------\n\n");*/
     }
 }
-
-    
-
-
-
-// 0 0 0 0 0 0 0 0 0 0
-// 0 0 0 0 0 0 0 0 0 0
-// 0 0 0 0 1 0 0 0 0 0
-// 0 0 0 0 0 0 0 0 0 0
-// 0 0 0 0 0 0 0 0 0 0
-
-
-// x = 200 | i = 201
-
-
-    // x,y = 24,26 | i,j = 25,25 | expect : 0,2
-    // 0 0 1 0
-    // 0 1 0 0
-    // 0 0 0 0

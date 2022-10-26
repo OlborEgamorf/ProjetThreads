@@ -1,6 +1,4 @@
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import javax.swing.JFrame;
+//package src;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
@@ -17,7 +15,7 @@ public class Main {
         int profondeur = 23;
         int temperature = menu.getTemperature();
         int vent = menu.getVent();
-        int mer = 150;
+        int mer = menu.getMer();
         int vitesse = 20;
         int coefficient = 1;
 
@@ -26,17 +24,8 @@ public class Main {
 
         Plage plage = new Plage(longueur, largeur, profondeur, temperature, vent, mer, nbMax);
 
-
-
-
-
-                // Une Plage => 1 Thread.
-        // Plusieurs personnes => 1 thread pour chaques personnes.
-
-        // Il va nous nous falloir une boite de communications entre les threads
-
         Interface interfaced = new Interface(plage);
-        new Scrollbar();
+        //new Scrollbar();
         while(true){
             plage.turn();
             interfaced.turn();
