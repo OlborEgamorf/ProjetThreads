@@ -1,6 +1,6 @@
 public class Personne extends Thread {
     private int age;
-    private double vitesse;
+    private int vitesse;
     private boolean estSauveteur;
     private boolean peutSauver;
     private double probaNoyade;
@@ -154,12 +154,12 @@ public class Personne extends Thread {
 
     public void setVitesse(){
         if (age >= 15 && age < 60)
-            this.vitesse= Math.floor(Math.random() * (1.43 - 1.31 + 1) + 1.31); //vitesse moyenne de marche en m/s;
+            this.vitesse = (int)Math.floor(1000/(Math.random() * (1.43 - 1.31 + 1) + 1.31)); //vitesse moyenne de marche en m/s;
         else if (age>=60 && age<80) {
-            this.vitesse = Math.floor(Math.random() * (1.34 - 1.13 + 1) + 1.13);
+            this.vitesse = (int)Math.floor(1000/(Math.random() * (1.34 - 1.13 + 1) + 1.13));
         }
         else
-            this.vitesse= Math.floor(Math.random() * (0.97 - 0.94 + 1) + 0.94);
+            this.vitesse = (int)Math.floor(1000/(Math.random() * (0.97 - 0.94 + 1) + 0.94));
     }
 
     public void setProbaNoyade(int vent){
@@ -285,7 +285,7 @@ public class Personne extends Thread {
                     while (!oath) {
                         try {
                             ///Thread.sleep(100 * coefficient);
-                            Thread.sleep(100);
+                            Thread.sleep(vitesse);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
