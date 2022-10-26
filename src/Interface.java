@@ -1,4 +1,4 @@
-
+package src;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,10 +42,10 @@ public class Interface extends JPanel {
     public Interface(Plage plage){
         setVisible(true);
         JFrame frame = new JFrame("Plage");
-        frame.setSize(plage.getLargeur(), plage.getLongueur()+plage.getMer());
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize((int) dimension.getWidth(), (int) dimension.getHeight());
         frame.setVisible(true);
         frame.setResizable(false);
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
         frame.setLocation(x, y);
@@ -84,7 +84,7 @@ public class Interface extends JPanel {
                     }
                     else{
                         g.setColor(Color.gray);
-                        g.fillOval((int) (personne.getPosition()[1]*ratio[1]), (int) (personne.getPosition()[0]*ratio[0], pixel, pixel));
+                        g.fillOval((int) (personne.getPosition()[1]*ratio[1]), (int) (personne.getPosition()[0]*ratio[0]), pixel, pixel);
                         
                     }
                     g.setColor(Color.black);
