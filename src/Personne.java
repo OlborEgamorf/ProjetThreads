@@ -1,3 +1,4 @@
+//package src;
 public class Personne extends Thread {
     private int age;
     private int vitesse;

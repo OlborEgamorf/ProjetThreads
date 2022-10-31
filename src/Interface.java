@@ -1,4 +1,4 @@
-package src;
+//package src;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +43,23 @@ public class Interface extends JPanel {
         setVisible(true);
         JFrame frame = new JFrame("Plage");
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setSize((int) dimension.getWidth(), (int) dimension.getHeight());
+
+        mer = plage.getMer();
+        longueur = plage.getLongueur();
+        largeur = plage.getLargeur();
+        double ratioBase = (double) (longueur+mer)/(double) largeur;
+        if (ratioBase<1){
+            frame.setSize((int) dimension.getWidth(), (int) ((int) dimension.getHeight()*ratioBase));
+            ratio[0] = (dimension.getHeight()/(longueur+mer)*ratioBase);
+            ratio[1] = dimension.getWidth()/largeur;
+        }
+        else {
+            ratioBase = (double) (largeur)/(double) (longueur+mer);
+            frame.setSize((int) ((int) dimension.getWidth()*ratioBase), (int) dimension.getHeight());
+            ratio[0] = (dimension.getHeight()/(longueur+mer));
+            ratio[1] = (dimension.getWidth()/largeur)*ratioBase;
+        }
+
         frame.setVisible(true);
         frame.setResizable(false);
         int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
@@ -52,16 +68,8 @@ public class Interface extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(this);
 
-
-
-        mer = plage.getMer();
-        longueur = plage.getLongueur();
-        largeur = plage.getLargeur();
         threads = plage.getThreads();
         matrice = plage.getMatrice();
-        ratio[0] = (dimension.getHeight()/(longueur+mer));
-        ratio[1] = (dimension.getWidth()/largeur);
-
     }
 
     public void paintComponent(Graphics g){
@@ -106,9 +114,15 @@ public class Interface extends JPanel {
         }
         /*for (int i = 0; i < longueur; i++){
             for (int j = 0; j < largeur; j++){
-                if (matrice [i][j].type == Type.TEMPORAIRE){
+                if (matrice [i][j].getType() == Type.TEMPORAIRE){
                     g.setColor(Color.red);
-                    g.fillRect(j, i, pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]), (int) (i*ratio[0]), pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]+1), (int) (i*ratio[0]), pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]+2), (int) (i*ratio[0]), pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]), (int) (i*ratio[0]+1), pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]+1), (int) (i*ratio[0]+1), pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]+2), (int) (i*ratio[0]+1), pixel, pixel);
+                    j+=2;
                 }
             }
         }*/
@@ -117,6 +131,12 @@ public class Interface extends JPanel {
                 if (matrice [i][j].getType() == Type.AFFAIRES){
                     g.setColor(Color.black);
                     g.fillRect((int) (j*ratio[1]), (int) (i*ratio[0]), pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]+1), (int) (i*ratio[0]), pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]+2), (int) (i*ratio[0]), pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]), (int) (i*ratio[0])+1, pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]+1), (int) (i*ratio[0])+1, pixel, pixel);
+                    g.fillRect((int) (j*ratio[1]+2), (int) (i*ratio[0])+1, pixel, pixel);
+                    j+=2;
                 }
             }
         }

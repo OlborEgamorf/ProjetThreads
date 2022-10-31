@@ -1,5 +1,7 @@
 //package src;
 
+import java.util.Arrays;
+
 public class Plage {
 
     private int longueur;
@@ -156,15 +158,15 @@ public class Plage {
                     && check6x6(x,y)){
                 int [] pos= {x,y};
                 personne.setPositionPlage(pos);
-                int [] pos2= {x+3,y+3};
+                int [] pos2= {x+1,y+1};
                 personne.setObjPosition(pos2);
-                for (int l=0; l<2; l++) {
+                for (int l=0;l<2;l++){
                     for (int m=0;m<3;m++) {
                         //System.out.println("1: x: "+personne.getPositionPlage()[0]+" y: "+personne.getPositionPlage()[1]+ " x: "+personne.getObjPosition()[0]+ " y: "+personne.getObjPosition()[1]);
                         matrice[x+l][y+m].setCase(personne.getIdPersonne(), Type.TEMPORAIRE);
                     }
-                    return ;
                 }
+                return ;
             }
             else{
                 t++;
