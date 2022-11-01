@@ -1,9 +1,9 @@
-package src;
+//package src;
 
 
 public class Personne extends Thread {
     private int age;
-    private double vitesse;
+    private int vitesse;
     private boolean estSauveteur;
     private boolean peutSauver;
     private double probaNoyade;
@@ -25,11 +25,13 @@ public class Personne extends Thread {
     private boolean place = false;
 
     private final int timing;
+
+    private int nbFoisEau = 0;
     
     Personne(int id, int[] position, int vent, int timing){
         this.position = position; //position spawn
         this.oldPosition = position;
-        this.etat = Etat.ATTENTE;
+        this.etat = Etat.ARRIVEE;
         this.id = id;
         this.timing = timing;
         
@@ -53,6 +55,14 @@ public class Personne extends Thread {
 
     public int[] getOldPosition () {
         return oldPosition;
+    }
+
+    public int getNbFoisEau() {
+        return nbFoisEau;
+    }
+
+    public int getIdPersonne(){
+        return id;
     }
 
     public Etat getEtat() {
@@ -149,12 +159,12 @@ public class Personne extends Thread {
 
     public void setVitesse(){
         if (age >= 15 && age < 60)
-            this.vitesse= Math.floor(Math.random() * (1.43 - 1.31 + 1) + 1.31); //vitesse moyenne de marche en m/s;
+            this.vitesse = (int)Math.floor(1000/(Math.random() * (1.43 - 1.31 + 1) + 1.31)); //vitesse moyenne de marche en m/s;
         else if (age>=60 && age<80) {
-            this.vitesse = Math.floor(Math.random() * (1.34 - 1.13 + 1) + 1.13);
+            this.vitesse = (int)Math.floor(1000/(Math.random() * (1.34 - 1.13 + 1) + 1.13));
         }
         else
-            this.vitesse= Math.floor(Math.random() * (0.97 - 0.94 + 1) + 0.94);
+            this.vitesse = (int)Math.floor(1000/(Math.random() * (0.97 - 0.94 + 1) + 0.94));
     }
 
     public void setProbaNoyade(int vent){
@@ -179,27 +189,7 @@ public class Personne extends Thread {
         }
     }
 
-    /*public void baignade(){
-        if (this.estSauveteur = false){
-            if (this.position == plage){
-                double baignade = Math.random();
-                if (baignade < 0.05){
-                    this.etat= Etat.MOUVEMENT;
-                    deplacement(); //mettre en paramètre un emplacement libre dans la mer
-                }
-            }
-            if (this.position == Plage.mer){
-                double baignade = Math.random();
-                if (baignade < 0.05) {
-                    this.etat = Etat.MOUVEMENT;
-                    deplacement(positionPlage);
-                    this.etat = Etat.REPOS;
-                }
-            }
-        }
-    }
-
-    public void seNoie(){
+    /*public void seNoie(){
         if (this.position == Plage.mer) {
             double noyade = Math.random();
             if (noyade < (0.005 * this.probaNoyade))
@@ -237,12 +227,10 @@ public class Personne extends Thread {
         try {
             Thread.sleep(timing);
         } catch (InterruptedException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 
         alive = true;
-        etat = Etat.ARRIVEE;
 
         while (!Thread.interrupted()) {
 
@@ -302,9 +290,8 @@ public class Personne extends Thread {
                     while (!oath) {
                         try {
                             ///Thread.sleep(100 * coefficient);
-                            Thread.sleep(100);
+                            Thread.sleep(vitesse);
                         } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
@@ -313,9 +300,8 @@ public class Personne extends Thread {
             } else if (etat == Etat.BAIGNADE) {
                 try {
                     ///Thread.sleep(60000 * coefficient);
-                    Thread.sleep(60000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 etat = Etat.MOUVEMENT;
@@ -324,23 +310,21 @@ public class Personne extends Thread {
 
             } else if (etat == Etat.REPOS) {
                 try {
-                    Thread.sleep(22200);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-
-
-
-
-
 
             } else if (etat == Etat.PLACEMENT) {
 
             } else if (etat == Etat.NOYADE) {
 
-            } else if (etat == Etat.PARTI){
-                Thread.interrupted();
+            } else if (etat == Etat.ATTENTE) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
         }
@@ -353,31 +337,23 @@ public class Personne extends Thread {
     }
     public void placementFini(){
         place = true;
-        etat= Etat.REPOS;
+        etat= Etat.ATTENTE;
         objectif= Objectif.REPOS;
     }
 
-    public void goBaignade(int mer, int longeuur, int[] zones){
+    public void goBaignade(int mer, int longeur){
         int y = objPosition[1];
-        objPosition = new int[] {longeuur+ (int) (Math.random()*mer),y};
+        nbFoisEau++;
+        objPosition = new int[] {longeur+ (int) (Math.random()*mer),y};
         etat = Etat.MOUVEMENT;
         objectif = Objectif.BAIGNADE;
         System.out.println(objPosition[0]+" "+objPosition[1]+" "+etat);
     }
 
     public void goPartir(){
-        int y = objPosition[1];
-        int x = 0;
-        objPosition = new int[] {x, y};
+        objPosition[0] = 0;
         etat = Etat.MOUVEMENT;
         objectif = Objectif.PARTIR;
         System.out.println("Partir : "+objPosition[0]+" "+objPosition[1]+" "+etat);
     }
-
-
-
-
 }
-
-
-
