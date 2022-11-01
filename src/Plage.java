@@ -109,12 +109,14 @@ public class Plage {
         return true;
     }
 
-    /* public void pack(int[][] coords) {
+    public void pack(int x, int y) {
         // La personne s'en va et remballe ses affaires
-        for (int i = 0;i< coords.length;i++) {
-            matrice[coords[i][0]][coords[i][1]] = 0;
+        for (int i=0; i<2; i++) {
+            for (int j=0; j<3; j++) {
+                matrice[x+i][y+j].setCase(0, Type.VIDE);
+            }
         }
-    } */
+    }
 
     public static int[] coordToArray(int x, int y) {
         int[] liste = {x, y};
@@ -224,6 +226,9 @@ public class Plage {
                 modifVision(personne,position[0],position[1],longueur+500,largeur+500);
                 placementPlage(personne);
                 personne.placementDebut();
+            } else if ( etat == Etat.REPOS){
+                pack(personne.getPositionPlage()[0], personne.getPositionPlage()[1]);
+                personne.goPartir();
             }
 
             personne.setOath(true);
