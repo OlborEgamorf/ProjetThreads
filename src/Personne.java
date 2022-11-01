@@ -324,16 +324,23 @@ public class Personne extends Thread {
 
             } else if (etat == Etat.REPOS) {
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(22200);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
+
+
+
+
+
             } else if (etat == Etat.PLACEMENT) {
 
             } else if (etat == Etat.NOYADE) {
 
+            } else if (etat == Etat.PARTI){
+                Thread.interrupted();
             }
 
         }
@@ -357,6 +364,16 @@ public class Personne extends Thread {
         objectif = Objectif.BAIGNADE;
         System.out.println(objPosition[0]+" "+objPosition[1]+" "+etat);
     }
+
+    public void goPartir(){
+        int y = objPosition[1];
+        int x = 0;
+        objPosition = new int[] {x, y};
+        etat = Etat.MOUVEMENT;
+        objectif = Objectif.PARTIR;
+        System.out.println("Partir : "+objPosition[0]+" "+objPosition[1]+" "+etat);
+    }
+
 
 
 
