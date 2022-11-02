@@ -290,7 +290,7 @@ public class Personne extends Thread {
                     while (!oath) {
                         try {
                             ///Thread.sleep(100 * coefficient);
-                            Thread.sleep(vitesse);
+                            Thread.sleep(vitesse/2);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

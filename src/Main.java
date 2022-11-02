@@ -16,7 +16,7 @@ public class Main {
         int profondeur = 23;
         int temperature = menu.getTemperature();
         int vent = menu.getVent();
-        int mer = 150;
+        int mer = menu.getMer();
         int vitesse = 20;
         int coefficient = 1;
 
