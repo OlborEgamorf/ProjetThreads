@@ -10,7 +10,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
     private JLabel intituleLargeur = new JLabel("Largeur plage :");
     private Saisie largeur = new Saisie("200");
     private JLabel intituleTraitDeCote = new JLabel("Trait de côte :");
-    private Saisie mer = new Saisie("50");
+    private Saisie traitDeCote = new Saisie("50");
     private JLabel intitulePersonne = new JLabel("Nombre de personne max :");
     private Saisie personne = new Saisie("1000");
     private JLabel intituleTemperature = new JLabel("Vent :");
@@ -55,18 +55,18 @@ public class InteractionMenu extends JFrame implements ActionListener {
         groupe.setAutoCreateGaps(true);
         GroupLayout.ParallelGroup horzGroupe = groupe.createParallelGroup();
         GroupLayout.SequentialGroup vertGroupe = groupe.createSequentialGroup();
-        horzGroupe.addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
+        horzGroupe.addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(traitDeCote).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
         horzGroupe.addComponent(validation);
-        vertGroupe.addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
+        vertGroupe.addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleTraitDeCote).addComponent(traitDeCote).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
         vertGroupe.addComponent(validation);
         vertGroupe.addComponent(intituleTraitDeCote).addComponent(intituleTraitDeCote).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
         vertGroupe.addComponent(validation);
 
-        vertGroupe.addComponent(intitulePersonne).addComponent(personne).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleVent).addComponent(vent);
+        vertGroupe.addComponent(intitulePersonne).addComponent(personne).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(traitDeCote).addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleVent).addComponent(vent);
         vertGroupe.addComponent(validation);
-        vertGroupe.addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent);
+        vertGroupe.addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(traitDeCote).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent);
         vertGroupe.addComponent(validation);
-        vertGroupe.addComponent(intituleVent).addComponent(vent).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleTemperature).addComponent(temperature);
+        vertGroupe.addComponent(intituleVent).addComponent(vent).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(traitDeCote).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleTemperature).addComponent(temperature);
         vertGroupe.addComponent(validation);
         groupe.setHorizontalGroup(horzGroupe);
         groupe.setVerticalGroup(vertGroupe);
@@ -112,43 +112,6 @@ public class InteractionMenu extends JFrame implements ActionListener {
         add(label5);
         label5.setBounds(150, 510, 250, 50);
 
-        liste.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(liste.getSelectedItem().toString());
-            }
-        });
-
-        liste2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(liste2.getSelectedItem().toString());
-            }
-        });
-
-        liste3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(liste3.getSelectedItem().toString());
-            }
-        });
-
-        liste4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(liste4.getSelectedItem().toString());
-            }
-        });
-
-        liste5.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(liste5.getSelectedItem().toString());
-            }
-        });
-
-
-
 
  */
 
@@ -156,7 +119,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
-        done = isNumber(largeur.getText()) && isNumber(longueur.getText()) && isNumber(mer.getText()) && isNumber(personne.getText()) && isNumber(temperature.getText()) && isNumber(vent.getText());
+        done = isNumber(largeur.getText()) && isNumber(longueur.getText()) && isNumber(traitDeCote.getText()) && isNumber(personne.getText()) && isNumber(temperature.getText()) && isNumber(vent.getText());
     
     }
 
@@ -202,8 +165,8 @@ public class InteractionMenu extends JFrame implements ActionListener {
         return Integer.valueOf(vent.getText());
     }
 
-    public int getMer() {
-        return Integer.valueOf(mer.getText());
+    public int getTraitDeCote() {
+        return Integer.valueOf(traitDeCote.getText());
     }
 
 

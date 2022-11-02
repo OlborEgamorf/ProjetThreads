@@ -1,6 +1,6 @@
 //package src;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Plage {
 
@@ -13,6 +13,7 @@ public class Plage {
     private int mer;
     private int[] zones= setZones();
     private Personne[] threads;
+    private ArrayList<Integer> intoWater;
 
     Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax) {
         this.longueur = longueur;
@@ -86,6 +87,7 @@ public class Plage {
         zones[2]= this.longueur;
         return zones;
     }
+
     public void unpack(int x, int y, int id) {
         //desormais la case n'est plus vide.
         // on met la case a 2 + celles aux alentours
@@ -108,13 +110,14 @@ public class Plage {
         return true;
     }
 
-    /* public void pack(int[][] coords) {
+    public void pack(int x, int y) {
         // La personne s'en va et remballe ses affaires
-        for (int i = 0;i< coords.length;i++) {
-            matrice[coords[i][0]][coords[i][1]] = 0;
+        for (int i=0; i<2; i++) {
+            for (int j=0; j<3; j++) {
+                matrice[x+i][y+j].setCase(0, Type.VIDE);
+            }
         }
-    } */
-
+    }
 
     public void modifVision(Personne personne, int x, int y, int oldX, int oldY) {
         Case emplacement;
@@ -145,7 +148,7 @@ public class Plage {
         personne.setVision(vision);
     }
 
-    public void placementPlage(Personne personne){
+    public boolean placementPlage(Personne personne){
         int i= getZones().length-1;
         int t=0;
         while (i>0){
@@ -158,15 +161,15 @@ public class Plage {
                     && check6x6(x,y)){
                 int [] pos= {x,y};
                 personne.setPositionPlage(pos);
-                int [] pos2= {x+1,y+1};
+                int [] pos2= {x+3,y+3};
                 personne.setObjPosition(pos2);
-                for (int l=0;l<2;l++){
+                for (int l=0; l<2; l++) {
                     for (int m=0;m<3;m++) {
                         //System.out.println("1: x: "+personne.getPositionPlage()[0]+" y: "+personne.getPositionPlage()[1]+ " x: "+personne.getObjPosition()[0]+ " y: "+personne.getObjPosition()[1]);
                         matrice[x+l][y+m].setCase(personne.getIdPersonne(), Type.TEMPORAIRE);
                     }
+                    return true;
                 }
-                return ;
             }
             else{
                 t++;
@@ -175,8 +178,8 @@ public class Plage {
                     i--;
                 }
             }
-
         }
+        return false;
     }
 
     public String fetchMatrice(){
@@ -239,20 +242,25 @@ public class Plage {
                     personne.placementDebut();
                 } else if (etat == Etat.ATTENTE) {
                     if (personne.getNbFoisEau() == 0) {
-                        personne.goBaignade(mer, longueur, zones);
+                        personne.goBaignade(mer, longueur);
                     } else if (Math.floor(Math.random()*(personne.getNbFoisEau()+1)) == 1) { // proba en fonction du nb fois qu'il y est allé
-                        personne.goBaignade(mer, longueur, zones);
+                        personne.goBaignade(mer, longueur);
                         System.out.println("RETOUR");
                     } else {
+                        pack(personne.getPositionPlage()[0], personne.getPositionPlage()[1]);
+                        personne.goPartir();
                         System.out.println("DEPART");
                         
                         // s'en va
                     }
+                } else if (etat == Etat.PARTI) {
+                    personne.setAlive(false);
+                    personne.interrupt();
                 }
             }
         }
-
-            
+    }
+}
 
          /*for (Personne pers : threads) {
             System.out.println(pers.getPosition()[0]+" "+pers.getPosition()[1]);
@@ -263,5 +271,3 @@ public class Plage {
         }
         System.out.println("");
         System.out.println("------\n\n");*/
-    }
-}

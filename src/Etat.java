@@ -1,4 +1,3 @@
-//package src;
 public enum Etat {
     REPOS, BAIGNADE, MOUVEMENT, SAUVETAGE, NOYADE, ATTENTE, PLACEMENT, PARTI, ARRIVEE
 }

@@ -1,4 +1,6 @@
 //package src;
+
+
 public class Personne extends Thread {
     private int age;
     private int vitesse;
@@ -12,6 +14,7 @@ public class Personne extends Thread {
     private int[] oldPosition;
     private int[] objPosition;
 
+
     private Etat etat;
     private Objectif objectif;
     private int[][] vision = {{0,0,0},{0,0,0},{0,0,0}};
@@ -22,6 +25,7 @@ public class Personne extends Thread {
     private boolean place = false;
 
     private final int timing;
+
     private int nbFoisEau = 0;
     
     Personne(int id, int[] position, int vent, int timing){
@@ -53,6 +57,14 @@ public class Personne extends Thread {
         return oldPosition;
     }
 
+    public int getNbFoisEau() {
+        return nbFoisEau;
+    }
+
+    public int getIdPersonne(){
+        return id;
+    }
+
     public Etat getEtat() {
         return etat;
     }
@@ -67,14 +79,6 @@ public class Personne extends Thread {
 
     public int[] getPositionPlage(){
         return positionPlage;
-    }
-
-    public int getIdPersonne(){
-        return id;
-    }
-
-    public int getNbFoisEau() {
-        return nbFoisEau;
     }
 
 
@@ -310,7 +314,7 @@ public class Personne extends Thread {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                etat = Etat.ATTENTE;
+
             } else if (etat == Etat.PLACEMENT) {
 
             } else if (etat == Etat.NOYADE) {
@@ -337,18 +341,19 @@ public class Personne extends Thread {
         objectif= Objectif.REPOS;
     }
 
-    public void goBaignade(int mer, int longeuur, int[] zones){
+    public void goBaignade(int mer, int longeur){
         int y = objPosition[1];
-        objPosition = new int[] {longeuur+ (int) (Math.random()*mer),y};
+        nbFoisEau++;
+        objPosition = new int[] {longeur+ (int) (Math.random()*mer),y};
         etat = Etat.MOUVEMENT;
         objectif = Objectif.BAIGNADE;
-        nbFoisEau ++;
         System.out.println(objPosition[0]+" "+objPosition[1]+" "+etat);
     }
 
-
-
+    public void goPartir(){
+        objPosition[0] = 0;
+        etat = Etat.MOUVEMENT;
+        objectif = Objectif.PARTIR;
+        System.out.println("Partir : "+objPosition[0]+" "+objPosition[1]+" "+etat);
+    }
 }
-
-
-
