@@ -212,9 +212,9 @@ public class Plage {
         
                     oldPos = personne.getOldPosition();
     
-                    if (position[0] != oldPos[0] && position[1] != oldPos[1]) {
+                    if (position[0] != oldPos[0] || position[1] != oldPos[1]) {
     
-                        if ((matrice[position[0]][position[1]].getType() != Type.VIDE) && (matrice[position[0]][position[1]].getType() != Type.TEMPORAIRE)) {
+                        if (matrice[position[0]][position[1]].getType() != Type.VIDE && matrice[position[0]][position[1]].getType() != Type.TEMPORAIRE && matrice[position[0]][position[1]].getId() != personne.getId()) {
                             // Si la personne s'est déplacé sur sa case avant
                             //System.out.println(matrice[actPos[0]][actPos[1]].type+" "+actPos[0]+" "+actPos[1]+" -- "+i);
                             personne.setPosition(oldPos);
@@ -228,35 +228,30 @@ public class Plage {
     
                             modifVision(personne, position[0], position[1], oldPos[0], oldPos[1]);
                             personne.immobilisation();
+                            System.out.println((personne.getObjectif() == Objectif.BAIGNADE)+" "+position[0]+" "+longueur);
+                            if (personne.getObjectif() == Objectif.BAIGNADE && position[0] == longueur) {
+                                personne.setObjPosition(new int[]{longueur,position[1]});
+                            }
                         }
+                    } else {
+                        System.out.println("IMMOBILE");
                     }
-
-                    personne.setOath(true);
     
                 } else if (etat == Etat.PLACEMENT) {
                     unpack(personne.getPositionPlage()[0], personne.getPositionPlage()[1], personne.getIdPersonne());
-                    personne.placementFini();
+                } else if (etat == Etat.DEPART) {
+                    pack(personne.getPositionPlage()[0], personne.getPositionPlage()[1]);
                 } else if (etat == Etat.ARRIVEE) {
                     modifVision(personne,position[0],position[1],longueur+500,largeur+500);
                     placementPlage(personne);
-                    personne.placementDebut();
                 } else if (etat == Etat.ATTENTE) {
-                    if (personne.getNbFoisEau() == 0) {
-                        personne.goBaignade(mer, longueur);
-                    } else if (Math.floor(Math.random()*(personne.getNbFoisEau()+1)) == 1) { // proba en fonction du nb fois qu'il y est allé
-                        personne.goBaignade(mer, longueur);
-                        System.out.println("RETOUR");
-                    } else {
-                        pack(personne.getPositionPlage()[0], personne.getPositionPlage()[1]);
-                        personne.goPartir();
-                        System.out.println("DEPART");
-                        
-                        // s'en va
-                    }
+                    
                 } else if (etat == Etat.PARTI) {
                     personne.setAlive(false);
                     personne.interrupt();
                 }
+
+                personne.setOath(true);
             }
         }
     }

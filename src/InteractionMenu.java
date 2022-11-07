@@ -138,6 +138,8 @@ public class InteractionMenu extends JFrame implements ActionListener {
         while (flag && i<number.length()) {
             if (!Character.isDigit(number.charAt(i))) {
                 flag = false;
+            } else if (Integer.parseInt(number) < 0 || Integer.parseInt(number) > 7500) {
+                flag = false;
             }
             i ++;
         }

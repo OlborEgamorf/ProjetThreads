@@ -20,9 +20,8 @@ public class Personne extends Thread {
     private int[][] vision = {{0,0,0},{0,0,0},{0,0,0}};
     private int id;
 
-    private boolean oath = true;
+    private boolean oath = false;
     private boolean alive = false;
-    private boolean place = false;
 
     private final int timing;
 
@@ -69,6 +68,10 @@ public class Personne extends Thread {
         return etat;
     }
 
+    public Objectif getObjectif() {
+        return objectif;
+    }
+
     public boolean getEstSauveteur(){
         return estSauveteur;
     }
@@ -80,8 +83,6 @@ public class Personne extends Thread {
     public int[] getPositionPlage(){
         return positionPlage;
     }
-
-
 
     public boolean getAlive() {
         return alive;
@@ -116,8 +117,6 @@ public class Personne extends Thread {
         this.age= (int)(Math.random() * 100);
     }
 
-
-
     public void setPeutSauver(){
         if (age < 15 || age > 60) {
             this.peutSauver = false;
@@ -149,12 +148,6 @@ public class Personne extends Thread {
 
     public void setOath(boolean oath) {
         this.oath = oath;
-    }
-
-    
-
-    public boolean isPlace() {
-        return place;
     }
 
     public void setVitesse(){
@@ -231,10 +224,12 @@ public class Personne extends Thread {
         }
 
         alive = true;
+        int sleeper = 10;
 
         while (!Thread.interrupted()) {
+            sleeper = 20;
 
-            if (etat == Etat.MOUVEMENT) {
+            if (etat == Etat.MOUVEMENT && oath) {
 
                 if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
                     //System.out.println("OUI JE SUI LA");
@@ -285,75 +280,55 @@ public class Personne extends Thread {
                         setPosition(newPos);
                     }
                     //System.out.println(position[0]+" "+position[1]);
-
-                    oath = false;
-                    while (!oath) {
-                        try {
-                            ///Thread.sleep(100 * coefficient);
-                            Thread.sleep(vitesse/2);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    sleeper = vitesse/2;
                 }
                 
             } else if (etat == Etat.BAIGNADE) {
-                try {
-                    ///Thread.sleep(60000 * coefficient);
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                etat = Etat.MOUVEMENT;
-                objectif = Objectif.REPOS;
-                objPosition = positionPlage;
+                //sleeper = 5000;
+                // VA CHANGER DU COUP 
 
             } else if (etat == Etat.REPOS) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                sleeper = 5000;
 
-            } else if (etat == Etat.PLACEMENT) {
+            } else if (etat == Etat.PLACEMENT && oath) {
+                etat = Etat.ATTENTE;
+                objectif = Objectif.REPOS;
+
+            } else if (etat == Etat.ARRIVEE && oath) {
+                etat = Etat.MOUVEMENT;
+                objectif = Objectif.PLACEMENT;
 
             } else if (etat == Etat.NOYADE) {
 
             } else if (etat == Etat.ATTENTE) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (getNbFoisEau() == 0 || Math.floor(Math.random()*(getNbFoisEau()+1)) == 1) {
+                    etat = Etat.MOUVEMENT;
+                    objectif = Objectif.BAIGNADE;
+                    objPosition[0] = 14999; // Taille limite de la plage
+                } else {
+                    etat = Etat.DEPART;
                 }
+
+            } else if (etat == Etat.DEPART && oath) {
+                objPosition[0] = 0;
+                etat = Etat.MOUVEMENT;
+                objectif = Objectif.PARTIR;
+            }
+
+            oath = false;
+            try {
+                Thread.sleep(sleeper);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (etat == Etat.BAIGNADE) {
+                etat = Etat.MOUVEMENT;
+                objectif = Objectif.REPOS;
+                objPosition = positionPlage;
             }
 
         }
     
-    }
-    
-    public void placementDebut(){
-        etat= Etat.MOUVEMENT;
-        objectif= Objectif.PLACEMENT;
-    }
-    public void placementFini(){
-        place = true;
-        etat= Etat.ATTENTE;
-        objectif= Objectif.REPOS;
-    }
-
-    public void goBaignade(int mer, int longeur){
-        int y = objPosition[1];
-        nbFoisEau++;
-        objPosition = new int[] {longeur+ (int) (Math.random()*mer),y};
-        etat = Etat.MOUVEMENT;
-        objectif = Objectif.BAIGNADE;
-        System.out.println(objPosition[0]+" "+objPosition[1]+" "+etat);
-    }
-
-    public void goPartir(){
-        objPosition[0] = 0;
-        etat = Etat.MOUVEMENT;
-        objectif = Objectif.PARTIR;
-        System.out.println("Partir : "+objPosition[0]+" "+objPosition[1]+" "+etat);
     }
 }
