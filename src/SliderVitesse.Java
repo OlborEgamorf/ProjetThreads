@@ -1,5 +1,6 @@
-package src;
+//package src;
 
+/*
 import java.awt.EventQueue;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -55,3 +56,5 @@ public class SliderVitesse extends JFrame {
 
     }
 }
+
+ */

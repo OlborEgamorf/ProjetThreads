@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
-
+/*
 
 public class Scrollbar {
     Scrollbar() {
@@ -35,4 +35,3 @@ public class Scrollbar {
     public static void main(String args[]){
         new Scrollbar();
     }
-}    
