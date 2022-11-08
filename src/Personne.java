@@ -1,4 +1,4 @@
-//package src;
+package src;
 
 
 public class Personne extends Thread {
@@ -314,21 +314,22 @@ public class Personne extends Thread {
                 etat = Etat.MOUVEMENT;
                 objectif = Objectif.PARTIR;
             }
-
             oath = false;
             try {
                 Thread.sleep(sleeper);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            if (etat == Etat.BAIGNADE) {
-                etat = Etat.MOUVEMENT;
-                objectif = Objectif.REPOS;
-                objPosition = positionPlage;
-            }
-
         }
     
+    }
+
+    public void changeAttribut(int x, double y){
+        if (x==1){
+            vitesse *= y;
+        }
+        if (x==2){
+            probaNoyade *= y;
+        }
     }
 }

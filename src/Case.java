@@ -1,3 +1,4 @@
+package src;
 public class Case {
     int x;
     int y;

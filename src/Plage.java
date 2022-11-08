@@ -1,4 +1,4 @@
-//package src;
+package src;
 
 import java.util.ArrayList;
 
@@ -14,13 +14,14 @@ public class Plage {
     private int[] zones= setZones();
     private Personne[] threads;
     private ArrayList<Integer> intoWater;
+    private Meteo meteo;
 
     Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax) {
         this.longueur = longueur;
         this.largeur = largeur;
         this.profondeur = profondeur;
         this.temperature = temperature;
-        this.vent = vent;
+        this.vent = (int) (Math.random() * 100);
         this.matrice = new Case[(int)longueur+mer][(int)largeur];
         for (int i=0;i<longueur+mer;i++) {
             for (int j=0;j<largeur;j++) {
@@ -30,6 +31,7 @@ public class Plage {
         this.mer = mer;
         setZones();
         this.threads = new Personne[nbMax];
+        setMeteo();
 
         int coeff = 500; // coefficient de vitesse d'apparition, en ms
         for (int i = 0; i < threads.length; i++) {
@@ -55,7 +57,7 @@ public class Plage {
         return profondeur;
     }
 
-    public Case[][] getMatrice() { return matrice; }
+    public Case[][] getMatrice() {return matrice;}
     
     public int getMer() {
         return mer;
@@ -63,6 +65,19 @@ public class Plage {
 
     public Personne[] getThreads() {
         return threads;
+    }
+    public Meteo getMeteo(){
+        return meteo;
+    }
+
+    public void setMeteo(){
+        int a= Meteo.values().length;
+        int rang = (int) (Math.random() * a)+1;
+        for (int i=0; i<Meteo.values().length; i++){
+            if (Meteo.values()[i].getNombre() == rang){
+                meteo = Meteo.values()[i];
+            }
+        }
     }
 
     /*
@@ -148,7 +163,7 @@ public class Plage {
         personne.setVision(vision);
     }
 
-    public boolean placementPlage(Personne personne){
+    public void placementPlage(Personne personne){
         int i= getZones().length-1;
         int t=0;
         while (i>0){
@@ -168,7 +183,7 @@ public class Plage {
                         //System.out.println("1: x: "+personne.getPositionPlage()[0]+" y: "+personne.getPositionPlage()[1]+ " x: "+personne.getObjPosition()[0]+ " y: "+personne.getObjPosition()[1]);
                         matrice[x+l][y+m].setCase(personne.getIdPersonne(), Type.TEMPORAIRE);
                     }
-                    return true;
+                    return;
                 }
             }
             else{
@@ -179,7 +194,6 @@ public class Plage {
                 }
             }
         }
-        return false;
     }
 
     public String fetchMatrice(){
@@ -199,6 +213,41 @@ public class Plage {
         int[] oldPos;
         Etat etat;
         Personne personne;
+
+        if (meteo == Meteo.Soleil){
+            double a= Math.random();
+            if (a<=0.01){
+                meteo = Meteo.Nuageux;
+            }
+        }
+        else if (meteo == Meteo.Nuageux){
+            double a= Math.random();
+            if (a<=0.01){
+                meteo = Meteo.Pluie;
+            } else if (a>=0.99) {
+                meteo = Meteo.Soleil;
+            }
+        }
+        else if (meteo == Meteo.Pluie){
+            double a= Math.random();
+            if (a<=0.01){
+                meteo = Meteo.Nuageux;
+            }
+        }
+
+        if (vent <= 25){
+            double a= Math.random();
+            if (a<0.1)
+                vent = (int) (Math.random() * (40));
+        } else if (vent<60) {
+            double a= Math.random();
+            if (a<0.1)
+                vent = (int) (Math.random() * ((60-15)+15));
+        } else {
+            double a= Math.random();
+            if (a<0.1)
+                vent = (int) (Math.random() * ((100-45)+45));
+        }
         
         for (int i = 0; i < threads.length; i++) {
 
@@ -207,6 +256,17 @@ public class Plage {
             position = personne.getPosition();
 
             if (personne.getAlive()) {
+
+                if (meteo == Meteo.Pluie){
+                    personne.changeAttribut(1,0.95);
+                    personne.changeAttribut(2, 1.15);
+                }
+
+                if (vent >25 && vent<60){
+                    personne.changeAttribut(2, 1.15);
+                }
+                else
+                    personne.changeAttribut(2, 1.30);
 
                 if (etat == Etat.MOUVEMENT) {
         
@@ -245,7 +305,34 @@ public class Plage {
                     modifVision(personne,position[0],position[1],longueur+500,largeur+500);
                     placementPlage(personne);
                 } else if (etat == Etat.ATTENTE) {
-                    
+                    if (personne.getNbFoisEau() == 0) {
+                        personne.goBaignade(mer, longueur);
+                    } else if (Math.floor(Math.random()*(personne.getNbFoisEau()+1)) == 1) {// proba en fonction du nb fois qu'il y est allé
+                        if (meteo == Meteo.Pluie){
+                            double a= Math.random();
+                            if (a<0.3){
+                                personne.goBaignade(mer, longueur);
+                                System.out.println("RETOUR");
+                            }
+                        }
+                        if (meteo == Meteo.Nuageux){
+                            double a= Math.random();
+                            if (a<0.6){
+                                personne.goBaignade(mer, longueur);
+                                System.out.println("RETOUR");
+                            }
+                        }
+                        if (meteo == Meteo.Soleil){
+                            personne.goBaignade(mer, longueur);
+                            System.out.println("RETOUR");
+                        }
+                    } else {
+                        pack(personne.getPositionPlage()[0], personne.getPositionPlage()[1]);
+                        personne.goPartir();
+                        System.out.println("DEPART");
+                        
+                        // s'en va
+                    }
                 } else if (etat == Etat.PARTI) {
                     personne.setAlive(false);
                     personne.interrupt();

@@ -38,8 +38,9 @@ public class Interface extends JPanel {
     private Personne[] threads;
     private Case[][] matrice;
     private double zoom = 1;
+    private Meteo meteo;
 
-    public Interface(Plage plage){
+    public Interface (Plage plage){
         setVisible(true);
         JFrame frame = new JFrame("Plage");
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -89,7 +90,7 @@ public class Interface extends JPanel {
                 zoom = 2;
             else
                 zoom = 1;
-            frame.setSize((int) (largeur*zoom), (int) ((longueur+mer)*zoom+(mer*ratioBase)));
+            frame.setSize((int) (largeur*zoom), (int) (a*zoom+(mer*ratioBase)));
         }
 
         frame.setVisible(true);
@@ -102,6 +103,8 @@ public class Interface extends JPanel {
 
         threads = plage.getThreads();
         matrice = plage.getMatrice();
+        meteo = plage.getMeteo();
+
     }
 
     public void paintComponent(Graphics g){
@@ -110,6 +113,17 @@ public class Interface extends JPanel {
         g.fillRect(0, 0,(int) (largeur*zoom),(int) (longueur*zoom));
         g.setColor(Color.decode("#338AFF"));
         g.fillRect(0,(int) (longueur*zoom), (int) (largeur*zoom), (int) (mer*zoom));
+
+        if (meteo == Meteo.Nuageux){
+            System.out.println("oui");
+            Color couleur = new Color(128, 128, 128, .5f);
+            g.setColor(couleur);
+            g.fillRect(0, 0, (int) (largeur*zoom), (int) ((longueur+mer)*zoom));
+        }
+
+        if (meteo == Meteo.Pluie){
+
+        }
 
         for (Personne personne : threads) {
             if (personne.getAlive()) {

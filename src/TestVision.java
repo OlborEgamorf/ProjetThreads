@@ -1,3 +1,4 @@
+package src;
 public class TestVision {
     public static void main(String[] args) throws InterruptedException {
         Plage plage = new Plage(10,10,10,0,0,8,3);
