@@ -216,6 +216,43 @@ public class Personne extends Thread {
         return false;
     } */
 
+    public void mouvement() {
+        int x = position[0];
+        int y = position[1];
+
+        int ecartX = objPosition[0]-position[0];
+        int ecartY = objPosition[1]-position[1];
+
+        if (ecartX != 0) {
+            ecartX = ecartX/Math.abs(ecartX);
+        }
+        
+        if (ecartY != 0) {
+            ecartY = ecartY/Math.abs(ecartY);
+        }                    
+        
+        if (vision[1+ecartX][1+ecartY] == 0) {
+            int[] newPos = {x+ecartX,y+ecartY};
+            setPosition(newPos);
+        } else if (vision[1][1+ecartY] == 0) {
+            int[] newPos = {x,y+ecartY};
+            setPosition(newPos);
+        } else if (vision[1+ecartX][1] == 0) {
+            int[] newPos = {x+ecartX,y};
+            setPosition(newPos);
+        } else if (vision[1+ecartX][0] == 0 && y > 0) {
+            int[] newPos = {x+ecartX,y-1};
+            setPosition(newPos);
+        } else if (vision[0][1+ecartY] == 0 && x > 0) {
+            int[] newPos = {x-1,y+ecartY};
+            setPosition(newPos);
+        } else {
+            System.out.println("DOMMAGE");
+            int[] newPos = position;
+            setPosition(newPos);
+        }
+    }
+
     public void run() {
         try {
             Thread.sleep(timing);
@@ -225,6 +262,7 @@ public class Personne extends Thread {
 
         alive = true;
         int sleeper = 10;
+        boolean finBaignade = false;
 
         while (!Thread.interrupted()) {
             sleeper = 20;
@@ -244,48 +282,14 @@ public class Personne extends Thread {
                     }
 
                 } else {
-                    int x = position[0];
-                    int y = position[1];
-
-
-                    int ecartX = objPosition[0]-position[0];
-                    int ecartY = objPosition[1]-position[1];
-
-                    if (ecartX != 0) {
-                        ecartX = ecartX/Math.abs(ecartX);
-                    }
-                    
-                    if (ecartY != 0) {
-                        ecartY = ecartY/Math.abs(ecartY);
-                    }                    
-                    
-                    if (vision[1+ecartX][1+ecartY] == 0) {
-                        int[] newPos = {x+ecartX,y+ecartY};
-                        setPosition(newPos);
-                    } else if (vision[1][1+ecartY] == 0) {
-                        int[] newPos = {x,y+ecartY};
-                        setPosition(newPos);
-                    } else if (vision[1+ecartX][1] == 0) {
-                        int[] newPos = {x+ecartX,y};
-                        setPosition(newPos);
-                    } else if (vision[1+ecartX][0] == 0 && y > 0) {
-                        int[] newPos = {x+ecartX,y-1};
-                        setPosition(newPos);
-                    } else if (vision[0][1+ecartY] == 0 && x > 0) {
-                        int[] newPos = {x-1,y+ecartY};
-                        setPosition(newPos);
-                    } else {
-                        System.out.println("DOMMAGE");
-                        int[] newPos = position;
-                        setPosition(newPos);
-                    }
-                    //System.out.println(position[0]+" "+position[1]);
+                    mouvement();
                     sleeper = vitesse/2;
                 }
                 
             } else if (etat == Etat.BAIGNADE) {
                 //sleeper = 5000;
                 // VA CHANGER DU COUP 
+                finBaignade = true;
 
             } else if (etat == Etat.REPOS) {
                 sleeper = 5000;
@@ -320,6 +324,14 @@ public class Personne extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            if (etat == Etat.BAIGNADE && finBaignade) {
+                etat = Etat.MOUVEMENT;
+                objectif = Objectif.REPOS;
+                objPosition = positionPlage;
+                finBaignade = false;
+            }
+
         }
     
     }
@@ -333,3 +345,10 @@ public class Personne extends Thread {
         }
     }
 }
+
+
+
+// paramètres physique
+// cliquer pour se noyer
+// modifier les cases
+// path finding
