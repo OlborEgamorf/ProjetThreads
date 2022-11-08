@@ -2,7 +2,7 @@
 
 import java.awt.*;
 import java.awt.event.*;
-
+/*
 
 public class Scrollbar {
     Scrollbar() {
@@ -37,3 +37,5 @@ public class Scrollbar {
         new test2();
     }
 }
+
+ */

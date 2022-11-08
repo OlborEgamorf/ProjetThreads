@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 public class InteractionMenu extends JFrame implements ActionListener {
     private JLabel intituleLongueur = new JLabel("Longueur plage :");
-    private Saisie longueur = new Saisie("300");
+    private Saisie longueur = new Saisie("200");
     private JLabel intituleLargeur = new JLabel("Largeur plage :");
     private Saisie largeur = new Saisie("150");
     private JLabel intituleMer = new JLabel("Trait de côte :");
@@ -70,12 +70,12 @@ public class InteractionMenu extends JFrame implements ActionListener {
         vertGroupe.addComponent(validation);
         groupe.setHorizontalGroup(horzGroupe);
         groupe.setVerticalGroup(vertGroupe);
-/*
-        Object[] elements = new Object[]{"Rien","Grande plage", "Moyenne plage", "Grande plage"};
-        Object[] elements1 = new Object[]{"Rien","Délimitation basse", "Délimitation au milieu", "Délimitation haute"};
-        Object[] elements2 = new Object[]{"Rien","Peu d'individus", "Individus moyen", "Beaucoup d'individu"};
-        Object[] elements3 = new Object[]{"Rien","Température haute", "Température moyenne", "Température haute"};
-        Object[] elements4 = new Object[]{"Rien","Vent fort", "Vent moyen", "Vent faible"};
+
+        Object[] elements = new Object[]{"Rien", "Grande plage", "Moyenne plage", "Grande plage"};
+        Object[] elements1 = new Object[]{"Rien", "Délimitation basse", "Délimitation au milieu", "Délimitation haute"};
+        Object[] elements2 = new Object[]{"Rien", "Peu d'individus", "Individus moyen", "Beaucoup d'individu"};
+        Object[] elements3 = new Object[]{"Rien", "Température haute", "Température moyenne", "Température haute"};
+        Object[] elements4 = new Object[]{"Rien", "Vent fort", "Vent moyen", "Vent faible"};
 
         JComboBox<String> liste = new JComboBox(elements);
         JComboBox<String> liste2 = new JComboBox(elements1);
@@ -112,16 +112,49 @@ public class InteractionMenu extends JFrame implements ActionListener {
         add(label5);
         label5.setBounds(150, 510, 250, 50);
 
+        liste.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Taille plage : " + liste.getSelectedItem().toString());
 
- */
+            }
+        });
+
+        liste2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Délimitation plage : " + liste2.getSelectedItem().toString());
+            }
+        });
+
+        liste3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Nombre d'individus : " + liste3.getSelectedItem().toString());
+            }
+        });
+
+        liste4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Température : " + liste4.getSelectedItem().toString());
+            }
+        });
+
+        liste5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Vent : " + liste5.getSelectedItem().toString());
+            }
+        });
 
     }
-
     public void actionPerformed(ActionEvent e) {
 
         done = isNumber(largeur.getText()) && isNumber(longueur.getText()) && isNumber(mer.getText()) && isNumber(personne.getText()) && isNumber(temperature.getText()) && isNumber(vent.getText());
-    
+
     }
+
 
     public boolean isDone() {
         return done;
