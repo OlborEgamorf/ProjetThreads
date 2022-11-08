@@ -305,34 +305,7 @@ public class Plage {
                     modifVision(personne,position[0],position[1],longueur+500,largeur+500);
                     placementPlage(personne);
                 } else if (etat == Etat.ATTENTE) {
-                    if (personne.getNbFoisEau() == 0) {
-                        personne.goBaignade(mer, longueur);
-                    } else if (Math.floor(Math.random()*(personne.getNbFoisEau()+1)) == 1) {// proba en fonction du nb fois qu'il y est allé
-                        if (meteo == Meteo.Pluie){
-                            double a= Math.random();
-                            if (a<0.3){
-                                personne.goBaignade(mer, longueur);
-                                System.out.println("RETOUR");
-                            }
-                        }
-                        if (meteo == Meteo.Nuageux){
-                            double a= Math.random();
-                            if (a<0.6){
-                                personne.goBaignade(mer, longueur);
-                                System.out.println("RETOUR");
-                            }
-                        }
-                        if (meteo == Meteo.Soleil){
-                            personne.goBaignade(mer, longueur);
-                            System.out.println("RETOUR");
-                        }
-                    } else {
-                        pack(personne.getPositionPlage()[0], personne.getPositionPlage()[1]);
-                        personne.goPartir();
-                        System.out.println("DEPART");
-                        
-                        // s'en va
-                    }
+
                 } else if (etat == Etat.PARTI) {
                     personne.setAlive(false);
                     personne.interrupt();
