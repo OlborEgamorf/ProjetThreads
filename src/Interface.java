@@ -2,10 +2,6 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 
 public class Interface extends JPanel {
 
@@ -127,7 +123,7 @@ public class Interface extends JPanel {
 
         for (Personne personne : threads) {
             if (personne.getAlive()) {
-                if (personne.getEstSauveteur()){
+                if (personne instanceof Sauveteur){
                     g.setColor(Color.red);
                     g.fillOval((int) (personne.getPosition()[1]*zoom),(int) (personne.getPosition()[0]*zoom), pixel, pixel);
                 }

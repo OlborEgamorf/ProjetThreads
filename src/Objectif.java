@@ -1,4 +1,4 @@
-package src;
+//package src;
 public enum Objectif {
-    PLACEMENT, BAIGNADE, REPOS, PARTIR
+    PLACEMENT, BAIGNADE, REPOS, PARTIR, SAUVETAGE, PATROUILLE
 }

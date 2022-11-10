@@ -1,4 +1,4 @@
-package src;
+//package src;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class Plage {
     private int mer;
     private int[] zones= setZones();
     private Personne[] threads;
-    private ArrayList<Integer> intoWater;
+    private ArrayList<Integer> sauveteurs;
     private Meteo meteo;
 
     Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax) {
@@ -22,29 +22,44 @@ public class Plage {
         this.profondeur = profondeur;
         this.temperature = temperature;
         this.vent = (int) (Math.random() * 100);
+
         this.matrice = new Case[(int)longueur+mer][(int)largeur];
         for (int i=0;i<longueur+mer;i++) {
             for (int j=0;j<largeur;j++) {
                 matrice[i][j] = new Case(i,j);
             }
         }
+
+        for (int i=0;i<6;i++) {
+            for (int j=largeur/2;j<(largeur/2)+6;j++) {
+                matrice[i][j].setCase(0, Type.POSTE);
+            }
+        }
+
         this.mer = mer;
-        setZones();
         this.threads = new Personne[nbMax];
+
+        setZones();
         setMeteo();
 
         int coeff = 500; // coefficient de vitesse d'apparition, en ms
         for (int i = 0; i < threads.length; i++) {
-            int[] posTest = {0,(int)(Math.floor(Math.random() * largeur))};
-            threads[i] = new Personne(i,posTest,vent,coeff*i);
+            if (Math.random() < 0.01) {
+                threads[i] = new Sauveteur(i,new int[]{0,(largeur/2)+2},vent);
+                sauveteurs.add(i);
+            } else {
+                int[] posTest = {0,(int)(Math.floor(Math.random() * largeur))};
+                threads[i] = new Personne(i,posTest,vent,coeff*i);
+            }
+            
             threads[i].start();
         }
-
-
     }
+
     public  int[] getZones(){
         return zones;
     }
+
     public int getLongueur() {
         return longueur;
     }
@@ -57,7 +72,9 @@ public class Plage {
         return profondeur;
     }
 
-    public Case[][] getMatrice() {return matrice;}
+    public Case[][] getMatrice() {
+        return matrice;
+    }
     
     public int getMer() {
         return mer;
@@ -65,9 +82,6 @@ public class Plage {
 
     public Personne[] getThreads() {
         return threads;
-    }
-    public Meteo getMeteo(){
-        return meteo;
     }
 
     public void setMeteo(){
@@ -78,6 +92,10 @@ public class Plage {
                 meteo = Meteo.values()[i];
             }
         }
+    }
+
+    public Meteo getMeteo(){
+        return meteo;
     }
 
     /*
@@ -145,7 +163,7 @@ public class Plage {
 
                 } else {
                     emplacement = matrice[x+i][y+j];
-                    if (emplacement.getType() != Type.VIDE && emplacement.getType() != Type.TEMPORAIRE) {
+                    if (emplacement.getType() != Type.VIDE && emplacement.getType() != Type.TEMPORAIRE && !emplacement.isAlerte()) {
                         if (emplacement.getId() != personne.getIdPersonne()) {
                             vision[i+1][j+1] = 1; 
                         }
@@ -207,6 +225,28 @@ public class Plage {
         return s;
     }
 
+    public int closerSave(int x, int y) {
+        switch (sauveteurs.size()) {
+            case 0: {
+                return -1;
+            }
+            case 1: {
+                return sauveteurs.get(0);
+            }
+            default: {
+                int flag = -1;
+                int min = 15000;
+                for (int i=0;i<sauveteurs.size();i++) {
+                    if (x-threads[i].getPosition()[0]+y-threads[i].getPosition()[1] < min && (threads[i].getEtat() != Etat.SAUVETAGE && threads[i].getObjectif() != Objectif.SAUVETAGE)) {
+                        flag = i;
+                        min = x-threads[i].getPosition()[0]+y-threads[i].getPosition()[1];
+                    }
+                }
+                return flag;
+            }
+        }
+    }
+
     public void turn() {
                 
         int[] position;
@@ -257,42 +297,50 @@ public class Plage {
 
             if (personne.getAlive()) {
 
-                if (meteo == Meteo.Pluie){
-                    personne.changeAttribut(1,0.95);
-                    personne.changeAttribut(2, 1.15);
-                }
-
-                if (vent >25 && vent<60){
-                    personne.changeAttribut(2, 1.15);
-                }
-                else
-                    personne.changeAttribut(2, 1.30);
-
-                if (etat == Etat.MOUVEMENT) {
+                if (etat == Etat.MOUVEMENT || etat == Etat.BAIGNADE) {
         
                     oldPos = personne.getOldPosition();
     
-                    if (position[0] != oldPos[0] || position[1] != oldPos[1]) {
+                    if (!comparePositions(position, oldPos)) {
     
                         if (matrice[position[0]][position[1]].getType() != Type.VIDE && matrice[position[0]][position[1]].getType() != Type.TEMPORAIRE && matrice[position[0]][position[1]].getId() != personne.getId()) {
                             // Si la personne s'est déplacé sur sa case avant
-                            //System.out.println(matrice[actPos[0]][actPos[1]].type+" "+actPos[0]+" "+actPos[1]+" -- "+i);
-                            personne.setPosition(oldPos);
-                            modifVision(personne, oldPos[0], oldPos[1], oldPos[0], oldPos[1]);
-                            System.out.println("DENIED");
+                            if (personne.getObjectif() == Objectif.SAUVETAGE) {
+                                if (matrice[position[0]][position[1]].getType() == Type.PERSONNE) {
+                                    int idPers = matrice[position[0]][position[1]].getId();
+                                    threads[idPers].forcePosition(new int[]{position[0],position[1]-1});
+                                    modifVision(threads[idPers], position[0], position[1]-1, position[0], position[1]);
+                                }
+                            } else {
+                                personne.setPosition(oldPos);
+                                modifVision(personne, oldPos[0], oldPos[1], oldPos[0], oldPos[1]);
+                                System.out.println("DENIED");
+                            }
+                            
                         } else {
                             // Si la personne peut aller sur la case
-    
-                            matrice[position[0]][position[1]].setCase(i, Type.PERSONNE);
-                            matrice[oldPos[0]][oldPos[1]].setCase(-1, Type.VIDE);
-    
+                            if (matrice[position[0]][position[1]].getType() == Type.AFFAIRES || matrice[position[0]][position[1]].getType() == Type.TEMPORAIRE) {
+                                matrice[position[0]][position[1]].setSecond(Type.PERSONNE);
+                            } else {
+                                matrice[position[0]][position[1]].setCase(i, Type.PERSONNE);
+                            }
+                            
+                            if (matrice[oldPos[0]][oldPos[1]].getType() == Type.AFFAIRES || matrice[position[0]][position[1]].getType() == Type.TEMPORAIRE) {
+                                matrice[oldPos[0]][oldPos[1]].setSecond(Type.VIDE);
+                            }
+
+                            if (personne.getObjectif() == Objectif.SAUVETAGE) {
+                                matrice[position[0]][position[1]].setAlerte(false);
+                            }
+                            
                             modifVision(personne, position[0], position[1], oldPos[0], oldPos[1]);
                             personne.immobilisation();
-                            System.out.println((personne.getObjectif() == Objectif.BAIGNADE)+" "+position[0]+" "+longueur);
+                            
                             if (personne.getObjectif() == Objectif.BAIGNADE && position[0] == longueur) {
                                 personne.setObjPosition(new int[]{longueur,position[1]});
                             }
                         }
+
                     } else {
                         System.out.println("IMMOBILE");
                     }
@@ -309,11 +357,27 @@ public class Plage {
                 } else if (etat == Etat.PARTI) {
                     personne.setAlive(false);
                     personne.interrupt();
+                } else if (etat == Etat.NOYADE) {
+                    int sauveteur = closerSave(position[0],position[1]);
+                    if (sauveteur == -1) {
+                        // S'il n'y a pas de sauveteur disponible, RIP !
+                    } else {
+                        Sauveteur saver = ((Sauveteur) threads[sauveteur]);
+                        saver.sauvetage(position);
+                        int[] simulPos = saver.getPosition();
+                        do {
+                            simulPos = saver.mouvement(simulPos[0], simulPos[1]);
+                            matrice[simulPos[0]][simulPos[1]].setAlerte(true);
+                        } while (!comparePositions(simulPos, position));
+                    }
                 }
-
                 personne.setOath(true);
             }
         }
+    }
+
+    public static boolean comparePositions(int[] position1, int[] position2) {
+        return position1[0] == position2[0] || position1[1] == position2[1];
     }
 }
 
