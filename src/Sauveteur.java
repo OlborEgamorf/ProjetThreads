@@ -1,15 +1,15 @@
-public class Sauveteur extends Personne {
+/*public class Sauveteur extends Personne {
 
-    public Sauveteur(int id, int[] position, int vent) {
+    public Sauveteur(int id, double[] position, int vent, Rectangle poste) {
         super(id, position, vent, 1);
-        positionPlage = position;
+        positionPlage = poste;
     }
 
     public void setAge() {
         this.age = (int)Math.floor(18 + Math.random() * 8);
     }
 
-    public void sauvetage(int[] position) {
+    public void sauvetage(double[] position) {
         etat = Etat.MOUVEMENT;
         objectif = Objectif.SAUVETAGE;
         objPosition = position;
@@ -37,12 +37,11 @@ public class Sauveteur extends Personne {
 
                 } else {
                     if (objectif == Objectif.SAUVETAGE) {
-                        sleeper = vitesse*2;
-                        vision = new int[][]{{0,0,0},{0,0,0},{0,0,0}};
+                        sleeper = (int)vitesse*2;
                     } else {
-                        sleeper = vitesse/2;
+                        sleeper = (int)vitesse/2;
                     }
-                    setPosition(mouvement(position[0], position[1]));
+                    vecteur.glissement();
                 }
                 
             } else if (etat == Etat.REPOS) {
@@ -73,3 +72,4 @@ public class Sauveteur extends Personne {
     }
 
 }
+*/

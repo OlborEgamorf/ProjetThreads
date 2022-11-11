@@ -4,7 +4,7 @@ public class Personne extends Thread {
     protected int age;
     protected double vitesse;
      
-    protected double[] positionPlage;
+    protected Rectangle positionPlage;
     
     protected double[] position;
     protected double[] objPosition;
@@ -15,6 +15,7 @@ public class Personne extends Thread {
 
     protected boolean oath = false;
     protected boolean alive = false;
+    protected boolean placed = false;
 
     protected final int timing;
 
@@ -77,7 +78,7 @@ public class Personne extends Thread {
         return objectif;
     }
 
-    public double[] getPositionPlage() {
+    public Rectangle getPositionPlage() {
         return positionPlage;
     }
 
@@ -110,12 +111,20 @@ public class Personne extends Thread {
         this.age = (int)(Math.random() * 100);
     }
 
-    public void setPositionPlage(double[] positionPlage) {
+    public void setPositionPlage(Rectangle positionPlage) {
         this.positionPlage = positionPlage;
     }
 
     public void setOath(boolean oath) {
         this.oath = oath;
+    }
+
+    public boolean isPlaced() {
+        return placed;
+    }
+
+    public void setPlaced(boolean placed) {
+        this.placed = placed;
     }
 
     public void setVitesse() {
@@ -197,7 +206,6 @@ public class Personne extends Thread {
             if (etat == Etat.MOUVEMENT) {
 
                 if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
-                    //System.out.println("OUI JE SUI LA");
                     if (objectif == Objectif.PLACEMENT) {
                         etat = Etat.PLACEMENT;
                     } else if (objectif == Objectif.BAIGNADE) {
@@ -255,7 +263,7 @@ public class Personne extends Thread {
             if (etat == Etat.BAIGNADE && finBaignade) {
                 etat = Etat.PATH;
                 objectif = Objectif.REPOS;
-                objPosition = positionPlage;
+                objPosition = positionPlage.getCentre();
                 finBaignade = false;
             }
 

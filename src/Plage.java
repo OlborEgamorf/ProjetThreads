@@ -30,11 +30,11 @@ public class Plage {
 
         int coeff = 500; // coefficient de vitesse d'apparition, en ms
         for (int i = 0; i < threads.length; i++) {
-            if (Math.random() < 0.01) {
-                threads[i] = new Sauveteur(i,new int[]{0,(largeur/2)+2},vent);
+            if (Math.random() > 1000) {
+                //threads[i] = new Sauveteur(i,new int[]{0,(largeur/2)+2},vent);
                 sauveteurs.add(i);
             } else {
-                double[] posTest = {0,Math.random() * largeur};
+                double[] posTest = {largeur-1,Math.random() * longueur};
                 threads[i] = new Personne(i,posTest,vent,coeff*i);
             }
             
@@ -90,92 +90,53 @@ public class Plage {
     }
     */
 
-
-    public boolean isFree(int x, int y) {
-        // Si la case est vide
-        return matrice[x][y].getType() == Type.VIDE;
-    }
     public int[] setZones(){
         zones = new int[3];
-        zones[0]= this.longueur/3;
-        zones[1]= 2*(this.longueur/3);
-        zones[2]= this.longueur;
+        zones[0] = this.longueur/3;
+        zones[1] = 2*(this.longueur/3);
+        zones[2] = this.longueur;
         return zones;
     }
 
-    public void unpack(int x, int y, int id) {
-        //desormais la case n'est plus vide.
-        // on met la case a 2 + celles aux alentours
-
-        for (int i=0; i<2; i++) {
-            for (int j=0;j<3;j++) {
-                matrice[x+i][y+j].setCase(id, Type.AFFAIRES);;
-                //System.out.println("oui2Unpackboucles");
-            }
-        }
-    }
-
-    public boolean check6x6(int x, int y){
-        for (int i=(x-3); i<(x+3); i++){
-            for (int j=(y-3); j<(y+3); j++){
-                if (!isFree(i, j))
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    public void pack(int x, int y) {
-        // La personne s'en va et remballe ses affaires
-        for (int i=0; i<2; i++) {
-            for (int j=0; j<3; j++) {
-                matrice[x+i][y+j].setCase(0, Type.VIDE);
-            }
-        }
-    }
-
     public void placementPlage(Personne personne){
-        int i= getZones().length-1;
-        int t=0;
-        while (i>0){
-            double x = (Math.random() * ((getZones()[i]-3)-(getZones()[i-1]+3))+(getZones()[i-1]+3));
-            double y = (Math.floor(Math.random() * (((getLargeur()-3)-(getLargeur()-(getLargeur()-3)))+(getLargeur()-(getLargeur()-3)))));
+        int z = getZones().length-1;
+        int t = 0;
+        while (z >= 0) {
+            double x = (Math.random() * ((getZones()[z]-3) - (getZones()[z-1]+3)) + (getZones()[z-1]+3));
+            double y = (Math.floor(Math.random() * (((getLargeur()-3) - (getLargeur() - (getLargeur()-3))) + (getLargeur() - (getLargeur()-3)))));
+            
             while (y<3){
-                y = (Math.floor(Math.random() * (((getLargeur()-3)-(getLargeur()-(getLargeur()-3)))+(getLargeur()-(getLargeur()-3)))));
+                y = (Math.floor(Math.random() * (((getLargeur()-3) - (getLargeur() - (getLargeur()-3))) + (getLargeur() - (getLargeur()-3)))));
             }
-            if (isFree(x,y) && (isFree(x,y-1) && isFree(x,y+1) && isFree(x-1,y) && isFree(x+1,y) && isFree(x+1,y+1)&& isFree(x+1,y-1)&& isFree(x-1,y+1)&& isFree(x-1,y-1))
-                    && check6x6(x,y)){
-                int [] pos= {x,y};
-                personne.setPositionPlage(pos);
-                int [] pos2= {x+3,y+3};
-                personne.setObjPosition(pos2);
-                for (int l=0; l<2; l++) {
-                    for (int m=0;m<3;m++) {
-                        //System.out.println("1: x: "+personne.getPositionPlage()[0]+" y: "+personne.getPositionPlage()[1]+ " x: "+personne.getObjPosition()[0]+ " y: "+personne.getObjPosition()[1]);
-                        matrice[x+l][y+m].setCase(personne.getIdPersonne(), Type.TEMPORAIRE);
+
+            Rectangle emplacement = new Rectangle(new double[]{x,y}, new double[]{x,y+1}, new double[]{x+1.7,y+1}, new double[]{x+1.7,y}, z); // dimensions serviette de plage
+
+            boolean flag = true;
+            for (int c=0; c<threads.length && flag; c++) {
+                if (threads[c].isAlive() && threads[c].getPositionPlage() != null && c != personne.getIdPersonne()) {
+                    Rectangle emp = threads[c].getPositionPlage();
+                    if (emp.getZone() == z) {
+                        flag = !emplacement.isIn(emp);
                     }
-                    return;
                 }
+            }
+
+            if (flag) {
+                personne.setPositionPlage(emplacement);
+                personne.setObjPosition(emplacement.getCentre());
+                z = -69;
             }
             else{
                 t++;
-                if (t== 15 && i>1){
+                if (t == 15){
                     t=0;
-                    i--;
+                    z--;
                 }
             }
-        }
-    }
 
-    public String fetchMatrice(){
-        String s = "";
-        for (int i=0;i<longueur+mer;i++) {
-            for (int j=0;j<largeur;j++) {
-                s+=matrice[i][j];
-            }
-            s+="\n";
+            System.out.println("Placé, "+x+" "+y);
+
         }
-        return s;
     }
 
     public int closerSave(double x, double y) {
@@ -188,7 +149,7 @@ public class Plage {
             }
             default: {
                 int flag = -1;
-                int min = 15000;
+                double min = 15000;
                 for (int i=0;i<sauveteurs.size();i++) {
                     if (x-threads[i].getPosition()[0]+y-threads[i].getPosition()[1] < min && (threads[i].getEtat() != Etat.SAUVETAGE && threads[i].getObjectif() != Objectif.SAUVETAGE)) {
                         flag = i;
@@ -250,7 +211,6 @@ public class Plage {
             objPosition = personne.getObjPosition();
 
             if (personne.getAlive()) {
-
                 if (etat == Etat.PATH) {
                     Vector vecteur;
                     if (position[0] == objPosition[0]) {
@@ -273,10 +233,11 @@ public class Plage {
                     personne.setVecteur(vecteur);
                 
                 } else if (etat == Etat.PLACEMENT) {
-                    unpack(personne.getPositionPlage()[0], personne.getPositionPlage()[1], personne.getIdPersonne());
+                    personne.setPlaced(true);
                 } else if (etat == Etat.DEPART) {
-                    pack(personne.getPositionPlage()[0], personne.getPositionPlage()[1]);
-                } else if (etat == Etat.ARRIVEE) {
+                    personne.setPlaced(false);
+                    personne.setPositionPlage(null);
+                } else if (etat == Etat.ARRIVEE && personne.getPositionPlage() == null) {
                     placementPlage(personne);
                 } else if (etat == Etat.ATTENTE) {
 
@@ -288,13 +249,13 @@ public class Plage {
                     if (sauveteur == -1) {
                         // S'il n'y a pas de sauveteur disponible, RIP !
                     } else {
-                        Sauveteur saver = ((Sauveteur) threads[sauveteur]);
+                        /*Sauveteur saver = ((Sauveteur) threads[sauveteur]);
                         saver.sauvetage(position);
                         int[] simulPos = saver.getPosition();
                         do {
                             simulPos = saver.mouvement(simulPos[0], simulPos[1]);
                             matrice[simulPos[0]][simulPos[1]].setAlerte(true);
-                        } while (!comparePositions(simulPos, position));
+                        } while (!comparePositions(simulPos, position));*/
                     }
                 }
                 personne.setOath(true);

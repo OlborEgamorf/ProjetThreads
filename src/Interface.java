@@ -32,7 +32,6 @@ public class Interface extends JPanel {
     private int largeur;
     private int mer;
     private Personne[] threads;
-    private Case[][] matrice;
     private double zoom = 1;
     private Meteo meteo;
 
@@ -98,7 +97,6 @@ public class Interface extends JPanel {
         frame.setContentPane(this);
 
         threads = plage.getThreads();
-        matrice = plage.getMatrice();
         meteo = plage.getMeteo();
 
     }
@@ -110,7 +108,7 @@ public class Interface extends JPanel {
         g.setColor(Color.decode("#338AFF"));
         g.fillRect(0,(int) (longueur*zoom), (int) (largeur*zoom), (int) (mer*zoom));
 
-        if (meteo == Meteo.Nuageux){
+        /*if (meteo == Meteo.Nuageux){
             System.out.println("oui");
             Color couleur = new Color(128, 128, 128, .5f);
             g.setColor(couleur);
@@ -119,11 +117,11 @@ public class Interface extends JPanel {
 
         if (meteo == Meteo.Pluie){
 
-        }
+        }*/
 
         for (Personne personne : threads) {
             if (personne.getAlive()) {
-                if (personne instanceof Sauveteur){
+                if (personne == null){ // instanceof Sauveteur
                     g.setColor(Color.red);
                     g.fillOval((int) (personne.getPosition()[1]*zoom),(int) (personne.getPosition()[0]*zoom), pixel, pixel);
                 }
@@ -135,37 +133,15 @@ public class Interface extends JPanel {
                     else{
                         g.setColor(Color.gray);
                         g.fillOval((int) (personne.getPosition()[1]*zoom), (int) (personne.getPosition()[0]*zoom), pixel, pixel);
-                        
+                    }
+
+                    if (personne.isPlaced()) {
+                        g.setColor(Color.black);
+                        g.fillRect((int) (personne.getPositionPlage().getD()[0]*zoom), (int) (personne.getPositionPlage().getD()[1]*zoom), 1, 2);
                     }
                 }
-                /*if (personne.isPlace()) {
-                    int[] positionPlage = personne.getPositionPlage();
-                    g.setColor(Color.black);
-                    g.fillRect(positionPlage[0], positionPlage[1], pixel, pixel);
-                    g.fillRect(positionPlage[0], positionPlage[1]-1, pixel, pixel);
-                    g.fillRect(positionPlage[0]-1, positionPlage[1], pixel, pixel);
-                    g.fillRect(positionPlage[0]-1, positionPlage[1]-1, pixel, pixel);
-                    g.fillRect(positionPlage[0]-2, positionPlage[1], pixel, pixel);
-                    g.fillRect(positionPlage[0]-2, positionPlage[1]-1, pixel, pixel);
-                }*/
             }
-        }
-        /*for (int i = 0; i < longueur; i++){
-            for (int j = 0; j < largeur; j++){
-                if (matrice [i][j].getType() == Type.TEMPORAIRE){
-                    g.setColor(Color.red);
-                    g.fillRect((int) (j*zoom), (int) (i*zoom), pixel, pixel);
-                }
-            }
-        }*/
-        for (int i = 0; i < longueur; i++){
-            for (int j = 0; j < largeur; j++){
-                if (matrice [i][j].getType() == Type.AFFAIRES){
-                    g.setColor(Color.black);
-                    g.fillRect((int) (j*zoom), (int) (i*zoom), pixel, pixel);
-                }
-            }
-        }
+        }        
     }
 
     public void turn(){
