@@ -129,12 +129,12 @@ public class Personne extends Thread {
 
     public void setVitesse() {
         if (age >= 15 && age < 60) 
-            this.vitesse = (int)Math.floor(1000/(Math.random() * (1.43 - 1.31 + 1) + 1.31)); //vitesse moyenne de marche en m/s;
+            this.vitesse = (Math.random() * (1.43 - 1.31 + 1) + 1.31); //vitesse moyenne de marche en m/s;
         else if (age>=60 && age<80) {
-            this.vitesse = (int)Math.floor(1000/(Math.random() * (1.34 - 1.13 + 1) + 1.13));
+            this.vitesse = (Math.random() * (1.34 - 1.13 + 1) + 1.13);
         }
         else
-            this.vitesse = (int)Math.floor(1000/(Math.random() * (0.97 - 0.94 + 1) + 0.94));
+            this.vitesse = (Math.random() * (0.97 - 0.94 + 1) + 0.94);
     }
 
     public boolean setProbaNoyade(int vent, int mer, int largeur) {
@@ -218,6 +218,7 @@ public class Personne extends Thread {
 
                 } else {
                     vecteur.glissement();
+                    System.out.println(vecteur.getCoords()[0]+" "+vecteur.getCoords()[1]);
                     setPosition(vecteur.getCoords());
                 }
                 
@@ -252,6 +253,8 @@ public class Personne extends Thread {
                 objPosition[0] = 0;
                 etat = Etat.PATH;
                 objectif = Objectif.PARTIR;
+            } else if (etat == Etat.PATH && vecteur != null) {
+                etat = Etat.MOUVEMENT;
             }
             oath = false;
             try {

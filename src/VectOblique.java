@@ -13,6 +13,8 @@ public class VectOblique extends Vector {
         } else {
             sens = -1;
         }
+
+        System.out.println(x+" "+y+" "+objX+" "+objY+" "+vitesse+" "+m+" "+p);
     }
 
     VectOblique(VectOblique vect) {
@@ -42,7 +44,7 @@ public class VectOblique extends Vector {
     public void glissement() {
         x = x + sens*vitesse / m;
         y = x * m + p;  
-        if ((sens == 1 && x > objX && y > objY) || (sens == -1 && x < objX && y < objY)) {
+        if ((sens == 1 && x >= objX && y >= objY) || (sens == -1 && x <= objX && y <= objY)) {
             x = objX;
             y = objY;
         }

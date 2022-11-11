@@ -34,7 +34,7 @@ public class Plage {
                 //threads[i] = new Sauveteur(i,new int[]{0,(largeur/2)+2},vent);
                 sauveteurs.add(i);
             } else {
-                double[] posTest = {largeur-1,Math.random() * longueur};
+                double[] posTest = {0,Math.random() * largeur};
                 threads[i] = new Personne(i,posTest,vent,coeff*i);
             }
             
