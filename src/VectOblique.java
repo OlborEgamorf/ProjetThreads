@@ -1,11 +1,27 @@
 public class VectOblique extends Vector {
     private double m, p;
 
-    VectOblique(VectOblique vect) {
-        super(vect);
-        this.m = vect.m;
-        this.p = vect.p;
+    
+
+    public VectOblique(double x, double y, double objX, double objY, double vitesse, double coeff) {
+        super(x, y, objX, objY, vitesse, coeff);
+        setM();
+        setP();
+
+        if (objX > x) {
+            sens = 1;
+        } else {
+            sens = -1;
+        }
     }
+
+    VectOblique(VectOblique vect) {
+        this(vect.x,vect.y,vect.objX,vect.objY,vect.vitesse,vect.coeff);
+    }
+
+    public VectOblique copy() {
+        return new VectOblique(this);
+    } 
 
     public double getM() {
         return m;

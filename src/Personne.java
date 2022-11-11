@@ -2,17 +2,15 @@
 
 public class Personne extends Thread {
     protected int age;
-    protected int vitesse;
+    protected double vitesse;
      
-    protected int[] positionPlage;
+    protected double[] positionPlage;
     
-    protected int[] position;
-    protected int[] oldPosition;
-    protected int[] objPosition;
+    protected double[] position;
+    protected double[] objPosition;
 
     protected Etat etat;
     protected Objectif objectif;
-    protected int[][] vision = {{0,0,0},{0,0,0},{0,0,0}};
     protected int id;
 
     protected boolean oath = false;
@@ -22,10 +20,11 @@ public class Personne extends Thread {
 
     protected int nbFoisEau = 0;
     protected double probaNoyade = 0;
+
+    protected Vector vecteur;
     
-    Personne(int id, int[] position, int vent, int timing) {
+    Personne(int id, double[] position, int vent, int timing) {
         this.position = position; //position spawn
-        this.oldPosition = position;
         this.etat = Etat.ARRIVEE;
         this.id = id;
         this.timing = timing;
@@ -34,20 +33,32 @@ public class Personne extends Thread {
         setVitesse();
         // setProbaNoyade(vent);
     }
+    
+
+    public Vector getVecteur() {
+        return vecteur;
+    }
+
+
+    public double getVitesse() {
+        return vitesse;
+    }
+
+
+    public void setVecteur(Vector vecteur) {
+        this.vecteur = vecteur;
+    }
+
 
     public double getAge() {
         return age;
     }
 
-    public int[] getPosition() {
+    public double[] getPosition() {
         return position;
     }
-    public int[] getObjPosition() {
+    public double[] getObjPosition() {
         return objPosition;
-    }
-
-    public int[] getOldPosition () {
-        return oldPosition;
     }
 
     public int getNbFoisEau() {
@@ -66,11 +77,7 @@ public class Personne extends Thread {
         return objectif;
     }
 
-    public int[][] getVision() {
-        return vision;
-    }
-
-    public int[] getPositionPlage() {
+    public double[] getPositionPlage() {
         return positionPlage;
     }
 
@@ -82,40 +89,29 @@ public class Personne extends Thread {
         alive = isAlive;
     }
 
-    public void setPosition(int[] nextPosition) {
-        // Change la position de la Personne et sauvegarde l'ancienne
-        oldPosition = position;
+    public void setPosition(double[] nextPosition) {
         position = nextPosition;
     }
 
-    public void forcePosition(int[] position) {
+    public void setPosition(double x, double y) {
+        position = new double[]{x,y};
+    }
+
+    public void forcePosition(double[] position) {
         // Force le changement de position, on ne veut pas changer l'ancienne position puisque c'est la même, il y a juste eu un déroutement
         this.position = position;
     }
 
-    public void setObjPosition(int[] nextPosition) {
+    public void setObjPosition(double[] nextPosition) {
         objPosition = nextPosition;
     }
 
-    public void immobilisation() {
-        // La position a été validée, et stabilisée
-        oldPosition = position;
-    }
-
-    public void setVision(int[][] vision) {
-        this.vision = vision;
-    }
-
-    public void setVisionCase(int x, int y, int val) {
-        vision[x][y] = val;
-    }
-
     public void setAge() {
-        this.age= (int)(Math.random() * 100);
+        this.age = (int)(Math.random() * 100);
     }
 
-    public void setPositionPlage(int[] positionPlage) {
-        this.positionPlage= positionPlage;
+    public void setPositionPlage(double[] positionPlage) {
+        this.positionPlage = positionPlage;
     }
 
     public void setOath(boolean oath) {
@@ -184,39 +180,6 @@ public class Personne extends Thread {
         return false;
     } */
 
-    public int[] mouvement(int x, int y) {
-
-        int ecartX = objPosition[0]-x;
-        int ecartY = objPosition[1]-y;
-
-        if (ecartX != 0) {
-            ecartX = ecartX/Math.abs(ecartX);
-        }
-        
-        if (ecartY != 0) {
-            ecartY = ecartY/Math.abs(ecartY);
-        }                    
-        
-        int[] newPos;
-
-        if (vision[1+ecartX][1+ecartY] == 0) {
-            newPos = new int[]{x+ecartX,y+ecartY};
-        } else if (vision[1][1+ecartY] == 0) {
-            newPos = new int[]{x,y+ecartY};
-        } else if (vision[1+ecartX][1] == 0) {
-            newPos = new int[]{x+ecartX,y};
-        } else if (vision[1+ecartX][0] == 0 && y > 0) {
-            newPos = new int[]{x+ecartX,y-1};
-        } else if (vision[0][1+ecartY] == 0 && x > 0) {
-            newPos = new int[]{x-1,y+ecartY};
-        } else {
-            System.out.println("DOMMAGE");
-            newPos = position;
-        }
-
-        return newPos;
-    }
-
     public void run() {
         try {
             Thread.sleep(timing);
@@ -225,13 +188,13 @@ public class Personne extends Thread {
         }
 
         alive = true;
-        int sleeper = 10;
+        int sleeper = 20;
         boolean finBaignade = false;
 
         while (!Thread.interrupted()) {
             sleeper = 20;
 
-            if (etat == Etat.MOUVEMENT && oath) {
+            if (etat == Etat.MOUVEMENT) {
 
                 if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
                     //System.out.println("OUI JE SUI LA");
@@ -246,8 +209,8 @@ public class Personne extends Thread {
                     }
 
                 } else {
-                    setPosition(mouvement(position[0], position[1]));
-                    sleeper = vitesse/2;
+                    vecteur.glissement();
+                    setPosition(vecteur.getCoords());
                 }
                 
             } else if (etat == Etat.BAIGNADE) {
@@ -263,14 +226,14 @@ public class Personne extends Thread {
                 objectif = Objectif.REPOS;
 
             } else if (etat == Etat.ARRIVEE && oath) {
-                etat = Etat.MOUVEMENT;
+                etat = Etat.PATH;
                 objectif = Objectif.PLACEMENT;
 
             } else if (etat == Etat.NOYADE) {
 
             } else if (etat == Etat.ATTENTE) {
                 if (getNbFoisEau() == 0 || Math.floor(Math.random()*(getNbFoisEau()+1)) == 1) {
-                    etat = Etat.MOUVEMENT;
+                    etat = Etat.PATH;
                     objectif = Objectif.BAIGNADE;
                     objPosition[0] = 14999; // Taille limite de la plage
                 } else {
@@ -279,7 +242,7 @@ public class Personne extends Thread {
 
             } else if (etat == Etat.DEPART && oath) {
                 objPosition[0] = 0;
-                etat = Etat.MOUVEMENT;
+                etat = Etat.PATH;
                 objectif = Objectif.PARTIR;
             }
             oath = false;
@@ -290,7 +253,7 @@ public class Personne extends Thread {
             }
 
             if (etat == Etat.BAIGNADE && finBaignade) {
-                etat = Etat.MOUVEMENT;
+                etat = Etat.PATH;
                 objectif = Objectif.REPOS;
                 objPosition = positionPlage;
                 finBaignade = false;

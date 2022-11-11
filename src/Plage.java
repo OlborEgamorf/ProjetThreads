@@ -7,7 +7,6 @@ public class Plage {
     private int longueur;
     private int largeur;
     private int profondeur;
-    private Case[][] matrice;
     private double temperature;
     private int vent;
     private int mer;
@@ -23,19 +22,6 @@ public class Plage {
         this.temperature = temperature;
         this.vent = (int) (Math.random() * 100);
 
-        this.matrice = new Case[(int)longueur+mer][(int)largeur];
-        for (int i=0;i<longueur+mer;i++) {
-            for (int j=0;j<largeur;j++) {
-                matrice[i][j] = new Case(i,j);
-            }
-        }
-
-        for (int i=0;i<6;i++) {
-            for (int j=largeur/2;j<(largeur/2)+6;j++) {
-                matrice[i][j].setCase(0, Type.POSTE);
-            }
-        }
-
         this.mer = mer;
         this.threads = new Personne[nbMax];
 
@@ -48,7 +34,7 @@ public class Plage {
                 threads[i] = new Sauveteur(i,new int[]{0,(largeur/2)+2},vent);
                 sauveteurs.add(i);
             } else {
-                int[] posTest = {0,(int)(Math.floor(Math.random() * largeur))};
+                double[] posTest = {0,Math.random() * largeur};
                 threads[i] = new Personne(i,posTest,vent,coeff*i);
             }
             
@@ -70,10 +56,6 @@ public class Plage {
 
     public int getProfondeur() {
         return profondeur;
-    }
-
-    public Case[][] getMatrice() {
-        return matrice;
     }
     
     public int getMer() {
@@ -152,43 +134,14 @@ public class Plage {
         }
     }
 
-    public void modifVision(Personne personne, int x, int y, int oldX, int oldY) {
-        Case emplacement;
-        int[][] vision = new int[3][3];
-
-        for (int i=-1;i<2;i++) {
-            for (int j=-1;j<2;j++) {
-
-                if (x+i < 0 || y+j < 0 || x+i == longueur+mer || y+j == largeur) {
-
-                } else {
-                    emplacement = matrice[x+i][y+j];
-                    if (emplacement.getType() != Type.VIDE && emplacement.getType() != Type.TEMPORAIRE && !emplacement.isAlerte()) {
-                        if (emplacement.getId() != personne.getIdPersonne()) {
-                            vision[i+1][j+1] = 1; 
-                        }
-                    }
-                    if (emplacement.getType() == Type.PERSONNE) {
-                        int[] coords = emplacement.getCoords();
-                        threads[emplacement.getId()].setVisionCase(Math.abs(x-coords[0]+1),Math.abs(y-coords[1]+1),1);
-                        if (coords[0]-oldX+1 >= 0 && coords[0]-oldX+1 <= 2 && coords[1]-oldY+1 >= 0 && coords[1]-oldY+1 <= 2) {
-                            threads[emplacement.getId()].setVisionCase(Math.abs(oldX-coords[0]+1),Math.abs(oldY-coords[1]+1),0);
-                        }
-                    }
-                }
-            }
-        }
-        personne.setVision(vision);
-    }
-
     public void placementPlage(Personne personne){
         int i= getZones().length-1;
         int t=0;
         while (i>0){
-            int x = (int)(Math.random() * ((getZones()[i]-3)-(getZones()[i-1]+3))+(getZones()[i-1]+3));
-            int y = (int)(Math.floor(Math.random() * (((getLargeur()-3)-(getLargeur()-(getLargeur()-3)))+(getLargeur()-(getLargeur()-3)))));
+            double x = (Math.random() * ((getZones()[i]-3)-(getZones()[i-1]+3))+(getZones()[i-1]+3));
+            double y = (Math.floor(Math.random() * (((getLargeur()-3)-(getLargeur()-(getLargeur()-3)))+(getLargeur()-(getLargeur()-3)))));
             while (y<3){
-                y = (int)(Math.floor(Math.random() * (((getLargeur()-3)-(getLargeur()-(getLargeur()-3)))+(getLargeur()-(getLargeur()-3)))));
+                y = (Math.floor(Math.random() * (((getLargeur()-3)-(getLargeur()-(getLargeur()-3)))+(getLargeur()-(getLargeur()-3)))));
             }
             if (isFree(x,y) && (isFree(x,y-1) && isFree(x,y+1) && isFree(x-1,y) && isFree(x+1,y) && isFree(x+1,y+1)&& isFree(x+1,y-1)&& isFree(x-1,y+1)&& isFree(x-1,y-1))
                     && check6x6(x,y)){
@@ -225,7 +178,7 @@ public class Plage {
         return s;
     }
 
-    public int closerSave(int x, int y) {
+    public int closerSave(double x, double y) {
         switch (sauveteurs.size()) {
             case 0: {
                 return -1;
@@ -249,8 +202,8 @@ public class Plage {
 
     public void turn() {
                 
-        int[] position;
-        int[] oldPos;
+        double[] position;
+        double[] objPosition;
         Etat etat;
         Personne personne;
 
@@ -294,63 +247,36 @@ public class Plage {
             personne = threads[i];
             etat = personne.getEtat();
             position = personne.getPosition();
+            objPosition = personne.getObjPosition();
 
             if (personne.getAlive()) {
 
-                if (etat == Etat.MOUVEMENT || etat == Etat.BAIGNADE) {
-        
-                    oldPos = personne.getOldPosition();
-    
-                    if (!comparePositions(position, oldPos)) {
-    
-                        if (matrice[position[0]][position[1]].getType() != Type.VIDE && matrice[position[0]][position[1]].getType() != Type.TEMPORAIRE && matrice[position[0]][position[1]].getId() != personne.getId()) {
-                            // Si la personne s'est déplacé sur sa case avant
-                            if (personne.getObjectif() == Objectif.SAUVETAGE) {
-                                if (matrice[position[0]][position[1]].getType() == Type.PERSONNE) {
-                                    int idPers = matrice[position[0]][position[1]].getId();
-                                    threads[idPers].forcePosition(new int[]{position[0],position[1]-1});
-                                    modifVision(threads[idPers], position[0], position[1]-1, position[0], position[1]);
-                                }
-                            } else {
-                                personne.setPosition(oldPos);
-                                modifVision(personne, oldPos[0], oldPos[1], oldPos[0], oldPos[1]);
-                                System.out.println("DENIED");
-                            }
-                            
-                        } else {
-                            // Si la personne peut aller sur la case
-                            if (matrice[position[0]][position[1]].getType() == Type.AFFAIRES || matrice[position[0]][position[1]].getType() == Type.TEMPORAIRE) {
-                                matrice[position[0]][position[1]].setSecond(Type.PERSONNE);
-                            } else {
-                                matrice[position[0]][position[1]].setCase(i, Type.PERSONNE);
-                            }
-                            
-                            if (matrice[oldPos[0]][oldPos[1]].getType() == Type.AFFAIRES || matrice[position[0]][position[1]].getType() == Type.TEMPORAIRE) {
-                                matrice[oldPos[0]][oldPos[1]].setSecond(Type.VIDE);
-                            }
+                if (etat == Etat.PATH) {
+                    Vector vecteur;
+                    if (position[0] == objPosition[0]) {
+                        vecteur = new VectVertical(position[0], position[1], objPosition[0], objPosition[1], personne.getVitesse(), 1);
+                    } else if (position[1] == objPosition[1]) {
+                        vecteur = new VectHorizontal(position[0], position[1], objPosition[0], objPosition[1], personne.getVitesse(), 1);
+                    } else {
+                        vecteur = new VectOblique(position[0], position[1], objPosition[0], objPosition[1], personne.getVitesse(), 1);
+                    }
 
-                            if (personne.getObjectif() == Objectif.SAUVETAGE) {
-                                matrice[position[0]][position[1]].setAlerte(false);
-                            }
-                            
-                            modifVision(personne, position[0], position[1], oldPos[0], oldPos[1]);
-                            personne.immobilisation();
-                            
-                            if (personne.getObjectif() == Objectif.BAIGNADE && position[0] == longueur) {
-                                personne.setObjPosition(new int[]{longueur,position[1]});
+                    for (Personne compare : threads) {
+                        Vector vecteurComp = compare.getVecteur();
+                        if (vecteurComp != null) {
+                            double[] coords = vecteur.isCroisement(vecteurComp);
+                            if (!Vector.isCoordsNull(coords)) {
+                                Vector.isCollision(vecteur.copy(),vecteurComp.copy());
                             }
                         }
-
-                    } else {
-                        System.out.println("IMMOBILE");
                     }
-    
+                    personne.setVecteur(vecteur);
+                
                 } else if (etat == Etat.PLACEMENT) {
                     unpack(personne.getPositionPlage()[0], personne.getPositionPlage()[1], personne.getIdPersonne());
                 } else if (etat == Etat.DEPART) {
                     pack(personne.getPositionPlage()[0], personne.getPositionPlage()[1]);
                 } else if (etat == Etat.ARRIVEE) {
-                    modifVision(personne,position[0],position[1],longueur+500,largeur+500);
                     placementPlage(personne);
                 } else if (etat == Etat.ATTENTE) {
 

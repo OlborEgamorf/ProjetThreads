@@ -6,15 +6,18 @@ public abstract class Vector {
     
     protected int sens;
 
-    Vector(){}
+    
+    public Vector(double x, double y, double objX, double objY, double vitesse, double coeff) {
+        this.x = x;
+        this.y = y;
+        this.objX = objX;
+        this.objY = objY;
+        this.vitesse = vitesse;
+        this.coeff = coeff;
+    }
+
     Vector(Vector vect) {
-        this.x = vect.x;
-        this.y = vect.y;
-        this.objX = vect.objY;
-        this.objY = vect.objY;
-        this.sens = vect.sens;
-        this.coeff = vect.coeff;
-        this.vitesse = vect.vitesse;
+        this(vect.x,vect.y,vect.objX,vect.objY,vect.vitesse,vect.coeff);
     }
 
     public double getX() {
@@ -79,11 +82,12 @@ public abstract class Vector {
         return x == objX && y == objY;
     }
 
-    public boolean isCoordsNull(double[] coords) {
+    public static boolean isCoordsNull(double[] coords) {
         return coords[0] == -1 && coords[1] == -1;
     }
 
     public abstract void glissement();
+    public abstract Vector copy();
 
     public double[] isCroisement(Vector vect){
         double incX = -1;
