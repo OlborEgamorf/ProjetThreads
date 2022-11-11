@@ -10,7 +10,6 @@ public class Personne extends Thread {
     protected int[] oldPosition;
     protected int[] objPosition;
 
-
     protected Etat etat;
     protected Objectif objectif;
     protected int[][] vision = {{0,0,0},{0,0,0},{0,0,0}};
