@@ -1,42 +1,63 @@
 //package src;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.TextAttribute;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Map;
 
 public class InteractionMenu extends JFrame implements ActionListener {
-    private JLabel intituleLongueur = new JLabel("Longueur plage :");
+    private JLabel intituleLongueur = new JLabel("Longueur de la plage :");
     private Saisie longueur = new Saisie("200");
-    private JLabel intituleLargeur = new JLabel("Largeur plage :");
+    private JLabel intituleLargeur = new JLabel("Largeur de la plage :");
     private Saisie largeur = new Saisie("150");
-    private JLabel intituleMer = new JLabel("Trait de côte :");
+
+    private JLabel intituleTraitDeCote = new JLabel("Trait de côte :");
+
     private Saisie mer = new Saisie("50");
-    private JLabel intitulePersonne = new JLabel("Nombre de personne max :");
+
+    private JLabel intitulePersonne = new JLabel("Nombre de personne maximum :");
     private Saisie personne = new Saisie("150");
-    private JLabel intituleTemperature = new JLabel("Vent :");
-    private Saisie temperature = new Saisie("20");
-    private JLabel intituleVent = new JLabel("Température :");
+
+    private JLabel intituleTemperature = new JLabel("Température en °C:");
     private Saisie vent = new Saisie("20");
+    private JLabel intituleVent = new JLabel("Vitesse du vent en km/h :");
+    private Saisie temperature = new Saisie("50");
+
+    private JButton validation = new JButton("Confirmer les choix");
+    private Saisie resultat = new Saisie("Résultat");
     private boolean done = false;
 
     public InteractionMenu() {
         super("Saisie des paramètres");
+        resultat.setEditable(false);
         gestionDisposition();
         pack();
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
+        validation.addActionListener(this);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - getHeight()) / 2);
         setLocation(x, y);
+        getContentPane().setBackground(Color.decode("#fdffbd"));
+
 
     }
     private class Saisie extends JTextField {
         public Saisie(String texte) {
-            super(texte, 20);
+            super(texte, 25);
+            Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+            int x = (int) ((dimension.getWidth() - getWidth()) / 2);
+            int y = (int) ((dimension.getHeight() - getHeight()) / 2);
             setFont(new Font("Verdana", Font.BOLD, 20));
             setMargin(new Insets(0, 3, 0, 0));
+            setBackground(Color.decode("#f4fefe"));
         }
     }
 
@@ -47,12 +68,18 @@ public class InteractionMenu extends JFrame implements ActionListener {
         groupe.setAutoCreateGaps(true);
         GroupLayout.ParallelGroup horzGroupe = groupe.createParallelGroup();
         GroupLayout.SequentialGroup vertGroupe = groupe.createSequentialGroup();
-        horzGroupe.addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleMer).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
-        vertGroupe.addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleMer).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
-        vertGroupe.addComponent(intituleMer).addComponent(intituleMer).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
-        vertGroupe.addComponent(intitulePersonne).addComponent(personne).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleMer).addComponent(mer).addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleVent).addComponent(vent);
-        vertGroupe.addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleMer).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent);
-        vertGroupe.addComponent(intituleVent).addComponent(vent).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleMer).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleTemperature).addComponent(temperature);
+        horzGroupe.addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
+        horzGroupe.addComponent(validation);
+        vertGroupe.addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
+        vertGroupe.addComponent(validation);
+        vertGroupe.addComponent(intituleTraitDeCote).addComponent(intituleTraitDeCote).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
+        vertGroupe.addComponent(validation);
+        vertGroupe.addComponent(intitulePersonne).addComponent(personne).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleVent).addComponent(vent);
+        vertGroupe.addComponent(validation);
+        vertGroupe.addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent);
+        vertGroupe.addComponent(validation);
+        vertGroupe.addComponent(intituleVent).addComponent(vent).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleTemperature).addComponent(temperature);
+        vertGroupe.addComponent(validation);
         groupe.setHorizontalGroup(horzGroupe);
         groupe.setVerticalGroup(vertGroupe);
 
@@ -60,7 +87,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         Object[] elements1 = new Object[]{"Délimitation de base", "Délimitation basse", "Délimitation haute"};
         Object[] elements2 = new Object[]{"Individus de base", "Peu d'individu", "Beaucoup d'individu"};
         Object[] elements3 = new Object[]{"Température de base", "Température basse", "Température haute"};
-        Object[] elements4 = new Object[]{"Vent de base", "Vent faible", "Vent fort"};
+        Object[] elements4 = new Object[]{"Vitesse de base", "Vitesse faible", "Vitesse forte"};
 
         JComboBox<String> liste = new JComboBox(elements);
         JComboBox<String> liste2 = new JComboBox(elements1);
@@ -68,11 +95,11 @@ public class InteractionMenu extends JFrame implements ActionListener {
         JComboBox<String> liste4 = new JComboBox(elements3);
         JComboBox<String> liste5 = new JComboBox(elements4);
 
-        liste.setBounds(10, 440, 120, 23);
-        liste2.setBounds(150, 440, 120, 23);
-        liste3.setBounds(290, 440, 120, 23);
-        liste4.setBounds(10, 550, 120, 23);
-        liste5.setBounds(150, 550, 120, 23);
+        liste.setBounds(30, 460, 150, 23);
+        liste2.setBounds(200, 460, 150, 23);
+        liste3.setBounds(370, 460, 150, 23);
+        liste4.setBounds(115, 570, 150, 23);
+        liste5.setBounds(285, 570, 150, 23);
 
         add(liste);
         add(liste2);
@@ -80,22 +107,30 @@ public class InteractionMenu extends JFrame implements ActionListener {
         add(liste4);
         add(liste5);
 
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - getHeight()) / 2);
+
+        JLabel texte = new JLabel("Choix de préréglages :");
+        texte.setFont(new Font("Verdana", Font.BOLD, 15));
+        add(texte);
+        texte.setBounds(y/2,380,200,50);
 
         JLabel label = new JLabel("Taille de la plage");
         add(label);
-        label.setBounds(10, 400, 250, 50);
+        label.setBounds(55, 420, 250, 50);
         JLabel label2 = new JLabel("Délimitation plage");
         add(label2);
-        label2.setBounds(150, 400, 250, 50);
+        label2.setBounds(220, 420, 250, 50);
         JLabel label3 = new JLabel("Nombre d'individus");
         add(label3);
-        label3.setBounds(290, 400, 250, 50);
+        label3.setBounds(390, 420, 250, 50);
         JLabel label4 = new JLabel("Température");
         add(label4);
-        label4.setBounds(10, 510, 250, 50);
-        JLabel label5 = new JLabel("Vent");
+        label4.setBounds(150, 530, 250, 50);
+        JLabel label5 = new JLabel("Vitesse du vent");
         add(label5);
-        label5.setBounds(150, 510, 250, 50);
+        label5.setBounds(315, 530, 250, 50);
 
         liste.addActionListener(new ActionListener() {
             @Override
@@ -152,13 +187,13 @@ public class InteractionMenu extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Température : " + liste4.getSelectedItem().toString());
                 if (liste4.getSelectedItem().toString().equals("Température de base")){
-                    vent.setText("20");
+                    temperature.setText("20");
                 }
                 if (liste4.getSelectedItem().toString().equals("Température basse")){
-                    vent.setText("10");
+                    temperature.setText("10");
                 }
                 if (liste4.getSelectedItem().toString().equals("Température haute")){
-                    vent.setText("35");
+                    temperature.setText("35");
                 }
             }
         });
@@ -166,14 +201,14 @@ public class InteractionMenu extends JFrame implements ActionListener {
         liste5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (liste5.getSelectedItem().toString().equals("Vent de base")){
-                    temperature.setText("50");
+                if (liste5.getSelectedItem().toString().equals("Vitesse de base")){
+                    vent.setText("50");
                 }
-                if (liste5.getSelectedItem().toString().equals("Vent faible")){
-                    temperature.setText("10");
+                if (liste5.getSelectedItem().toString().equals("Vitesse faible")){
+                    vent.setText("10");
                 }
-                if (liste5.getSelectedItem().toString().equals("Vent fort")){
-                    temperature.setText("200");
+                if (liste5.getSelectedItem().toString().equals("Vitesse forte")){
+                    vent.setText("200");
                 }
             }
         });
@@ -229,5 +264,5 @@ public class InteractionMenu extends JFrame implements ActionListener {
 
 
 
-    
+
 }
