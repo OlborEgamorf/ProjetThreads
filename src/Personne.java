@@ -287,9 +287,24 @@ public class Personne extends Thread {
                 }
                 
             } else if (etat == Etat.BAIGNADE) {
+                //System.out.println("Je vais me baigner");
+                sleeper = vitesse*3;
+                mouvement();
+                int x2 = position[0]+(int)(Math.floor(Math.random()*1000));
+                int y2 = position[1];
+                objPosition = new int[] {x2, y2};
+                int x3 = position[0];
+                int x4 = (int)(Math.floor(Math.random()*25));
+                objPosition = new int[] {x3, x4};
+                //new int[] {x2 + (int)(Math.floor(Math.random()*5)), y2 + (int)(Math.floor(Math.random()*5)) };
+                if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
+                    sleeper = vitesse/3;
+                    finBaignade = true;
+                }
+
                 //sleeper = 5000;
                 // VA CHANGER DU COUP 
-                finBaignade = true;
+                //finBaignade = true;
 
             } else if (etat == Etat.REPOS) {
                 sleeper = 5000;
@@ -326,6 +341,7 @@ public class Personne extends Thread {
             }
 
             if (etat == Etat.BAIGNADE && finBaignade) {
+                //sleeper = vitesse/3;
                 etat = Etat.MOUVEMENT;
                 objectif = Objectif.REPOS;
                 objPosition = positionPlage;
