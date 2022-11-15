@@ -1,12 +1,7 @@
 public class VectVertical extends Vector {
 
-    public VectVertical(double x, double y, double objX, double objY, double vitesse, double coeff) {
-        super(x, y, objX, objY, vitesse, coeff);
-        if (objY > y) {
-            sens = 1;
-        } else {
-            sens = -1;
-        }
+    public VectVertical(double x, double y, double objX, double objY, double vitesse, double coeff, int timing) {
+        super(x, y, objX, objY, vitesse, coeff, timing);
     }
 
     public VectVertical(Vector vect) {
@@ -18,8 +13,8 @@ public class VectVertical extends Vector {
     } 
 
     public void glissement() {
-        y += sens*vitesse;
-        if ((sens == 1 && y > objY) || (sens == -1 && y < objY)) {
+        y += sensY*vitesse;
+        if ((sensY == 1 && y > objY) || (sensY == -1 && y < objY)) {
             y = objY;
         }
     }

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 //package src;
 
 public class Personne extends Thread {
@@ -22,7 +24,8 @@ public class Personne extends Thread {
     protected int nbFoisEau = 0;
     protected double probaNoyade = 0;
 
-    protected Vector vecteur;
+    protected ArrayList<Vector> stackMove = new ArrayList<Vector>();
+    protected Vector vecteurCourant;
     
     Personne(int id, double[] position, int vent, int timing) {
         this.position = position; //position spawn
@@ -36,18 +39,25 @@ public class Personne extends Thread {
     }
     
 
-    public Vector getVecteur() {
-        return vecteur;
+    public Vector getVecteurCourant() {
+        return vecteurCourant;
     }
-
 
     public double getVitesse() {
         return vitesse;
     }
 
+    public void addVector(Vector vecteur) {
+        stackMove.add(vecteur);
+        if (vecteurCourant == null) {
+            vecteurCourant = vecteur;
+            objPosition = vecteur.getCoordsObj();
+        }
+    }
 
-    public void setVecteur(Vector vecteur) {
-        this.vecteur = vecteur;
+
+    public ArrayList<Vector> getStackMove() {
+        return stackMove;
     }
 
 
@@ -129,12 +139,12 @@ public class Personne extends Thread {
 
     public void setVitesse() {
         if (age >= 15 && age < 60) 
-            this.vitesse = (Math.random() * (1.43 - 1.31 + 1) + 1.31); //vitesse moyenne de marche en m/s;
+            this.vitesse = (Math.random() * (1.43 - 1.31 + 1) + 1.31)/10; //vitesse moyenne de marche en m/s;
         else if (age>=60 && age<80) {
-            this.vitesse = (Math.random() * (1.34 - 1.13 + 1) + 1.13);
+            this.vitesse = (Math.random() * (1.34 - 1.13 + 1) + 1.13)/10;
         }
         else
-            this.vitesse = (Math.random() * (0.97 - 0.94 + 1) + 0.94);
+            this.vitesse = (Math.random() * (0.97 - 0.94 + 1) + 0.94)/10;
     }
 
     public boolean setProbaNoyade(int vent, int mer, int largeur) {
@@ -206,20 +216,28 @@ public class Personne extends Thread {
             if (etat == Etat.MOUVEMENT) {
 
                 if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
-                    if (objectif == Objectif.PLACEMENT) {
-                        etat = Etat.PLACEMENT;
-                    } else if (objectif == Objectif.BAIGNADE) {
-                        etat = Etat.BAIGNADE;
-                    } else if (objectif == Objectif.REPOS) {
-                        etat = Etat.REPOS;
-                    } else if (objectif == Objectif.PARTIR) {
-                        etat = Etat.PARTI;
-                    }
+                    stackMove.remove(0);
+                    if (stackMove.size() == 0) {
+                        vecteurCourant = null;
+                        if (objectif == Objectif.PLACEMENT) {
+                            etat = Etat.PLACEMENT;
+                        } else if (objectif == Objectif.BAIGNADE) {
+                            etat = Etat.BAIGNADE;
+                        } else if (objectif == Objectif.REPOS) {
+                            etat = Etat.REPOS;
+                        } else if (objectif == Objectif.PARTIR) {
+                            etat = Etat.PARTI;
+                        }
+                    } else {
+                        vecteurCourant = stackMove.get(0);
+                        objPosition = vecteurCourant.getCoordsObj();
+                        sleeper = vecteurCourant.getTiming();
+                    } 
 
                 } else {
-                    vecteur.glissement();
-                    System.out.println(vecteur.getCoords()[0]+" "+vecteur.getCoords()[1]);
-                    setPosition(vecteur.getCoords());
+                    vecteurCourant.glissement();
+                    //System.out.println(vecteurCourant.getCoords()[0]+" "+vecteurCourant.getCoords()[1]);
+                    setPosition(vecteurCourant.getCoords());
                 }
                 
             } else if (etat == Etat.BAIGNADE) {
@@ -253,7 +271,7 @@ public class Personne extends Thread {
                 objPosition[0] = 0;
                 etat = Etat.PATH;
                 objectif = Objectif.PARTIR;
-            } else if (etat == Etat.PATH && vecteur != null) {
+            } else if (etat == Etat.PATH && vecteurCourant != null) {
                 etat = Etat.MOUVEMENT;
             }
             oath = false;

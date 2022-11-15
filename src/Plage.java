@@ -1,6 +1,10 @@
 //package src;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Plage {
 
@@ -133,9 +137,6 @@ public class Plage {
                     z--;
                 }
             }
-
-            System.out.println("Placé, "+x+" "+y);
-
         }
     }
 
@@ -212,25 +213,53 @@ public class Plage {
 
             if (personne.getAlive()) {
                 if (etat == Etat.PATH) {
-                    Vector vecteur;
-                    if (position[0] == objPosition[0]) {
-                        vecteur = new VectVertical(position[0], position[1], objPosition[0], objPosition[1], personne.getVitesse(), 1);
-                    } else if (position[1] == objPosition[1]) {
-                        vecteur = new VectHorizontal(position[0], position[1], objPosition[0], objPosition[1], personne.getVitesse(), 1);
-                    } else {
-                        vecteur = new VectOblique(position[0], position[1], objPosition[0], objPosition[1], personne.getVitesse(), 1);
-                    }
+                    Vector vecteur = Vector.choixVector(position, objPosition, personne.getVitesse(), 0);
 
+                    ArrayList<Coordonnees> liste = new ArrayList<>();
                     for (Personne compare : threads) {
-                        Vector vecteurComp = compare.getVecteur();
-                        if (vecteurComp != null) {
-                            double[] coords = vecteur.isCroisement(vecteurComp);
-                            if (!Vector.isCoordsNull(coords)) {
-                                Vector.isCollision(vecteur.copy(),vecteurComp.copy());
+                        if (compare.isAlive() && !compare.getStackMove().isEmpty()) {
+                            Iterator<Vector> it = compare.getStackMove().iterator();
+                            while (it.hasNext()) {
+                                Vector vectorComp = it.next();
+                                double[] coords = vecteur.isCroisement(vectorComp);
+                                if (!Vector.isCoordsNull(coords)) {
+                                    if (Vector.isCollision(vecteur.copy(),vectorComp.copy())) {
+                                        liste.add(new Coordonnees(coords[0], coords[1]));
+                                    };
+                                }
                             }
                         }
                     }
-                    personne.setVecteur(vecteur);
+                    
+                    if (liste.isEmpty()) {
+                        personne.addVector(vecteur);
+                    } else {
+                        Collections.sort(liste);
+                        if (vecteur.getSensX() == -1) {
+                            Collections.reverse(liste);
+                        }
+
+                        //System.out.println(personne.getIdPersonne()+" P:"+position[0]+" "+position[1]+" O:"+objPosition[0]+" "+objPosition[1]);
+                        ListIterator<Coordonnees> itLi = liste.listIterator();
+                        while (itLi.hasNext()) {
+                            double[] coordsPrevious;
+                            if (itLi.hasPrevious()) {
+                                coordsPrevious = itLi.previous().getCoords();
+                                itLi.next();
+                            } else {
+                                coordsPrevious = position;
+                            }
+                            double[] coordsNext = itLi.next().getCoords();
+                            
+                            //System.out.println(personne.getIdPersonne()+" P:"+coordsPrevious[0]+" "+coordsPrevious[1]+" N:"+coordsNext[0]+" "+coordsNext[1]);
+                            personne.addVector(Vector.choixVector(coordsPrevious, coordsNext, personne.getVitesse(), 100));
+                            if (!itLi.hasNext()) {
+                                //System.out.println(personne.getIdPersonne()+" P:"+coordsNext[0]+" "+coordsNext[1]+" F:"+objPosition[0]+" "+objPosition[1]);
+                                personne.addVector(Vector.choixVector(coordsNext, objPosition, personne.getVitesse(), 0));
+                            }
+                        }
+                        
+                    }
                 
                 } else if (etat == Etat.PLACEMENT) {
                     personne.setPlaced(true);
@@ -257,6 +286,10 @@ public class Plage {
                             matrice[simulPos[0]][simulPos[1]].setAlerte(true);
                         } while (!comparePositions(simulPos, position));*/
                     }
+                } else if (etat == Etat.MOUVEMENT && personne.getObjectif() == Objectif.BAIGNADE) {
+                    if (position[0] >= longueur) {
+                        personne.setObjPosition(new double[]{position[0],position[1]});
+                    }
                 }
                 personne.setOath(true);
             }
@@ -267,13 +300,3 @@ public class Plage {
         return position1[0] == position2[0] || position1[1] == position2[1];
     }
 }
-
-         /*for (Personne pers : threads) {
-            System.out.println(pers.getPosition()[0]+" "+pers.getPosition()[1]);
-            int[][] vis = pers.getVision();
-            for (int i=0;i<3;i++) {
-                System.out.println(vis[i][0]+" "+vis[i][1]+" "+vis[i][2]);
-            }
-        }
-        System.out.println("");
-        System.out.println("------\n\n");*/

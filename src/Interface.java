@@ -137,7 +137,7 @@ public class Interface extends JPanel {
 
                     if (personne.isPlaced()) {
                         g.setColor(Color.black);
-                        g.fillRect((int) (personne.getPositionPlage().getD()[0]*zoom), (int) (personne.getPositionPlage().getD()[1]*zoom), 1, 2);
+                        g.fillRect((int) (personne.getPositionPlage().getD()[1]*zoom), (int) (personne.getPositionPlage().getD()[0]*zoom), 2, 3);
                     }
                 }
             }

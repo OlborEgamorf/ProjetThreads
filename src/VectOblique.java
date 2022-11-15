@@ -1,24 +1,16 @@
 public class VectOblique extends Vector {
     private double m, p;
 
-    
-
-    public VectOblique(double x, double y, double objX, double objY, double vitesse, double coeff) {
-        super(x, y, objX, objY, vitesse, coeff);
+    public VectOblique(double x, double y, double objX, double objY, double vitesse, double coeff, int timing) {
+        super(x, y, objX, objY, vitesse, coeff,timing);
         setM();
         setP();
 
-        if (objX > x) {
-            sens = 1;
-        } else {
-            sens = -1;
-        }
-
-        System.out.println(x+" "+y+" "+objX+" "+objY+" "+vitesse+" "+m+" "+p);
+        //System.out.println(x+" "+y+" "+objX+" "+objY+" V:"+vitesse+" "+m+" "+p+" "+sensX+" "+sensY);
     }
 
     VectOblique(VectOblique vect) {
-        this(vect.x,vect.y,vect.objX,vect.objY,vect.vitesse,vect.coeff);
+        this(vect.x,vect.y,vect.objX,vect.objY,vect.vitesse,vect.coeff,vect.timing);
     }
 
     public VectOblique copy() {
@@ -41,14 +33,13 @@ public class VectOblique extends Vector {
         this.p = y-m*x;
     }
 
+
     public void glissement() {
-        x = x + sens*vitesse / m;
-        y = x * m + p;  
-        if ((sens == 1 && x >= objX && y >= objY) || (sens == -1 && x <= objX && y <= objY)) {
+        x += sensX*Math.sqrt(Math.pow(vitesse,2)/(Math.pow(m,2)+1));
+        y = m*x +p;
+        if ((sensX == 1 && sensY == 1 && x >= objX && y >= objY) || (sensX == 1 && sensY == -1 && x >= objX && y <= objY) || (sensX == -1 && sensY == 1 && x <= objX && y >= objY) || (sensX == -1 && sensY == -1 && x <= objX && y <= objY)) {
             x = objX;
             y = objY;
         }
     }
 }
-
-//(1,2) -> (4,4)

@@ -4,20 +4,24 @@ public abstract class Vector {
     protected double vitesse;
     protected double coeff = 1;
     
-    protected int sens;
+    protected int sensX;
+    protected int sensY;
 
+    protected int timing;
     
-    public Vector(double x, double y, double objX, double objY, double vitesse, double coeff) {
+    public Vector(double x, double y, double objX, double objY, double vitesse, double coeff, int timing) {
         this.x = x;
         this.y = y;
         this.objX = objX;
         this.objY = objY;
         this.vitesse = vitesse;
         this.coeff = coeff;
+        this.timing = timing;
+        setSens();
     }
 
     Vector(Vector vect) {
-        this(vect.x,vect.y,vect.objX,vect.objY,vect.vitesse,vect.coeff);
+        this(vect.x,vect.y,vect.objX,vect.objY,vect.vitesse,vect.coeff,vect.timing);
     }
 
     public double getX() {
@@ -40,12 +44,16 @@ public abstract class Vector {
         return objY;
     }
 
-    public double[] getCoordsOnj() {
+    public double[] getCoordsObj() {
         return new double[]{objX,objY};
     }
 
     public double getVitesse() {
         return vitesse;
+    }
+
+    public int getTiming() {
+        return timing;
     }
 
     public void setCoords(double[] coords) {
@@ -71,23 +79,25 @@ public abstract class Vector {
     }
 
     public void setSens() {
-        if (x-objX > 0) {
-            sens = -1;
+        if (x > objX) {
+            sensX = -1;
         } else {
-            sens = 1;
+            sensX = 1;
         }
+        if (y > objY) {
+            sensY = -1;
+        } else {
+            sensY = 1;
+        }
+    }
+
+    public int getSensX() {
+        return sensX;
     }
 
     public boolean isArrived() {
         return x == objX && y == objY;
     }
-
-    public static boolean isCoordsNull(double[] coords) {
-        return coords[0] == -1 && coords[1] == -1;
-    }
-
-    public abstract void glissement();
-    public abstract Vector copy();
 
     public double[] isCroisement(Vector vect){
         double incX = -1;
@@ -177,6 +187,13 @@ public abstract class Vector {
         return new double[]{incX,incY};
     }
 
+    public abstract void glissement();
+    public abstract Vector copy();
+
+    public static boolean isCoordsNull(double[] coords) {
+        return coords[0] == -1 && coords[1] == -1;
+    }
+
     public static boolean isCollision(Vector vect1, Vector vect2) {
         boolean flag = false;
         while (!vect1.isArrived() && !vect2.isArrived() && !flag) {
@@ -189,5 +206,13 @@ public abstract class Vector {
         return flag;
     }
 
-    
+    public static Vector choixVector(double[] position, double[] objPosition, double vitesse, int timing) {
+        if (position[0] == objPosition[0]) {
+            return new VectVertical(position[0], position[1], objPosition[0], objPosition[1], vitesse, 1, timing);
+        } else if (position[1] == objPosition[1]) {
+            return new VectHorizontal(position[0], position[1], objPosition[0], objPosition[1], vitesse, 1, timing);
+        } else {
+            return new VectOblique(position[0], position[1], objPosition[0], objPosition[1], vitesse, 1, timing);
+        }
+    }
 }
