@@ -12,6 +12,8 @@ public class BarreVitesse {
     private JLabel TexteDessous;
     private JPanel controlPanel;
 
+    private int value = 1;
+
     public BarreVitesse(){
         prepareGUI();
     }
@@ -45,7 +47,7 @@ public class BarreVitesse {
         Fenetre.add(TexteDessous);
         Fenetre.setVisible(true);
     }
-    private void showSliderDemo(){
+    void showSliderDemo(){
         TexteDessus.setText("Changer la vitesse de la simulation :");
         Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
         fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
@@ -63,14 +65,24 @@ public class BarreVitesse {
         slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 TexteDessous.setText("Vitesse de la simulation : " + ((JSlider)e.getSource()).getValue());
+                value = slider.getValue();
+                System.out.println(value);
             }
         });
         controlPanel.add(slider);
         Fenetre.setVisible(true);
+
+
     }
+    public int getValue() {
+        return value;
+    }
+
+
 
     public static void main(String[] args){
         BarreVitesse swingControlDemo = new BarreVitesse();
         swingControlDemo.showSliderDemo();
     }
 }
+

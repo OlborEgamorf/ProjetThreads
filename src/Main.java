@@ -1,4 +1,4 @@
-package src;
+//package src;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -20,7 +20,7 @@ public class Main {
         int vent = menu.getVent();
         int mer = menu.getMer();
         int vitesse = 20;
-        int coefficient = 1;
+        //int coefficient = 1;
 
 
         int nbMax = menu.getPersonne();
@@ -28,6 +28,10 @@ public class Main {
         Plage plage = new Plage(longueur, largeur, profondeur, temperature, vent, mer, nbMax);
 
         Interface interfaced = new Interface(plage);
+        BarreVitesse swingControlDemo = new BarreVitesse();
+        swingControlDemo.showSliderDemo();
+        int coefficient = swingControlDemo.getValue();
+
         while(true){
             plage.turn();
             interfaced.turn();

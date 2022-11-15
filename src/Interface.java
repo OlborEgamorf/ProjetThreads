@@ -114,17 +114,6 @@ public class Interface extends JPanel {
         g.setColor(Color.decode("#338AFF"));
         g.fillRect(0,(int) (longueur*zoom), (int) (largeur*zoom), (int) (mer*zoom));
 
-        if (meteo == Meteo.Nuageux){
-            System.out.println("oui");
-            Color couleur = new Color(128, 128, 128, .5f);
-            g.setColor(couleur);
-            g.fillRect(0, 0, (int) (largeur*zoom), (int) ((longueur+mer)*zoom));
-        }
-
-        if (meteo == Meteo.Pluie){
-
-        }
-
         for (Personne personne : threads) {
             if (personne.getAlive()) {
                 if (personne.getEstSauveteur()){
