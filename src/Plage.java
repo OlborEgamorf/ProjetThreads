@@ -268,7 +268,7 @@ public class Plage {
                 else
                     personne.changeAttribut(2, 1.30);
 
-                if (etat == Etat.MOUVEMENT) {
+                if (etat == Etat.MOUVEMENT || etat == Etat.BAIGNADE) {
         
                     oldPos = personne.getOldPosition();
     
@@ -288,14 +288,14 @@ public class Plage {
     
                             modifVision(personne, position[0], position[1], oldPos[0], oldPos[1]);
                             personne.immobilisation();
-                            System.out.println((personne.getObjectif() == Objectif.BAIGNADE)+" "+position[0]+" "+longueur);
+                            //System.out.println((personne.getObjectif() == Objectif.BAIGNADE)+" "+position[0]+" "+longueur);
                             if (personne.getObjectif() == Objectif.BAIGNADE && position[0] == longueur) {
                                 personne.setObjPosition(new int[]{longueur,position[1]});
                             }
                         }
-                    } else {
+                    } /*else {
                         System.out.println("IMMOBILE");
-                    }
+                    }*/
     
                 } else if (etat == Etat.PLACEMENT) {
                     unpack(personne.getPositionPlage()[0], personne.getPositionPlage()[1], personne.getIdPersonne());
