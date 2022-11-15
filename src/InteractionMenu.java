@@ -1,12 +1,9 @@
 //package src;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,10 +18,10 @@ public class InteractionMenu extends JFrame implements ActionListener {
 
     private Saisie mer = new Saisie("50");
 
-    private JLabel intitulePersonne = new JLabel("                                               Nombre de personne maximum :");
+    private JLabel intitulePersonne = new JLabel("                                                          Nombre d'individus :");
     private Saisie personne = new Saisie("150");
 
-    private JLabel intituleTemperature = new JLabel("                                                          Température en °C:");
+    private JLabel intituleTemperature = new JLabel("                                                          Température en °C :");
     private Saisie vent = new Saisie("20");
     private JLabel intituleVent = new JLabel("                                                     Vitesse du vent en km/h :");
     private Saisie temperature = new Saisie("50");
@@ -48,7 +45,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         int x = (int) ((dimension.getWidth() - getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - getHeight()) / 2);
         setLocation(x, y);
-        getContentPane().setBackground(Color.decode("#fdffbd"));
+        getContentPane().setBackground(Color.decode("#DAF6F1"));
 
 
     }
@@ -58,8 +55,8 @@ public class InteractionMenu extends JFrame implements ActionListener {
             setFont(new Font("Verdana", Font.BOLD, 20));
             setMargin(new Insets(0, 3, 0, 15));
             setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            setForeground(Color.decode("#A9A1A0"));
-            setBackground(Color.decode("#f4fefe"));
+            setForeground(Color.decode("#666666"));
+            setBackground(Color.decode("#F7F5F8"));
         }
     }
 
@@ -102,10 +99,20 @@ public class InteractionMenu extends JFrame implements ActionListener {
         Object[] elements4 = new Object[]{"Vitesse de base", "Vitesse faible", "Vitesse forte"};
 
         JComboBox<String> liste = new JComboBox(elements);
+        liste.setForeground(Color.decode("#666666"));
+        liste.setBackground(Color.decode("#f4fefe"));
         JComboBox<String> liste2 = new JComboBox(elements1);
+        liste2.setForeground(Color.decode("#666666"));
+        liste2.setBackground(Color.decode("#f4fefe"));
         JComboBox<String> liste3 = new JComboBox(elements2);
+        liste3.setForeground(Color.decode("#666666"));
+        liste3.setBackground(Color.decode("#f4fefe"));
         JComboBox<String> liste4 = new JComboBox(elements3);
+        liste4.setForeground(Color.decode("#666666"));
+        liste4.setBackground(Color.decode("#f4fefe"));
         JComboBox<String> liste5 = new JComboBox(elements4);
+        liste5.setForeground(Color.decode("#666666"));
+        liste5.setBackground(Color.decode("#f4fefe"));
 
         liste.setBounds(30, 460, 150, 23);
         liste2.setBounds(200, 460, 150, 23);
@@ -120,10 +127,10 @@ public class InteractionMenu extends JFrame implements ActionListener {
         add(liste5);
 
 
-        JLabel texte = new JLabel("Choix de préréglages optionnel :");
+        JLabel texte = new JLabel("Choix de préréglages optionnels :");
         texte.setFont(new Font("Verdana", Font.BOLD, 15).deriveFont(fontAttributes));
         add(texte);
-        texte.setBounds(140,400,300,50);
+        texte.setBounds(130,400,300,50);
 
         JLabel label = new JLabel("Taille de la plage");
         add(label);
