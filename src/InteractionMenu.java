@@ -21,15 +21,16 @@ public class InteractionMenu extends JFrame implements ActionListener {
     private JLabel intitulePersonne = new JLabel("                                                          Nombre d'individus :");
     private Saisie personne = new Saisie("150");
 
-    private JLabel intituleTemperature = new JLabel("                                                          Température en °C :");
+    private JLabel intituleTemperature = new JLabel("                                         Météo (1 = Soleil, 2 = Nuageux, 3 = Pluie ) :");
     private Saisie vent = new Saisie("20");
     private JLabel intituleVent = new JLabel("                                                     Vitesse du vent en km/h :");
-    private Saisie temperature = new Saisie("50");
+
 
     private JButton validation = new JButton("Confirmer les choix");
 
 
     private boolean done = false;
+    private Saisie meteo = new Saisie("1");
 
     public InteractionMenu() {
         super("Saisie des paramètres");
@@ -75,19 +76,19 @@ public class InteractionMenu extends JFrame implements ActionListener {
 
         GroupLayout.ParallelGroup horzGroupe = groupe.createParallelGroup();
         GroupLayout.SequentialGroup vertGroupe = groupe.createSequentialGroup();
-        horzGroupe.addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
+        horzGroupe.addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(meteo);
 
-        horzGroupe.addComponent(intituleLongueur).addComponent(longueur).addComponent(largeur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
+        horzGroupe.addComponent(intituleLongueur).addComponent(longueur).addComponent(largeur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(meteo);
         horzGroupe.addComponent(validation, GroupLayout.Alignment.CENTER);
-        vertGroupe.addComponent(espacement).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
+        vertGroupe.addComponent(espacement).addComponent(intituleLargeur).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(meteo);
         vertGroupe.addComponent(validation);
-        vertGroupe.addComponent(intituleTraitDeCote).addComponent(intituleTraitDeCote).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(temperature);
+        vertGroupe.addComponent(intituleTraitDeCote).addComponent(intituleTraitDeCote).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent).addComponent(intituleTemperature).addComponent(meteo);
         vertGroupe.addComponent(validation);
-        vertGroupe.addComponent(intitulePersonne).addComponent(personne).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intituleTemperature).addComponent(temperature).addComponent(intituleVent).addComponent(vent);
+        vertGroupe.addComponent(intitulePersonne).addComponent(personne).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intituleTemperature).addComponent(meteo).addComponent(intituleVent).addComponent(vent);
         vertGroupe.addComponent(validation);
-        vertGroupe.addComponent(intituleTemperature).addComponent(temperature).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent);
+        vertGroupe.addComponent(intituleTemperature).addComponent(meteo).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleVent).addComponent(vent);
         vertGroupe.addComponent(validation);
-        vertGroupe.addComponent(intituleVent).addComponent(vent).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleTemperature).addComponent(temperature);
+        vertGroupe.addComponent(intituleVent).addComponent(vent).addComponent(largeur).addComponent(intituleLongueur).addComponent(longueur).addComponent(espacement).addComponent(intituleLargeur).addComponent(intituleTraitDeCote).addComponent(mer).addComponent(intitulePersonne).addComponent(personne).addComponent(intituleTemperature).addComponent(meteo);
         vertGroupe.addComponent(validation);
         groupe.setHorizontalGroup(horzGroupe);
         groupe.setVerticalGroup(vertGroupe);
@@ -95,7 +96,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         Object[] elements = new Object[]{"Taille de base", "Petite plage", "Grande plage"};
         Object[] elements1 = new Object[]{"Délimitation de base", "Délimitation basse", "Délimitation haute"};
         Object[] elements2 = new Object[]{"Individus de base", "Peu d'individu", "Beaucoup d'individu"};
-        Object[] elements3 = new Object[]{"Température de base", "Température basse", "Température haute"};
+        Object[] elements3 = new Object[]{"Soleil", "Nuageux", "Pluie"};
         Object[] elements4 = new Object[]{"Vitesse de base", "Vitesse faible", "Vitesse forte"};
 
         JComboBox<String> liste = new JComboBox(elements);
@@ -141,9 +142,9 @@ public class InteractionMenu extends JFrame implements ActionListener {
         JLabel label3 = new JLabel("Nombre d'individus");
         add(label3);
         label3.setBounds(390, 420, 250, 50);
-        JLabel label4 = new JLabel("Température");
+        JLabel label4 = new JLabel("Météo");
         add(label4);
-        label4.setBounds(150, 530, 250, 50);
+        label4.setBounds(170, 530, 250, 50);
         JLabel label5 = new JLabel("Vitesse du vent");
         add(label5);
         label5.setBounds(315, 530, 250, 50);
@@ -201,15 +202,15 @@ public class InteractionMenu extends JFrame implements ActionListener {
         liste4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Température : " + liste4.getSelectedItem().toString());
-                if (liste4.getSelectedItem().toString().equals("Température de base")){
-                    temperature.setText("20");
+                System.out.println("Météo : " + liste4.getSelectedItem().toString());
+                if (liste4.getSelectedItem().toString().equals("Soleil")){
+                    meteo.setText("1");
                 }
-                if (liste4.getSelectedItem().toString().equals("Température basse")){
-                    temperature.setText("10");
+                if (liste4.getSelectedItem().toString().equals("Nuageux")){
+                    meteo.setText("2");
                 }
-                if (liste4.getSelectedItem().toString().equals("Température haute")){
-                    temperature.setText("35");
+                if (liste4.getSelectedItem().toString().equals("Pluie")){
+                    meteo.setText("3");
                 }
             }
         });
@@ -232,7 +233,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
     }
     public void actionPerformed(ActionEvent e) {
 
-        done = isNumber(largeur.getText()) && isNumber(longueur.getText()) && isNumber(mer.getText()) && isNumber(personne.getText()) && isNumber(temperature.getText()) && isNumber(vent.getText());
+        done = isNumber(largeur.getText()) && isNumber(longueur.getText()) && isNumber(mer.getText()) && isNumber(personne.getText()) && isNumber(meteo.getText()) && isNumber(vent.getText());
 
     }
     public boolean isDone() {
@@ -268,8 +269,8 @@ public class InteractionMenu extends JFrame implements ActionListener {
     public int getPersonne() {
         return Integer.valueOf(personne.getText());
     }
-    public int getTemperature() {
-        return Integer.valueOf(temperature.getText());
+    public int getMeteo() {
+        return Integer.valueOf(meteo.getText());
     }
     public int getVent() {
         return Integer.valueOf(vent.getText());
