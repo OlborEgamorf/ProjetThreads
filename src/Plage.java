@@ -212,6 +212,18 @@ public class Plage {
             objPosition = personne.getObjPosition();
 
             if (personne.getAlive()) {
+            
+                if (meteo == Meteo.Pluie){
+                    personne.changeAttribut(1,0.95);
+                    personne.changeAttribut(2, 1.15);
+                }
+
+                if (vent >25 && vent<60){
+                    personne.changeAttribut(2, 1.15);
+                }
+                else
+                    personne.changeAttribut(2, 1.30);
+
                 if (etat == Etat.PATH) {
                     Vector vecteur = Vector.choixVector(position, objPosition, personne.getVitesse(), 0);
 
