@@ -2,41 +2,14 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 
 public class Interface extends JPanel {
-
-
-
-       /*
-
-        // Parametre Scrollbar
-        final java.awt.Scrollbar population = new java.awt.Scrollbar(Adjustable.HORIZONTAL, 0, 0, 0, 10);
-        // Position Scrollbar ///////
-        population.setBounds(50, 0, 200, 50);
-        f.add(population);
-        f.add(label);
-        // Taille de la fenetre
-        f.setSize(300, 125);
-        f.setLayout(null);
-        f.setVisible(true);
-        population.addAdjustmentListener(new AdjustmentListener() {
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                label.setText("Vitesse : "+ population.getValue());
-            }
-        });
-    }
-
-        */
+    
     private final int pixel = 4;
     private int longueur;
     private int largeur;
     private int mer;
     private Personne[] threads;
-    private Case[][] matrice;
     private double zoom = 1;
     private Meteo meteo;
 
@@ -102,7 +75,6 @@ public class Interface extends JPanel {
         frame.setContentPane(this);
 
         threads = plage.getThreads();
-        matrice = plage.getMatrice();
         meteo = plage.getMeteo();
 
     }
@@ -116,7 +88,7 @@ public class Interface extends JPanel {
 
         for (Personne personne : threads) {
             if (personne.getAlive()) {
-                if (personne.getEstSauveteur()){
+                if (personne == null){ // instanceof Sauveteur
                     g.setColor(Color.red);
                     g.fillOval((int) (personne.getPosition()[1]*zoom),(int) (personne.getPosition()[0]*zoom), pixel, pixel);
                 }
@@ -128,37 +100,15 @@ public class Interface extends JPanel {
                     else{
                         g.setColor(Color.gray);
                         g.fillOval((int) (personne.getPosition()[1]*zoom), (int) (personne.getPosition()[0]*zoom), pixel, pixel);
-                        
+                    }
+
+                    if (personne.isPlaced()) {
+                        g.setColor(Color.black);
+                        g.fillRect((int) (personne.getPositionPlage().getD()[1]*zoom), (int) (personne.getPositionPlage().getD()[0]*zoom), 2, 3);
                     }
                 }
-                /*if (personne.isPlace()) {
-                    int[] positionPlage = personne.getPositionPlage();
-                    g.setColor(Color.black);
-                    g.fillRect(positionPlage[0], positionPlage[1], pixel, pixel);
-                    g.fillRect(positionPlage[0], positionPlage[1]-1, pixel, pixel);
-                    g.fillRect(positionPlage[0]-1, positionPlage[1], pixel, pixel);
-                    g.fillRect(positionPlage[0]-1, positionPlage[1]-1, pixel, pixel);
-                    g.fillRect(positionPlage[0]-2, positionPlage[1], pixel, pixel);
-                    g.fillRect(positionPlage[0]-2, positionPlage[1]-1, pixel, pixel);
-                }*/
             }
-        }
-        /*for (int i = 0; i < longueur; i++){
-            for (int j = 0; j < largeur; j++){
-                if (matrice [i][j].getType() == Type.TEMPORAIRE){
-                    g.setColor(Color.red);
-                    g.fillRect((int) (j*zoom), (int) (i*zoom), pixel, pixel);
-                }
-            }
-        }*/
-        for (int i = 0; i < longueur; i++){
-            for (int j = 0; j < largeur; j++){
-                if (matrice [i][j].getType() == Type.AFFAIRES){
-                    g.setColor(Color.black);
-                    g.fillRect((int) (j*zoom), (int) (i*zoom), pixel, pixel);
-                }
-            }
-        }
+        }        
     }
 
     public void turn(){

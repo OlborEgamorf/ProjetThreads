@@ -1,4 +1,4 @@
-package src;
+//package src;
 
 public enum Meteo {
     Soleil (1), Nuageux (2), Pluie (3);
