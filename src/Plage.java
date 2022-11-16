@@ -229,6 +229,9 @@ public class Plage {
                                 }
                             }
                         }
+                        if (compare.isPlaced()) {
+                            
+                        }
                     }
                     
                     if (liste.isEmpty()) {
@@ -252,7 +255,7 @@ public class Plage {
                             double[] coordsNext = itLi.next().getCoords();
                             
                             //System.out.println(personne.getIdPersonne()+" P:"+coordsPrevious[0]+" "+coordsPrevious[1]+" N:"+coordsNext[0]+" "+coordsNext[1]);
-                            personne.addVector(Vector.choixVector(coordsPrevious, coordsNext, personne.getVitesse(), 100));
+                            personne.addVector(Vector.choixVector(coordsPrevious, coordsNext, personne.getVitesse(), 1000));
                             if (!itLi.hasNext()) {
                                 //System.out.println(personne.getIdPersonne()+" P:"+coordsNext[0]+" "+coordsNext[1]+" F:"+objPosition[0]+" "+objPosition[1]);
                                 personne.addVector(Vector.choixVector(coordsNext, objPosition, personne.getVitesse(), 0));

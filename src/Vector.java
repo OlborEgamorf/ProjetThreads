@@ -216,3 +216,16 @@ public abstract class Vector {
         }
     }
 }
+
+
+/* 
+ * D = (0,0)
+ * C = (1.7,0)
+ * a(x - x1)(x - x2)
+ * a(x)(x - 1.7) = y
+ * ax(x-1.7) = y
+ * ax^2 - 1.7ax = y
+ * 
+ * 
+ * 
+*/
