@@ -4,10 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class InteractionMenu extends JFrame implements ActionListener {
+
     private JLabel espacement = new JLabel("");
     private JLabel intituleLongueur = new JLabel("                                                         Longueur de la plage :");
     private Saisie longueur = new Saisie("200");
@@ -229,6 +231,38 @@ public class InteractionMenu extends JFrame implements ActionListener {
                 }
             }
         });
+        JCheckBox check1 = new JCheckBox("Données fichier .txt");
+        add(check1);
+        check1.setSize(100,100);
+        check1.setBounds(386,-15,200,50);
+        check1.setFont(new Font("Verdana", Font.BOLD, 11));
+        check1.setBackground(Color.decode("#DAF6F1"));
+        check1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (check1.isSelected()){
+                    String lo;
+                    String la;
+                    String me;
+                    String ind;
+                    String v;
+                    String met;
+                    lo = Main.getDonnee().get(0);
+                    la = Main.getDonnee().get(1);
+                    me = Main.getDonnee().get(2);
+                    ind = Main.getDonnee().get(3);
+                    v = Main.getDonnee().get(4);
+                    met = Main.getDonnee().get(5);
+                    longueur.setText(lo);
+                    largeur.setText(la);
+                    mer.setText(me);
+                    personne.setText(ind);
+                    vent.setText(v);
+                    meteo.setText(met);
+
+                }
+            }
+        });
 
     }
     public void actionPerformed(ActionEvent e) {
@@ -260,6 +294,10 @@ public class InteractionMenu extends JFrame implements ActionListener {
         return flag;
     }
 
+
+
+
+
     public int getLongueur() {
         return Integer.valueOf(longueur.getText());
     }
@@ -278,6 +316,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
     public int getMer() {
         return Integer.valueOf(mer.getText());
     }
+
 
 
 
