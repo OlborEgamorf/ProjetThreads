@@ -3,7 +3,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.ListIterator;
 
 public class Plage {
@@ -18,8 +17,9 @@ public class Plage {
     private Personne[] threads;
     private ArrayList<Integer> sauveteurs;
     private Meteo meteo;
+    private Coeff coeff;
 
-    Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax) {
+    Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax, Coeff coeff) {
         this.longueur = longueur;
         this.largeur = largeur;
         this.profondeur = profondeur;
@@ -28,18 +28,19 @@ public class Plage {
 
         this.mer = mer;
         this.threads = new Personne[nbMax];
+        this.coeff = coeff;
 
         setZones();
         setMeteo();
 
-        int coeff = 500; // coefficient de vitesse d'apparition, en ms
+        int apparition = 500; // coefficient de vitesse d'apparition, en ms
         for (int i = 0; i < threads.length; i++) {
             if (Math.random() > 1000) {
                 //threads[i] = new Sauveteur(i,new int[]{0,(largeur/2)+2},vent);
                 sauveteurs.add(i);
             } else {
                 double[] posTest = {0,Math.random() * largeur};
-                threads[i] = new Personne(i,posTest,vent,coeff*i);
+                threads[i] = new Personne(i,posTest,vent,apparition*i);
             }
             
             threads[i].start();
@@ -225,7 +226,7 @@ public class Plage {
                     personne.changeAttribut(2, 1.30);
 
                 if (etat == Etat.PATH) {
-                    Vector vecteur = Vector.choixVector(position, objPosition, personne.getVitesse(), 0);
+                    Vector vecteur = Vector.choixVector(position, objPosition, personne.getVitesse(), coeff, 0);
 
                     ArrayList<Coordonnees> liste = new ArrayList<>();
                     for (Personne compare : threads) {
@@ -267,10 +268,10 @@ public class Plage {
                             double[] coordsNext = itLi.next().getCoords();
                             
                             //System.out.println(personne.getIdPersonne()+" P:"+coordsPrevious[0]+" "+coordsPrevious[1]+" N:"+coordsNext[0]+" "+coordsNext[1]);
-                            personne.addVector(Vector.choixVector(coordsPrevious, coordsNext, personne.getVitesse(), 1000));
+                            personne.addVector(Vector.choixVector(coordsPrevious, coordsNext, personne.getVitesse(), coeff, 1000));
                             if (!itLi.hasNext()) {
                                 //System.out.println(personne.getIdPersonne()+" P:"+coordsNext[0]+" "+coordsNext[1]+" F:"+objPosition[0]+" "+objPosition[1]);
-                                personne.addVector(Vector.choixVector(coordsNext, objPosition, personne.getVitesse(), 0));
+                                personne.addVector(Vector.choixVector(coordsNext, objPosition, personne.getVitesse(), coeff, 0));
                             }
                         }
                         

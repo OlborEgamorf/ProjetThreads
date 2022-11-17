@@ -1,7 +1,5 @@
 //package src;
 
-<<<<<<< Updated upstream
-=======
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
@@ -11,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 
-
->>>>>>> Stashed changes
 public class Main {
     static ArrayList<String> Donnee = new ArrayList<>();
 
@@ -44,9 +40,6 @@ public class Main {
                 System.out.println(sb.toString());
                 System.out.println(Donnee);
 
-
-
-
             }
             catch(IOException e)
             {
@@ -66,28 +59,19 @@ public class Main {
         int meteo = menu.getMeteo();
         int vent = menu.getVent();
         int mer = menu.getMer();
-        int vitesse = 20;
-        int coefficient = 1;
-
-
-
-
         int nbMax = menu.getPersonne();
-
-        Plage plage = new Plage(longueur, largeur, profondeur, meteo, vent, mer, nbMax);
+        
+        Coeff coefficient = new Coeff();
+        Plage plage = new Plage(longueur, largeur, profondeur, meteo, vent, mer, nbMax, coefficient);
 
         Interface interfaced = new Interface(plage);
-        BarreVitesse swingControlDemo = new BarreVitesse();
+        BarreVitesse swingControlDemo = new BarreVitesse(coefficient);
         swingControlDemo.showSliderDemo();
-
 
         while(true){
             plage.turn();
             interfaced.turn();
-            Thread.sleep(vitesse * coefficient);
-
-
+            Thread.sleep(10);
         }
-
     }
 }}

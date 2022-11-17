@@ -1,6 +1,6 @@
 public class VectHorizontal extends Vector {
 
-    public VectHorizontal(double x, double y, double objX, double objY, double vitesse, double coeff, int timing) {
+    public VectHorizontal(double x, double y, double objX, double objY, double vitesse, Coeff coeff, int timing) {
         super(x, y, objX, objY, vitesse, coeff, timing);
     }
 
@@ -13,7 +13,7 @@ public class VectHorizontal extends Vector {
     } 
 
     public void glissement() {
-        x += sensX*vitesse;
+        x += sensX*vitesse*coeff.getCoeff();
         if ((sensX == 1 && x > objX) || (sensX == -1 && x < objX)) {
             x = objX;
         }

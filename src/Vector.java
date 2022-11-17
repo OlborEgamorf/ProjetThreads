@@ -2,14 +2,14 @@ public abstract class Vector {
     protected double x, y, objX, objY;
 
     protected double vitesse;
-    protected double coeff = 1;
+    protected Coeff coeff;
     
     protected int sensX;
     protected int sensY;
 
     protected int timing;
     
-    public Vector(double x, double y, double objX, double objY, double vitesse, double coeff, int timing) {
+    public Vector(double x, double y, double objX, double objY, double vitesse, Coeff coeff, int timing) {
         this.x = x;
         this.y = y;
         this.objX = objX;
@@ -206,13 +206,13 @@ public abstract class Vector {
         return flag;
     }
 
-    public static Vector choixVector(double[] position, double[] objPosition, double vitesse, int timing) {
+    public static Vector choixVector(double[] position, double[] objPosition, double vitesse, Coeff coeff, int timing) {
         if (position[0] == objPosition[0]) {
-            return new VectVertical(position[0], position[1], objPosition[0], objPosition[1], vitesse, 1, timing);
+            return new VectVertical(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
         } else if (position[1] == objPosition[1]) {
-            return new VectHorizontal(position[0], position[1], objPosition[0], objPosition[1], vitesse, 1, timing);
+            return new VectHorizontal(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
         } else {
-            return new VectOblique(position[0], position[1], objPosition[0], objPosition[1], vitesse, 1, timing);
+            return new VectOblique(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
         }
     }
 }

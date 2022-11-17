@@ -1,7 +1,7 @@
 public class VectOblique extends Vector {
     private double m, p;
 
-    public VectOblique(double x, double y, double objX, double objY, double vitesse, double coeff, int timing) {
+    public VectOblique(double x, double y, double objX, double objY, double vitesse, Coeff coeff, int timing) {
         super(x, y, objX, objY, vitesse, coeff,timing);
         setM();
         setP();
@@ -35,8 +35,8 @@ public class VectOblique extends Vector {
 
 
     public void glissement() {
-        x += sensX*Math.sqrt(Math.pow(vitesse,2)/(Math.pow(m,2)+1));
-        y = m*x +p;
+        x += sensX*Math.sqrt(Math.pow(vitesse*coeff.getCoeff(),2)/(Math.pow(m,2)+1));
+        y = m*x + p;
         if ((sensX == 1 && sensY == 1 && x >= objX && y >= objY) || (sensX == 1 && sensY == -1 && x >= objX && y <= objY) || (sensX == -1 && sensY == 1 && x <= objX && y >= objY) || (sensX == -1 && sensY == -1 && x <= objX && y <= objY)) {
             x = objX;
             y = objY;

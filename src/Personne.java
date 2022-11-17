@@ -139,12 +139,12 @@ public class Personne extends Thread {
 
     public void setVitesse() {
         if (age >= 15 && age < 60) 
-            this.vitesse = (Math.random() * (1.43 - 1.31 + 1) + 1.31)/10; //vitesse moyenne de marche en m/s;
+            this.vitesse = (Math.random() * (1.43 - 1.31 + 1) + 1.31)/100; //vitesse moyenne de marche en m/s;
         else if (age>=60 && age<80) {
-            this.vitesse = (Math.random() * (1.34 - 1.13 + 1) + 1.13)/10;
+            this.vitesse = (Math.random() * (1.34 - 1.13 + 1) + 1.13)/100;
         }
         else
-            this.vitesse = (Math.random() * (0.97 - 0.94 + 1) + 0.94)/10;
+            this.vitesse = (Math.random() * (0.97 - 0.94 + 1) + 0.94)/100;
     }
 
     public boolean setProbaNoyade(int vent, int mer, int largeur) {

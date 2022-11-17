@@ -12,10 +12,11 @@ public class BarreVitesse {
     private JLabel TexteDessous;
     private JPanel controlPanel;
 
-    private int value = 1;
+    private Coeff value;
 
-    public BarreVitesse(){
+    public BarreVitesse(Coeff value){
         prepareGUI();
+        this.value = value;
     }
 
     private void prepareGUI(){
@@ -52,7 +53,7 @@ public class BarreVitesse {
         Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
         fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         TexteDessus.setFont(new Font("Verdana", Font.BOLD, 14).deriveFont(fontAttributes));
-        JSlider slider = new JSlider(JSlider.HORIZONTAL,0,5,1);
+        JSlider slider = new JSlider(JSlider.HORIZONTAL,1,100,1);
         TexteDessous.setText("Vitesse de la simulation : 1" );
         TexteDessous.setForeground(Color.decode("#666666"));
         slider.setMajorTickSpacing(1);
@@ -65,7 +66,7 @@ public class BarreVitesse {
         slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 TexteDessous.setText("Vitesse de la simulation : " + ((JSlider)e.getSource()).getValue());
-                value = slider.getValue();
+                value.setCoeff(slider.getValue());
                 System.out.println(value);
             }
         });
@@ -74,15 +75,8 @@ public class BarreVitesse {
 
 
     }
-    public int getValue() {
+    public Coeff getValue() {
         return value;
-    }
-
-
-
-    public static void main(String[] args){
-        BarreVitesse swingControlDemo = new BarreVitesse();
-        swingControlDemo.showSliderDemo();
     }
 }
 
