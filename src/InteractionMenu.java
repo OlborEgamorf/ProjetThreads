@@ -58,7 +58,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
             setFont(new Font("Verdana", Font.BOLD, 20));
             setMargin(new Insets(0, 3, 0, 15));
             setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            setForeground(Color.decode("#666666"));
+            setForeground(Color.decode("#7B7878"));
             setBackground(Color.decode("#F7F5F8"));
         }
     }
@@ -102,19 +102,19 @@ public class InteractionMenu extends JFrame implements ActionListener {
         Object[] elements4 = new Object[]{"Vitesse de base", "Vitesse faible", "Vitesse forte"};
 
         JComboBox<String> liste = new JComboBox(elements);
-        liste.setForeground(Color.decode("#666666"));
+        liste.setForeground(Color.decode("#7B7878"));
         liste.setBackground(Color.decode("#f4fefe"));
         JComboBox<String> liste2 = new JComboBox(elements1);
-        liste2.setForeground(Color.decode("#666666"));
+        liste2.setForeground(Color.decode("#7B7878"));
         liste2.setBackground(Color.decode("#f4fefe"));
         JComboBox<String> liste3 = new JComboBox(elements2);
-        liste3.setForeground(Color.decode("#666666"));
+        liste3.setForeground(Color.decode("#7B7878"));
         liste3.setBackground(Color.decode("#f4fefe"));
         JComboBox<String> liste4 = new JComboBox(elements3);
-        liste4.setForeground(Color.decode("#666666"));
+        liste4.setForeground(Color.decode("#7B7878"));
         liste4.setBackground(Color.decode("#f4fefe"));
         JComboBox<String> liste5 = new JComboBox(elements4);
-        liste5.setForeground(Color.decode("#666666"));
+        liste5.setForeground(Color.decode("#7B7878"));
         liste5.setBackground(Color.decode("#f4fefe"));
 
         liste.setBounds(30, 460, 150, 23);
@@ -231,16 +231,26 @@ public class InteractionMenu extends JFrame implements ActionListener {
                 }
             }
         });
-        JCheckBox check1 = new JCheckBox("Données fichier .txt");
+
+        JLabel tex = new JLabel("Choisir .txt :");
+        tex.setFont(new Font("Verdana", Font.BOLD, 12));
+        add(tex);
+        tex.setBounds(415,-5,300,50);
+
+        Image image1 = new ImageIcon("image.png").getImage().getScaledInstance(25, 25  , Image.SCALE_DEFAULT);
+        JCheckBox check1 = new JCheckBox(new ImageIcon(image1));
         add(check1);
-        check1.setSize(100,100);
-        check1.setBounds(386,-15,200,50);
+        check1.setSize(25,25);
+        check1.setBounds(500,2,200,38);
         check1.setFont(new Font("Verdana", Font.BOLD, 11));
         check1.setBackground(Color.decode("#DAF6F1"));
+        check1.setForeground(Color.decode("#7B7878"));
+        check1.setToolTipText("<html>Dans le fichier.txt doit être écrit : <br/>1er ligne : Largeur <br/> 2e ligne : Longueur <br/> 3e ligne : Trait de côte <br/> 4e ligne : Nombre d'individus <br/> 5e ligne : Vitesse du vent <br/> 6e ligne : Météo (1 = Soleil, <br/> 2 = Nuageux, 3 = Pluie)</html>");
+
         check1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (check1.isSelected()){
+                if (check1.isSelected() && Main.getDonnee().size() == 6){
                     String lo;
                     String la;
                     String me;
@@ -259,7 +269,9 @@ public class InteractionMenu extends JFrame implements ActionListener {
                     personne.setText(ind);
                     vent.setText(v);
                     meteo.setText(met);
-
+                }
+                else{
+                    System.out.println("Les valeurs saisies ne sont pas bonnes");
                 }
             }
         });
