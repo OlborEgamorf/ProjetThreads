@@ -39,22 +39,30 @@ public class InteractionMenu extends JFrame implements ActionListener {
         gestionDisposition();
         pack();
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setResizable(false);
-        setVisible(true);
         validation.addActionListener(this);
         setSize(550,800);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - getHeight()) / 2);
         setLocation(x, y);
-        getContentPane().setBackground(Color.decode("#DAF6F1"));
+
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+        JLabel background = new JLabel(new ImageIcon("plage.png"));
+        add(background);
+        background.setLayout(new FlowLayout());
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
+
+
+
+
 
 
     }
     private class Saisie extends JTextField {
         public Saisie(String texte) {
-            super(texte, 10);
+            super(texte, 15);
             setFont(new Font("Verdana", Font.BOLD, 20));
             setMargin(new Insets(0, 3, 0, 15));
             setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -243,8 +251,6 @@ public class InteractionMenu extends JFrame implements ActionListener {
         check1.setSize(25,25);
         check1.setBounds(500,2,200,38);
         check1.setFont(new Font("Verdana", Font.BOLD, 11));
-        check1.setBackground(Color.decode("#DAF6F1"));
-        check1.setForeground(Color.decode("#7B7878"));
         check1.setToolTipText("<html>Dans le fichier.txt doit être écrit : <br/>1er ligne : Largeur <br/> 2e ligne : Longueur <br/> 3e ligne : Trait de côte <br/> 4e ligne : Nombre d'individus <br/> 5e ligne : Vitesse du vent <br/> 6e ligne : Météo (1 = Soleil, <br/> 2 = Nuageux, 3 = Pluie)</html>");
 
         check1.addActionListener(new ActionListener() {
