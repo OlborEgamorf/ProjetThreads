@@ -1,4 +1,4 @@
-package src;
+//package src;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public class Personne extends Thread {
         
         setAge();
         setVitesse();
-        // setProbaNoyade(vent);
+        //setProbaNoyade(vent);
     }
     
 
@@ -249,7 +249,7 @@ public class Personne extends Thread {
                 
             } else if (etat == Etat.BAIGNADE) {
                 //System.out.println("Je vais me baigner");
-                /*sleeper = vitesse*3;
+                sleeper = vitesse*3;
                 mouvement();
                 int x2 = position[0]+(int)(Math.floor(Math.random()*1000));
                 int y2 = position[1];
@@ -261,7 +261,7 @@ public class Personne extends Thread {
                 if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
                     sleeper = vitesse/3;
                     finBaignade = true;
-                }*/
+                }
 
                 //sleeper = 5000;
                 // VA CHANGER DU COUP 

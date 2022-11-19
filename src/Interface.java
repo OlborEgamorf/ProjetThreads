@@ -11,7 +11,6 @@ public class Interface extends JPanel {
     private int mer;
     private Personne[] threads;
     private double zoom = 1;
-    private Meteo meteo;
 
     public Interface (Plage plage){
         setVisible(true);
@@ -75,8 +74,6 @@ public class Interface extends JPanel {
         frame.setContentPane(this);
 
         threads = plage.getThreads();
-        meteo = plage.getMeteo();
-
     }
 
     public void paintComponent(Graphics g){

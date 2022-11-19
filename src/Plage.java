@@ -1,4 +1,4 @@
-package src;
+//package src;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +35,6 @@ public class Plage {
         this.meteo = meteo;
         this.maree = 0;
         setMultVagues();
-        changeVitesseInitiale();
 
         int apparition = 500; // coefficient de vitesse d'apparition, en ms
         for (int i = 0; i < threads.length; i++) {
@@ -49,6 +48,7 @@ public class Plage {
 
             threads[i].start();
         }
+        changeVitesseInitiale();
     }
 
     public  int[] getZones(){
@@ -95,8 +95,8 @@ public class Plage {
     public void changeVitesseInitiale(){
         if (meteo == Meteo.Pluie){
             for (Personne thread : threads) {
-                thread.changeAttribut(1, 0.95);
-                thread.changeAttribut(2, 1.15);
+                thread.changeAttribut(1, 0.80);
+                thread.changeAttribut(2, 1.20);
             }
         }
         if (vent >25 && vent<60){

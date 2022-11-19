@@ -1,4 +1,4 @@
-//package src;
+package src;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -56,13 +56,13 @@ public class Main {
         int largeur = menu.getLargeur();
         int longueur = menu.getLongueur();
         int profondeur = 23;
-        int meteo = menu.getMeteo();
+        //Meteo meteo = menu.getMeteo();
         int vent = menu.getVent();
         int mer = menu.getMer();
         int nbMax = menu.getPersonne();
         
         Coeff coefficient = new Coeff();
-        Plage plage = new Plage(longueur, largeur, profondeur, meteo, vent, mer, nbMax, coefficient);
+        Plage plage = new Plage(longueur, largeur, profondeur, 1, vent, mer, nbMax, Meteo.Pluie, coefficient);
 
         Interface interfaced = new Interface(plage);
         BarreVitesse swingControlDemo = new BarreVitesse(coefficient);
