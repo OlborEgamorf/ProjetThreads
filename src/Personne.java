@@ -1,6 +1,6 @@
-import java.util.ArrayList;
+package src;
 
-//package src;
+import java.util.ArrayList;
 
 public class Personne extends Thread {
     protected int age;
@@ -23,9 +23,9 @@ public class Personne extends Thread {
 
     protected int nbFoisEau = 0;
     protected double probaNoyade = 0;
-
     protected ArrayList<Vector> stackMove = new ArrayList<Vector>();
     protected Vector vecteurCourant;
+    private boolean attributsBaignade = false;
     
     Personne(int id, double[] position, int vent, int timing) {
         this.position = position; //position spawn
@@ -94,6 +94,14 @@ public class Personne extends Thread {
 
     public boolean getAlive() {
         return alive;
+    }
+
+    public boolean getAttributsBaignade(){
+        return attributsBaignade;
+    }
+
+    public void setAttributsBaignade(boolean booleen){
+        attributsBaignade = booleen;
     }
 
     public void setAlive(boolean isAlive) {
@@ -166,7 +174,6 @@ public class Personne extends Thread {
         } else {
             proba = 0;
         }
-
 
         if (proba == 0) {
             return false;
@@ -242,19 +249,19 @@ public class Personne extends Thread {
                 
             } else if (etat == Etat.BAIGNADE) {
                 //System.out.println("Je vais me baigner");
-                sleeper = vitesse*3;
+                /*sleeper = vitesse*3;
                 mouvement();
                 int x2 = position[0]+(int)(Math.floor(Math.random()*1000));
                 int y2 = position[1];
                 objPosition = new int[] {x2, y2};
                 int x3 = position[0];
-                int x4 = (int)(Math.floor(Math.random()*25));
+                int x4 = (int)(Math.floor(Math.random()*250));
                 objPosition = new int[] {x3, x4};
                 //new int[] {x2 + (int)(Math.floor(Math.random()*5)), y2 + (int)(Math.floor(Math.random()*5)) };
                 if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
                     sleeper = vitesse/3;
                     finBaignade = true;
-                }
+                }*/
 
                 //sleeper = 5000;
                 // VA CHANGER DU COUP 
@@ -307,11 +314,11 @@ public class Personne extends Thread {
     
     }
 
-    public void changeAttribut(int x, double y){
-        if (x==1){
+    public void changeAttribut(int x, double y) {
+        if (x == 1) {
             vitesse *= y;
         }
-        if (x==2){
+        if (x == 2) {
             probaNoyade *= y;
         }
     }

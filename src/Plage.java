@@ -1,4 +1,4 @@
-//package src;
+package src;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,20 +18,24 @@ public class Plage {
     private ArrayList<Integer> sauveteurs;
     private Meteo meteo;
     private Coeff coeff;
+    private double maree;
+    private double multVagues; //[hauteur, vitesse]
 
-    Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax, Coeff coeff) {
+    Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax, Meteo meteo, Coeff coeff) {
         this.longueur = longueur;
         this.largeur = largeur;
         this.profondeur = profondeur;
         this.temperature = temperature;
-        this.vent = (int) (Math.random() * 100);
-
+        this.vent = vent;
         this.mer = mer;
         this.threads = new Personne[nbMax];
         this.coeff = coeff;
 
         setZones();
-        setMeteo();
+        this.meteo = meteo;
+        this.maree = 0;
+        setMultVagues();
+        changeVitesseInitiale();
 
         int apparition = 500; // coefficient de vitesse d'apparition, en ms
         for (int i = 0; i < threads.length; i++) {
@@ -42,7 +46,7 @@ public class Plage {
                 double[] posTest = {0,Math.random() * largeur};
                 threads[i] = new Personne(i,posTest,vent,apparition*i);
             }
-            
+
             threads[i].start();
         }
     }
@@ -71,12 +75,38 @@ public class Plage {
         return threads;
     }
 
-    public void setMeteo(){
-        int a= Meteo.values().length;
-        int rang = (int) (Math.random() * a)+1;
-        for (int i=0; i<Meteo.values().length; i++){
-            if (Meteo.values()[i].getNombre() == rang){
-                meteo = Meteo.values()[i];
+    public void setMultVagues(){
+        if (meteo == Meteo.Soleil){
+            this.multVagues = Math.random();
+        }
+        else if (meteo == Meteo.Nuageux){
+            this.multVagues = Math.random() * ((2-1)+1);
+        }
+        else if (meteo == Meteo.Pluie){
+            this.multVagues = Math.random() * ((3-2)+2);
+        }
+        if (vent > 25 && vent<60) {
+            this.multVagues *= 2;
+        } else {
+            this.multVagues *= 3;
+        }
+    }
+
+    public void changeVitesseInitiale(){
+        if (meteo == Meteo.Pluie){
+            for (Personne thread : threads) {
+                thread.changeAttribut(1, 0.95);
+                thread.changeAttribut(2, 1.15);
+            }
+        }
+        if (vent >25 && vent<60){
+            for (Personne thread : threads) {
+                thread.changeAttribut(2, 1.15);
+            }
+        }
+        else if (vent >= 60){
+            for (Personne thread : threads) {
+                thread.changeAttribut(2, 1.30);
             }
         }
     }
@@ -163,47 +193,45 @@ public class Plage {
         }
     }
 
+    public void attributsBaignade(Personne i, boolean entreOuSort){ //entre == true, sort == false
+        if (entreOuSort){
+            if (multVagues <= 3){
+                i.changeAttribut(1, 1.1);
+                i.changeAttribut(2, 1.1);
+            }
+            else if (multVagues <= 6){
+                i.changeAttribut(1, 1.5);
+                i.changeAttribut(2, 1.5);
+            }
+            else {
+                i.changeAttribut(1, 2);
+                i.changeAttribut(2, 2);
+            }
+        }
+        else {
+            if (multVagues <= 3){
+                i.changeAttribut(1, 1/1.1);
+                i.changeAttribut(2, 1/1.1);
+            }
+            else if (multVagues <= 6){
+                i.changeAttribut(1, 1/1.5);
+                i.changeAttribut(2, 1/1.5);
+            }
+            else {
+                i.changeAttribut(1, 0.5);
+                i.changeAttribut(2, 0.5);
+            }
+        }
+        i.setAttributsBaignade(entreOuSort);
+    }
+
     public void turn() {
                 
         double[] position;
         double[] objPosition;
+        int[] oldPos;
         Etat etat;
         Personne personne;
-
-        if (meteo == Meteo.Soleil){
-            double a= Math.random();
-            if (a<=0.01){
-                meteo = Meteo.Nuageux;
-            }
-        }
-        else if (meteo == Meteo.Nuageux){
-            double a= Math.random();
-            if (a<=0.01){
-                meteo = Meteo.Pluie;
-            } else if (a>=0.99) {
-                meteo = Meteo.Soleil;
-            }
-        }
-        else if (meteo == Meteo.Pluie){
-            double a= Math.random();
-            if (a<=0.01){
-                meteo = Meteo.Nuageux;
-            }
-        }
-
-        if (vent <= 25){
-            double a= Math.random();
-            if (a<0.1)
-                vent = (int) (Math.random() * (40));
-        } else if (vent<60) {
-            double a= Math.random();
-            if (a<0.1)
-                vent = (int) (Math.random() * ((60-15)+15));
-        } else {
-            double a= Math.random();
-            if (a<0.1)
-                vent = (int) (Math.random() * ((100-45)+45));
-        }
         
         for (int i = 0; i < threads.length; i++) {
 
@@ -213,17 +241,14 @@ public class Plage {
             objPosition = personne.getObjPosition();
 
             if (personne.getAlive()) {
-            
-                if (meteo == Meteo.Pluie){
-                    personne.changeAttribut(1,0.95);
-                    personne.changeAttribut(2, 1.15);
+
+                if (position[0] >= mer && !personne.getAttributsBaignade()){
+                    attributsBaignade(personne, true);
                 }
 
-                if (vent >25 && vent<60){
-                    personne.changeAttribut(2, 1.15);
+                if (position[0] < mer && personne.getAttributsBaignade()){
+                    attributsBaignade(personne, false);
                 }
-                else
-                    personne.changeAttribut(2, 1.30);
 
                 if (etat == Etat.PATH) {
                     Vector vecteur = Vector.choixVector(position, objPosition, personne.getVitesse(), coeff, 0);
