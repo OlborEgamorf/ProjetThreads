@@ -316,7 +316,8 @@ public class Personne extends Thread {
 
     public void changeAttribut(int x, double y) {
         if (x == 1) {
-            vitesse *= y;
+            for (Vector vector : stackMove)
+                vector.vitesse *= y;
         }
         if (x == 2) {
             probaNoyade *= y;
