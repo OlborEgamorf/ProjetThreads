@@ -1,8 +1,9 @@
-/*public class Sauveteur extends Personne {
+public class Sauveteur extends Personne {
 
-    public Sauveteur(int id, double[] position, int vent, Rectangle poste) {
-        super(id, position, vent, 1);
+    public Sauveteur(int id, double[] position, int vent, Rectangle poste, Coeff coeff) {
+        super(id, position, vent, 1, coeff);
         positionPlage = poste;
+        etat = Etat.REPOS;
     }
 
     public void setAge() {
@@ -10,7 +11,7 @@
     }
 
     public void sauvetage(double[] position) {
-        etat = Etat.MOUVEMENT;
+        etat = Etat.PATH;
         objectif = Objectif.SAUVETAGE;
         objPosition = position;
     }
@@ -18,46 +19,60 @@
     public void run() {
 
         alive = true;
-        int sleeper = 10;
         int iterStatique = 0;
+        int tempsPatrouille = 0;
 
         while (!Thread.interrupted()) {
-            sleeper = 20;
-
-            if (etat == Etat.MOUVEMENT && oath) {
-
+            int sleeper = 10;
+            if (etat == Etat.MOUVEMENT) {
+                //System.out.println(position[0]+" "+objPosition[0]+" "+position[1]+" "+objPosition[1]);
                 if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
-                    if (objectif == Objectif.PATROUILLE) {
-                        etat = Etat.ATTENTE;
-                    } else if (objectif == Objectif.SAUVETAGE) {
-                        etat = Etat.SAUVETAGE;
-                    } else if (objectif == Objectif.REPOS) {
-                        etat = Etat.ATTENTE;
-                    }
+                    stackMove.remove(0);
+                    if (stackMove.size() == 0) {
+                        vecteurCourant = null;
+                        if (objectif == Objectif.PATROUILLE) {
+                            etat = Etat.ATTENTE;
+                        } else if (objectif == Objectif.SAUVETAGE) {
+                            etat = Etat.SAUVETAGE;
+                        } else if (objectif == Objectif.REPOS) {
+                            etat = Etat.REPOS;
+                        }
+                    } else {
+                        vecteurCourant = stackMove.get(0);
+                        objPosition = vecteurCourant.getCoordsObj();
+                        sleeper = vecteurCourant.getTiming();
+                    } 
 
                 } else {
-                    if (objectif == Objectif.SAUVETAGE) {
-                        sleeper = (int)vitesse*2;
-                    } else {
-                        sleeper = (int)vitesse/2;
-                    }
-                    vecteur.glissement();
+                    vecteurCourant.glissement();
+                    setPosition(vecteurCourant.getCoords());
                 }
                 
-            } else if (etat == Etat.REPOS) {
-                sleeper = 100;
-                iterStatique += 1;
-                if (iterStatique == 50) {
-                    etat = Etat.MOUVEMENT;
-                    if (Plage.comparePositions(position, positionPlage)) {
-                        objectif = Objectif.PATROUILLE;
-                        objPosition = ;
-                    } else {
+            } else if (etat == Etat.ATTENTE) {
+                iterStatique += 10*coeff.getCoeff();
+                if (iterStatique >= 60000) {
+                    tempsPatrouille += 1;
+                    if (tempsPatrouille == 10) {
                         objectif = Objectif.REPOS;
-                        objPosition = positionPlage;
+                        objPosition = positionPlage.getCentre();
+                        tempsPatrouille = 0;
+                    } else {
+                        objectif = Objectif.PATROUILLE;
                     }
-                    
+                    etat = Etat.PATH;
+                    iterStatique = 0;
                 }
+
+            } else if (etat == Etat.REPOS) {
+                iterStatique += 10*coeff.getCoeff();
+                if (iterStatique >= 1200000) {
+                    objectif = Objectif.PATROUILLE;
+                    etat = Etat.PATH;
+                    iterStatique = 0;
+                }
+
+            } else if (etat == Etat.PATH && vecteurCourant != null) {
+                etat = Etat.MOUVEMENT;
             }
 
             oath = false;
@@ -72,4 +87,3 @@
     }
 
 }
-*/

@@ -4,31 +4,30 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class InteractionMenu extends JFrame implements ActionListener {
 
     private JLabel espacement = new JLabel("");
-    private JLabel intituleLongueur = new JLabel("                                                         Longueur de la plage :");
-    private Saisie longueur = new Saisie("200");
-    private JLabel intituleLargeur = new JLabel("                                                           Largeur de la plage :");
-    private Saisie largeur = new Saisie("150");
+    private JLabel intituleLongueur = new JLabel("                                                         Longueur de la plage (en mètres)");
+    private Saisie longueur = new Saisie("100");
+    private JLabel intituleLargeur = new JLabel("                                                           Largeur de la plage (en m)");
+    private Saisie largeur = new Saisie("200");
 
-    private JLabel intituleTraitDeCote = new JLabel("                                                               Trait de côte :");
+    private JLabel intituleTraitDeCote = new JLabel("                                                               Trait de côte (en m)");
 
     private Saisie mer = new Saisie("50");
 
-    private JLabel intitulePersonne = new JLabel("                                                          Nombre d'individus :");
-    private Saisie personne = new Saisie("150");
+    private JLabel intitulePersonne = new JLabel("                                                          Nombre d'individus maximal");
+    private Saisie personne = new Saisie("500");
 
-    private JLabel intituleTemperature = new JLabel("                                         Météo (1 = Soleil, 2 = Nuageux, 3 = Pluie ) :");
+    private JLabel intituleTemperature = new JLabel("                                         Météo (1 = Soleil, 2 = Nuageux, 3 = Pluie )");
     private Saisie vent = new Saisie("20");
-    private JLabel intituleVent = new JLabel("                                                     Vitesse du vent en km/h :");
+    private JLabel intituleVent = new JLabel("                                                     Vitesse du vent (en km/h)");
 
 
-    private JButton validation = new JButton("Confirmer les choix");
+    private JButton validation = new JButton("Lancement !");
 
 
     private boolean done = false;
@@ -53,13 +52,9 @@ public class InteractionMenu extends JFrame implements ActionListener {
         background.setLayout(new FlowLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-
-
-
-
-
-
     }
+
+
     private class Saisie extends JTextField {
         public Saisie(String texte) {
             super(texte, 15);
@@ -77,7 +72,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         groupe.setAutoCreateContainerGaps(true);
         groupe.setAutoCreateGaps(true);
 
-        JLabel texte2 = new JLabel("Choix des paramètres :");
+        JLabel texte2 = new JLabel("Choix des paramètres");
         Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
         fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         texte2.setFont(new Font("Verdana", Font.BOLD, 15).deriveFont(fontAttributes));
@@ -137,8 +132,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         add(liste4);
         add(liste5);
 
-
-        JLabel texte = new JLabel("Choix de préréglages optionnels :");
+        JLabel texte = new JLabel("Préréglages");
         texte.setFont(new Font("Verdana", Font.BOLD, 15).deriveFont(fontAttributes));
         add(texte);
         texte.setBounds(130,400,300,50);
@@ -163,16 +157,16 @@ public class InteractionMenu extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (liste.getSelectedItem().toString().equals("Taille de base")){
-                    longueur.setText("200");
-                    largeur.setText("150");
+                    longueur.setText("100");
+                    largeur.setText("200");
                 }
                 if (liste.getSelectedItem().toString().equals("Petite plage")){
-                    longueur.setText("100");
-                    largeur.setText("50");
+                    longueur.setText("75");
+                    largeur.setText("100");
                 }
                 if (liste.getSelectedItem().toString().equals("Grande plage")){
-                    longueur.setText("300");
-                    largeur.setText("225");
+                    longueur.setText("150");
+                    largeur.setText("350");
                 }
 
             }
@@ -198,13 +192,13 @@ public class InteractionMenu extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Nombre d'individus : " + liste3.getSelectedItem().toString());
                 if (liste3.getSelectedItem().toString().equals("Individus de base")){
-                    personne.setText("150");
+                    personne.setText("500");
                 }
-                if (liste3.getSelectedItem().toString().equals("Peu d'individu")){
-                    personne.setText("50");
+                if (liste3.getSelectedItem().toString().equals("Peu d'individus")){
+                    personne.setText("200");
                 }
-                if (liste3.getSelectedItem().toString().equals("Beaucoup d'individu")){
-                    personne.setText("300");
+                if (liste3.getSelectedItem().toString().equals("Beaucoup d'individus")){
+                    personne.setText("1500");
                 }
             }
         });
@@ -229,13 +223,13 @@ public class InteractionMenu extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (liste5.getSelectedItem().toString().equals("Vitesse de base")){
-                    vent.setText("50");
+                    vent.setText("20");
                 }
                 if (liste5.getSelectedItem().toString().equals("Vitesse faible")){
                     vent.setText("10");
                 }
                 if (liste5.getSelectedItem().toString().equals("Vitesse forte")){
-                    vent.setText("200");
+                    vent.setText("80");
                 }
             }
         });
@@ -303,7 +297,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         while (flag && i<number.length()) {
             if (!Character.isDigit(number.charAt(i))) {
                 flag = false;
-            } else if (Integer.parseInt(number) < 0 || Integer.parseInt(number) > 7500) {
+            } else if (Integer.parseInt(number) < 0 || Integer.parseInt(number) > 50000) {
                 flag = false;
             }
             i ++;

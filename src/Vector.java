@@ -207,13 +207,15 @@ public abstract class Vector {
     }
 
     public static Vector choixVector(double[] position, double[] objPosition, double vitesse, Coeff coeff, int timing) {
+        return new VectOblique(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
+        /*
         if (position[0] == objPosition[0]) {
             return new VectVertical(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
         } else if (position[1] == objPosition[1]) {
             return new VectHorizontal(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
         } else {
             return new VectOblique(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
-        }
+        }*/
     }
 }
 

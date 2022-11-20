@@ -1,13 +1,9 @@
-package src;
-
-import java.awt.Dimension;
-import java.awt.Toolkit;
+//package src;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JFrame;
 
 public class Main {
     static ArrayList<String> Donnee = new ArrayList<>();
@@ -67,6 +63,8 @@ public class Main {
         Interface interfaced = new Interface(plage);
         BarreVitesse swingControlDemo = new BarreVitesse(coefficient);
         swingControlDemo.showSliderDemo();
+
+        plage.startAll();
 
         while(true){
             plage.turn();
