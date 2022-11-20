@@ -53,8 +53,8 @@ public class BarreVitesse {
         Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
         fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         TexteDessus.setFont(new Font("Verdana", Font.BOLD, 14).deriveFont(fontAttributes));
-        JSlider slider = new JSlider(JSlider.HORIZONTAL,0,100,30);
-        TexteDessous.setText("Vitesse de la simulation : 1" );
+        JSlider slider = new JSlider(JSlider.HORIZONTAL,1,100,30);
+        TexteDessous.setText("Vitesse de la simulation : 30" );
         TexteDessous.setForeground(Color.decode("#666666"));
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);

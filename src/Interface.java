@@ -5,10 +5,11 @@ import java.awt.*;
 
 public class Interface extends JPanel {
     
-    private final int pixel = 4;
+    private final int pixel = 3;
     private int longueur;
     private int largeur;
     private int mer;
+    private Rectangle poste;
     private Personne[] threads;
     private double zoom = 1;
 
@@ -20,6 +21,7 @@ public class Interface extends JPanel {
         mer = plage.getMer();
         longueur = plage.getLongueur();
         largeur = plage.getLargeur();
+        poste = plage.getPoste();
         double ratioBase = (double) (longueur+mer)/(double) largeur;
         if (largeur>dimension.getWidth() || longueur+mer>dimension.getHeight()){
             boolean fini = false;
@@ -80,12 +82,15 @@ public class Interface extends JPanel {
         super.paintComponent(g);
         g.setColor(Color.decode("#FFE333"));
         g.fillRect(0, 0,(int) (largeur*zoom),(int) (longueur*zoom));
-        g.setColor(Color.decode("#338AFF"));
+        g.setColor(Color.decode("#34a8eb"));
         g.fillRect(0,(int) (longueur*zoom), (int) (largeur*zoom), (int) (mer*zoom));
+
+        g.setColor(Color.red);
+        g.fillRect((int) (poste.getD()[1]*zoom), (int) (poste.getD()[0]*zoom), 10, 6);
 
         for (Personne personne : threads) {
             if (personne.getAlive()) {
-                if (personne == null){ // instanceof Sauveteur
+                if (personne instanceof Sauveteur){
                     g.setColor(Color.red);
                     g.fillOval((int) (personne.getPosition()[1]*zoom),(int) (personne.getPosition()[0]*zoom), pixel, pixel);
                 }

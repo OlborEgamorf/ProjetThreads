@@ -1,5 +1,5 @@
 public class Coeff {
-    private int coeff = 1;
+    private int coeff = 30;
 
     public void setCoeff(int coeff) {
         this.coeff = coeff;
