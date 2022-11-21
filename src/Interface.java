@@ -64,7 +64,7 @@ public class Interface extends JPanel {
                 zoom = 2;
             else
                 zoom = 1;
-            frame.setSize((int) (largeur*zoom), (int) (a*zoom+(mer*ratioBase)));
+            frame.setSize((int) (largeur*zoom), (int) ((longueur+mer)*zoom+(mer*ratioBase)));
         }
 
         frame.setVisible(true);
