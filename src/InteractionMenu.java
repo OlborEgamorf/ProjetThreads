@@ -283,6 +283,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
 
         done = isNumber(largeur.getText()) && isNumber(longueur.getText()) && isNumber(mer.getText()) && isNumber(personne.getText()) && isNumber(meteo.getText()) && isNumber(vent.getText());
 
+
     }
     public boolean isDone() {
         return done;
@@ -321,8 +322,17 @@ public class InteractionMenu extends JFrame implements ActionListener {
     public int getPersonne() {
         return Integer.valueOf(personne.getText());
     }
-    public int getMeteo() {
-        return Integer.valueOf(meteo.getText());
+    public Meteo getMeteo() {
+        if (Integer.valueOf(meteo.getText()) == 1){
+            return Meteo.Soleil;
+        }
+        else if (Integer.valueOf(meteo.getText()) == 2){
+            return Meteo.Nuageux;
+        }
+        else if (Integer.valueOf(meteo.getText()) == 3){
+            return Meteo.Pluie;
+        }
+        return null;
     }
     public int getVent() {
         return Integer.valueOf(vent.getText());
