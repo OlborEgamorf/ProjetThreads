@@ -10,21 +10,21 @@ import java.util.Map;
 public class InteractionMenu extends JFrame implements ActionListener {
 
     private JLabel espacement = new JLabel("");
-    private JLabel intituleLongueur = new JLabel("                                                         Longueur de la plage (en mètres)");
+    private JLabel intituleLongueur = new JLabel("                                                     Longueur de la plage (en m)");
     private Saisie longueur = new Saisie("100");
-    private JLabel intituleLargeur = new JLabel("                                                           Largeur de la plage (en m)");
+    private JLabel intituleLargeur = new JLabel("                                                       Largeur de la plage (en m)");
     private Saisie largeur = new Saisie("200");
 
-    private JLabel intituleTraitDeCote = new JLabel("                                                               Trait de côte (en m)");
+    private JLabel intituleTraitDeCote = new JLabel("                                                           Trait de côte (en m)");
 
     private Saisie mer = new Saisie("50");
 
-    private JLabel intitulePersonne = new JLabel("                                                          Nombre d'individus maximal");
+    private JLabel intitulePersonne = new JLabel("                                                     Nombre d'individus maximal");
     private Saisie personne = new Saisie("500");
 
-    private JLabel intituleTemperature = new JLabel("                                         Météo (1 = Soleil, 2 = Nuageux, 3 = Pluie )");
+    private JLabel intituleTemperature = new JLabel("                                           Météo (1 = Soleil, 2 = Nuageux, 3 = Pluie )");
     private Saisie vent = new Saisie("20");
-    private JLabel intituleVent = new JLabel("                                                     Vitesse du vent (en km/h)");
+    private JLabel intituleVent = new JLabel("                                                       Vitesse du vent (en km/h)");
 
 
     private JButton validation = new JButton("Lancement !");
@@ -35,8 +35,8 @@ public class InteractionMenu extends JFrame implements ActionListener {
 
     public InteractionMenu() {
         super("Saisie des paramètres");
-        gestionDisposition();
         pack();
+        gestionDisposition();
 
         validation.addActionListener(this);
         setSize(550,800);
@@ -49,6 +49,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         setLayout(new BorderLayout());
         JLabel background = new JLabel(new ImageIcon("plage.png"));
         add(background);
+        getContentPane().setBackground(Color.decode("#dcf9fa"));
         background.setLayout(new FlowLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -59,7 +60,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         public Saisie(String texte) {
             super(texte, 15);
             setFont(new Font("Verdana", Font.BOLD, 20));
-            setMargin(new Insets(0, 3, 0, 15));
+            setMargin(new Insets(0, 0, 0, 0));
             setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             setForeground(Color.decode("#7B7878"));
             setBackground(Color.decode("#F7F5F8"));
@@ -77,7 +78,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         texte2.setFont(new Font("Verdana", Font.BOLD, 15).deriveFont(fontAttributes));
         add(texte2);
-        texte2.setBounds(165,-15,200,50);
+        texte2.setBounds(178,-15,200,50);
 
         GroupLayout.ParallelGroup horzGroupe = groupe.createParallelGroup();
         GroupLayout.SequentialGroup vertGroupe = groupe.createSequentialGroup();
@@ -135,7 +136,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         JLabel texte = new JLabel("Préréglages");
         texte.setFont(new Font("Verdana", Font.BOLD, 15).deriveFont(fontAttributes));
         add(texte);
-        texte.setBounds(130,400,300,50);
+        texte.setBounds(220,400,300,50);
 
         JLabel label = new JLabel("Taille de la plage");
         add(label);
@@ -242,6 +243,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         Image image1 = new ImageIcon("image.png").getImage().getScaledInstance(25, 25  , Image.SCALE_DEFAULT);
         JCheckBox check1 = new JCheckBox(new ImageIcon(image1));
         add(check1);
+        check1.setBackground(Color.decode("#dcf9fa"));
         check1.setSize(25,25);
         check1.setBounds(500,2,200,38);
         check1.setFont(new Font("Verdana", Font.BOLD, 11));
