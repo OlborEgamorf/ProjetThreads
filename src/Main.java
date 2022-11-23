@@ -4,43 +4,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Main {
-    static ArrayList<String> Donnee = new ArrayList<>();
-
-    public static ArrayList<String> getDonnee() {
-        return Donnee;
-    }
-
     public static void main(String[] args) throws InterruptedException {
-        {
-            try
-            {
-                // Le fichier d'entrée
-                File file = new File("texte.txt");
-                // Créer l'objet File Reader
-                FileReader fr = new FileReader(file);
-                // Créer l'objet BufferedReader
-                BufferedReader br = new BufferedReader(fr);
-                StringBuffer sb = new StringBuffer();
-                String line;
-                while((line = br.readLine()) != null)
-                {
-                    // ajoute la ligne au buffer
-                    sb.append(line);
-                    Donnee.add(String.valueOf((line)));
-                    sb.append("\n");
-                }
-                fr.close();
-                System.out.println("Contenu du fichier: ");
-                System.out.println(sb.toString());
-                System.out.println(Donnee);
 
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
+
+
 
 
         InteractionMenu menu = new InteractionMenu();
@@ -60,7 +30,6 @@ public class Main {
         
         Coeff coefficient = new Coeff();
         Plage plage = new Plage(longueur, largeur, profondeur, 1, vent, mer, nbMax, meteo, coefficient);
-        System.out.println(meteo);
 
         Interface interfaced = new Interface(plage);
         BarreVitesse swingControlDemo = new BarreVitesse(coefficient);
@@ -73,5 +42,4 @@ public class Main {
             interfaced.turn();
             Thread.sleep(10);
         }
-    }
-}}
+    }}
