@@ -4,8 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class InteractionMenu extends JFrame implements ActionListener {
 
@@ -78,7 +83,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         texte2.setFont(new Font("Verdana", Font.BOLD, 15).deriveFont(fontAttributes));
         add(texte2);
-        texte2.setBounds(178,-15,200,50);
+        texte2.setBounds(178, -15, 200, 50);
 
         GroupLayout.ParallelGroup horzGroupe = groupe.createParallelGroup();
         GroupLayout.SequentialGroup vertGroupe = groupe.createSequentialGroup();
@@ -104,6 +109,8 @@ public class InteractionMenu extends JFrame implements ActionListener {
         Object[] elements2 = new Object[]{"Individus de base", "Peu d'individu", "Beaucoup d'individu"};
         Object[] elements3 = new Object[]{"Soleil", "Nuageux", "Pluie"};
         Object[] elements4 = new Object[]{"Vitesse de base", "Vitesse faible", "Vitesse forte"};
+        Object[] elements5 = new Object[]{"Texte1", "Texte2", "Texte3"};
+
 
         JComboBox<String> liste = new JComboBox(elements);
         liste.setForeground(Color.decode("#7B7878"));
@@ -120,23 +127,28 @@ public class InteractionMenu extends JFrame implements ActionListener {
         JComboBox<String> liste5 = new JComboBox(elements4);
         liste5.setForeground(Color.decode("#7B7878"));
         liste5.setBackground(Color.decode("#f4fefe"));
+        JComboBox<String> liste6 = new JComboBox(elements5);
+        liste6.setForeground(Color.decode("#7B7878"));
+        liste6.setBackground(Color.decode("#f4fefe"));
 
         liste.setBounds(30, 460, 150, 23);
         liste2.setBounds(200, 460, 150, 23);
         liste3.setBounds(370, 460, 150, 23);
         liste4.setBounds(115, 570, 150, 23);
         liste5.setBounds(285, 570, 150, 23);
+        liste6.setBounds(370, 385, 150, 23);
 
         add(liste);
         add(liste2);
         add(liste3);
         add(liste4);
         add(liste5);
+        add(liste6);
 
         JLabel texte = new JLabel("Préréglages");
         texte.setFont(new Font("Verdana", Font.BOLD, 15).deriveFont(fontAttributes));
         add(texte);
-        texte.setBounds(220,400,300,50);
+        texte.setBounds(220, 400, 300, 50);
 
         JLabel label = new JLabel("Taille de la plage");
         add(label);
@@ -153,19 +165,21 @@ public class InteractionMenu extends JFrame implements ActionListener {
         JLabel label5 = new JLabel("Vitesse du vent");
         add(label5);
         label5.setBounds(315, 530, 250, 50);
-
+        JLabel label6 = new JLabel("Choisir .txt");
+        add(label6);
+        label6.setBounds(410, 350, 250, 50);
         liste.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (liste.getSelectedItem().toString().equals("Taille de base")){
+                if (liste.getSelectedItem().toString().equals("Taille de base")) {
                     longueur.setText("100");
                     largeur.setText("200");
                 }
-                if (liste.getSelectedItem().toString().equals("Petite plage")){
+                if (liste.getSelectedItem().toString().equals("Petite plage")) {
                     longueur.setText("75");
                     largeur.setText("100");
                 }
-                if (liste.getSelectedItem().toString().equals("Grande plage")){
+                if (liste.getSelectedItem().toString().equals("Grande plage")) {
                     longueur.setText("150");
                     largeur.setText("350");
                 }
@@ -176,13 +190,13 @@ public class InteractionMenu extends JFrame implements ActionListener {
         liste2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (liste2.getSelectedItem().toString().equals("Délimitation de base")){
+                if (liste2.getSelectedItem().toString().equals("Délimitation de base")) {
                     mer.setText("50");
                 }
-                if (liste2.getSelectedItem().toString().equals("Délimitation basse")){
+                if (liste2.getSelectedItem().toString().equals("Délimitation basse")) {
                     mer.setText("100");
                 }
-                if (liste2.getSelectedItem().toString().equals("Délimitation haute")){
+                if (liste2.getSelectedItem().toString().equals("Délimitation haute")) {
                     mer.setText("30");
                 }
             }
@@ -192,13 +206,13 @@ public class InteractionMenu extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Nombre d'individus : " + liste3.getSelectedItem().toString());
-                if (liste3.getSelectedItem().toString().equals("Individus de base")){
+                if (liste3.getSelectedItem().toString().equals("Individus de base")) {
                     personne.setText("500");
                 }
-                if (liste3.getSelectedItem().toString().equals("Peu d'individus")){
+                if (liste3.getSelectedItem().toString().equals("Peu d'individus")) {
                     personne.setText("200");
                 }
-                if (liste3.getSelectedItem().toString().equals("Beaucoup d'individus")){
+                if (liste3.getSelectedItem().toString().equals("Beaucoup d'individus")) {
                     personne.setText("1500");
                 }
             }
@@ -208,13 +222,13 @@ public class InteractionMenu extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Météo : " + liste4.getSelectedItem().toString());
-                if (liste4.getSelectedItem().toString().equals("Soleil")){
+                if (liste4.getSelectedItem().toString().equals("Soleil")) {
                     meteo.setText("1");
                 }
-                if (liste4.getSelectedItem().toString().equals("Nuageux")){
+                if (liste4.getSelectedItem().toString().equals("Nuageux")) {
                     meteo.setText("2");
                 }
-                if (liste4.getSelectedItem().toString().equals("Pluie")){
+                if (liste4.getSelectedItem().toString().equals("Pluie")) {
                     meteo.setText("3");
                 }
             }
@@ -223,17 +237,21 @@ public class InteractionMenu extends JFrame implements ActionListener {
         liste5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (liste5.getSelectedItem().toString().equals("Vitesse de base")){
+                if (liste5.getSelectedItem().toString().equals("Vitesse de base")) {
                     vent.setText("20");
                 }
-                if (liste5.getSelectedItem().toString().equals("Vitesse faible")){
+                if (liste5.getSelectedItem().toString().equals("Vitesse faible")) {
                     vent.setText("10");
                 }
-                if (liste5.getSelectedItem().toString().equals("Vitesse forte")){
+                if (liste5.getSelectedItem().toString().equals("Vitesse forte")) {
                     vent.setText("80");
                 }
             }
+
         });
+
+
+
 
         JLabel tex = new JLabel("Choisir .txt :");
         tex.setFont(new Font("Verdana", Font.BOLD, 12));
@@ -249,10 +267,145 @@ public class InteractionMenu extends JFrame implements ActionListener {
         check1.setFont(new Font("Verdana", Font.BOLD, 11));
         check1.setToolTipText("<html>Dans le fichier.txt doit être écrit : <br/>1er ligne : Largeur <br/> 2e ligne : Longueur <br/> 3e ligne : Trait de côte <br/> 4e ligne : Nombre d'individus <br/> 5e ligne : Vitesse du vent <br/> 6e ligne : Météo (1 = Soleil, <br/> 2 = Nuageux, 3 = Pluie)</html>");
 
+        JButton bouton = new JButton("Sauvegarder");
+        bouton.setBounds(30,366,120,26);
+        add(bouton);
+        bouton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+
+                Frame f = new JFrame("TextField Example");
+
+
+
+                JTextField t1;
+                t1 = new JTextField("");
+                t1.setBounds(170, 100, 200, 25);
+                f.add(t1);
+
+                JLabel titre = new JLabel("Saisir le nom du fichier :");
+                titre.setBounds(200,82,300,15);
+                f.add(titre);
+
+                JButton bouton = new JButton("Valider");
+                bouton.setBounds(215,125,100,20);
+                f.add(bouton);
+
+                bouton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if(t1.getText().length() >= 1){
+                            try {
+                                File dossier = new File("Sauvegardes");
+                                boolean res = dossier.mkdir();
+
+                                if (res) {
+                                    System.out.println("Le dossier sauvegardes a été créé.");
+                                    System.out.println("Ajout de la sauvegarde");
+
+
+                                    PrintWriter writer = new PrintWriter("Sauvegardes\\"+t1.getText()+".txt", "UTF-8");
+                                    writer.println(largeur.getText());
+                                    writer.println(longueur.getText());
+                                    writer.println(mer.getText());
+                                    writer.println(personne.getText());
+                                    writer.println(vent.getText());
+                                    writer.println(meteo.getText());
+                                    writer.close();
+                                } else {
+                                    System.out.println("Le dossier sauvegardes existe déja.");
+                                    System.out.println("Ajout de la sauvegarde");
+                                    PrintWriter writer = new PrintWriter("Sauvegardes\\"+t1.getText()+".txt", "UTF-8");
+                                    writer.println(largeur.getText());
+                                    writer.println(longueur.getText());
+                                    writer.println(mer.getText());
+                                    writer.println(personne.getText());
+                                    writer.println(vent.getText());
+                                    writer.println(meteo.getText());
+                                    writer.close();
+                                }
+
+
+                            } catch (FileNotFoundException ex) {
+                                throw new RuntimeException(ex);
+                            } catch (UnsupportedEncodingException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            System.out.println("oui");
+                            f.dispose();
+                        }
+                        else{
+                            System.out.println("Veuillez saisir un nom de fichier");
+                        }
+
+
+                                             }
+                                         });
+
+
+
+                Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+                int x = (int) ((dimension.getWidth() - getWidth()) / 2);
+                int y = (int) ((dimension.getHeight() - getHeight()) / 2);
+                f.setLocation(x, y);
+                f.setSize(550, 250);
+                ((JFrame) f).getContentPane().setBackground(Color.decode("#dcf9fa"));
+                f.setLayout(null);
+                f.setVisible(true);
+            }});
+/*
+
+            //frame.dispose();
+                String nomFichier;
+                System.out.print("Saisir le nom du fichier : ");
+                Scanner sc = new Scanner (System.in);
+                nomFichier = sc.nextLine();
+
+
+
+                try {
+                    File dossier = new File("Sauvegardes");
+                    boolean res = dossier.mkdir();
+
+                    if (res) {
+                        System.out.println("Le dossier sauvegardes a été créé.");
+                        System.out.println("Ajout de la sauvegarde");
+
+
+                        PrintWriter writer = new PrintWriter("Sauvegardes\\"+nomFichier+".txt", "UTF-8");
+                        writer.println(largeur.getText());
+                        writer.println(longueur.getText());
+                        writer.println(mer.getText());
+                        writer.println(personne.getText());
+                        writer.println(vent.getText());
+                        writer.println(meteo.getText());
+                        writer.close();
+                    } else {
+                        System.out.println("Le dossier sauvegardes existe déja.");
+                        System.out.println("Ajout de la sauvegarde");
+                        PrintWriter writer = new PrintWriter("Sauvegardes\\"+nomFichier+".txt", "UTF-8");
+                        writer.println(largeur.getText());
+                        writer.println(longueur.getText());
+                        writer.println(mer.getText());
+                        writer.println(personne.getText());
+                        writer.println(vent.getText());
+                        writer.println(meteo.getText());
+                        writer.close();
+                    }
+
+
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                } catch (UnsupportedEncodingException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }});
+
+
+
         check1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (check1.isSelected() && Main.getDonnee().size() == 6){
+                if (check1.isSelected() && Main.getDonnee().size() == 6) {
                     String lo;
                     String la;
                     String me;
@@ -271,12 +424,21 @@ public class InteractionMenu extends JFrame implements ActionListener {
                     personne.setText(ind);
                     vent.setText(v);
                     meteo.setText(met);
-                }
-                else{
+                } else {
                     System.out.println("Les valeurs saisies ne sont pas bonnes");
                 }
             }
         });
+
+ */
+
+
+
+
+
+
+
+
 
     }
     public void actionPerformed(ActionEvent e) {
