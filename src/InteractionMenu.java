@@ -352,7 +352,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
                 int x = (int) ((dimension.getWidth() - getWidth()) / 2);
                 int y = (int) ((dimension.getHeight() - getHeight()) / 2);
                 frameFichier.setLocation(x, y);
-                frameFichier.setSize(550, 250);
+                frameFichier.setSize(565, 250);
                 ((JFrame) frameFichier).getContentPane().setBackground(Color.decode("#dcf9fa"));
                 frameFichier.setLayout(null);
                 frameFichier.setVisible(true);
