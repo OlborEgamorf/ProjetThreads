@@ -1,18 +1,20 @@
-public class Rectangle {
+public class Rectangle implements Comparable<Rectangle> {
     private double[] a;
     private double[] b;
     private double[] c;
     private double[] d;
     private double[] centre;    
     private int zone;
+    private int id;
 
-    public Rectangle(double[] a, double[] b, double[] c, double[] d, int zone) {
+    public Rectangle(double[] a, double[] b, double[] c, double[] d, int zone, int id) {
         this.a = a;
         this.b = b;
         this.c = c;
         this.d = d;
         this.zone = zone;
         this.centre = new double[]{(a[0]+c[0])/2,(a[1]+c[1])/2};
+        this.id = id;
     }
 
 
@@ -35,6 +37,29 @@ public class Rectangle {
         return d;
     }
 
-    
+
+    public double[] getA() {
+        return a;
+    }
+
+
+    public double[] getB() {
+        return b;
+    }
+
+
+    public double[] getC() {
+        return c;
+    }
+
+    public int compareTo(Rectangle other) {
+        if (d[1] > other.d[1]) {
+            return 1;
+        } else if (d[1] < other.d[1]) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 
 }

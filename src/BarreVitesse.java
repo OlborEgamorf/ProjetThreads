@@ -12,11 +12,10 @@ public class BarreVitesse {
     private JLabel TexteDessous;
     private JPanel controlPanel;
 
-    private Coeff value;
+    private int value = 1;
 
-    public BarreVitesse(Coeff value){
+    public BarreVitesse(){
         prepareGUI();
-        this.value = value;
     }
 
     private void prepareGUI(){
@@ -66,7 +65,7 @@ public class BarreVitesse {
         slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 TexteDessous.setText("Vitesse de la simulation : " + ((JSlider)e.getSource()).getValue());
-                value.setCoeff(slider.getValue());
+                Coeff.setCoeff(slider.getValue());
                 System.out.println(value);
             }
         });
@@ -75,7 +74,7 @@ public class BarreVitesse {
 
 
     }
-    public Coeff getValue() {
+    public int getValue() {
         return value;
     }
 }
