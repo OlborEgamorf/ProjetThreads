@@ -62,4 +62,8 @@ public class Rectangle implements Comparable<Rectangle> {
         }
     }
 
+    public int getIdRect() {
+        return id;
+    }
+
 }

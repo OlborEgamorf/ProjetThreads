@@ -28,7 +28,11 @@ public class Plage {
         this.mer = mer;
         this.threads = new Personne[nbMax];
 
-        this.poste = new Rectangle(new double[]{longueur/2-3,largeur/2+5}, new double[]{longueur/2+3,largeur/2+5}, new double[]{longueur/2+3,largeur/2-5}, new double[]{longueur/2-3,largeur/2-5}, 2,-1);
+        this.poste = new Rectangle(new double[]{longueur/2-20,largeur/2+20}, new double[]{longueur/2+20,largeur/2+20}, new double[]{longueur/2+20,largeur/2}, new double[]{longueur/2-20,largeur/2}, 2,-1);
+
+        System.out.println((longueur/2-20)+" "+(longueur/2+20));
+
+        placements.add(poste);
 
         setZones();
         this.meteo = meteo;
@@ -140,12 +144,9 @@ public class Plage {
             Rectangle emplacement = new Rectangle(new double[]{x,y}, new double[]{x,y+1}, new double[]{x+1.7,y+1}, new double[]{x+1.7,y}, z, personne.getIdPersonne()); // dimensions serviette de plage
 
             boolean flag = true;
-            for (int c=0; c<threads.length && flag; c++) {
-                if (threads[c].isAlive() && threads[c].getPositionPlage() != null && c != personne.getIdPersonne()) {
-                    Rectangle emp = threads[c].getPositionPlage();
-                    if (emp.getZone() == z) {
-                        flag = !emplacement.isIn(emp);
-                    }
+            for (Rectangle emp : placements) {
+                if (emp.getZone() == z) {
+                    flag = !emplacement.isIn(emp);
                 }
             }
 
@@ -258,15 +259,32 @@ public class Plage {
                         } else {
                             Vector vecteur = Vector.choixVector(position, objPosition, vitesse, 0);
                             ArrayList<Coordonnees> liste = new ArrayList<>();
-                            for (Personne compare : threads) {
-                                if (compare.isPlaced()) {
-                                    if (vecteur.croisementRectangle(compare.positionPlage)) {
-                                        
+                            int sensX = vecteur.getSensX();
+                            int sensY = vecteur.getSensY();
+                            for (Rectangle compare : placements) {
+                                if (compare.getIdRect() != personne.getIdPersonne()) {
+                                    Coordonnees coords = vecteur.croisementRectangle(compare);
+                                    if (!Vector.isCoordsNull(coords)) {
+                                        liste.add(coords);
+                                        if (sensX == 1) {
+                                            liste.add(new Coordonnees(compare.getB()[0]+0.5, coords.getY()));
+                                            vecteur = Vector.choixVector(new double[]{compare.getB()[0]+0.5,coords.getY()}, objPosition, vitesse, i);
+                                        } else {
+                                            liste.add(new Coordonnees(compare.getA()[0]-0.5, coords.getY()));
+                                            vecteur = Vector.choixVector(new double[]{compare.getA()[0]-0.5,coords.getY()}, objPosition, vitesse, i);
+                                        }
                                     }
                                 }
-                            }
-                            
-                            if (vecteur.croisementRectangle(poste)) {
+
+                                if (sensY == 1) {
+                                    if (objPosition[1] > compare.getD()[1] && objPosition[1] > compare.getA()[1]) {
+                                        break;
+                                    }
+                                } else {
+                                    if (objPosition[1] < compare.getD()[1] && objPosition[1] < compare.getA()[1]) {
+                                        break;
+                                    }
+                                }
                                 
                             }
 
@@ -299,7 +317,11 @@ public class Plage {
                                 }
                             }
 
-                            for (Personne compare : threads) {
+                            for (Vector vect : personne.getStackMove()) {
+                                System.out.println(vect);
+                            }
+
+                            /*for (Personne compare : threads) {
                                 if (compare.isAlive() && !compare.getStackMove().isEmpty()) {
                                     Iterator<Vector> it = compare.getStackMove().iterator();
                                     while (it.hasNext()) {
@@ -312,7 +334,7 @@ public class Plage {
                                         }
                                     }
                                 }
-                            }
+                            }*/
                         }                
         
                     } catch (ConcurrentModificationException exc) {}
@@ -350,6 +372,8 @@ public class Plage {
                     
                 } else if (etat == Etat.SAUVETAGE) {
 
+                } else if (etat == Etat.DEPART) {
+                    placements.remove(personne.getPositionPlage());
                 }
 
                 personne.setOath(true);

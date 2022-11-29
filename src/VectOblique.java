@@ -26,7 +26,7 @@ public class VectOblique extends Vector {
     }
 
     public void setM() {
-        this.m = (objY-y)/(objX-x);
+        this.m = objX-x==0?0:(objY-y)/(objX-x);
     }
 
     public void setP() {
@@ -43,13 +43,26 @@ public class VectOblique extends Vector {
         }
     }
 
-    public boolean croisementRectangle(Rectangle rect) {
+    public Coordonnees croisementRectangle(Rectangle rect) {
         boolean flag = false;
         for (double i=rect.getA()[0];i<=rect.getB()[0] && !flag;i+=0.1) {
             if (m*i+p <= rect.getA()[1] && m*i+p >= rect.getD()[1]) {
                 flag = true;
             }
         }
-        return flag;
+
+        if (flag) {
+            Vector vectCop = copy();
+            double colX, colY;
+            do {   
+                colX = vectCop.x;
+                colY = vectCop.y;
+                vectCop.glissement();
+            } while ((sensY == 1 && vectCop.x < rect.getD()[1]) || (sensY == -1 && vectCop.x > rect.getA()[1]));
+
+            return new Coordonnees(colX, colY);
+            
+        }
+        return new Coordonnees(-1,-1);
     }
 }

@@ -189,11 +189,16 @@ public class Personne extends Thread {
     }
 
     public void run() {
-        try {
-            Thread.sleep(timing/Coeff.getCoeff());
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
+        int deadge = 0;
+        while (deadge < timing) {
+            try {
+                deadge+=1000*Coeff.getCoeff();
+                Thread.sleep(1000/Coeff.getCoeff());
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
         }
+        
 
         alive = true;
         int tempsEau = 0;
@@ -201,7 +206,7 @@ public class Personne extends Thread {
 
         while (!Thread.interrupted()) {
             int sleeper = 1000/Coeff.getCoeff();
-            System.out.println(stamina);
+            //System.out.println(stamina);
 
             if (etat == Etat.MOUVEMENT && oath) {
 

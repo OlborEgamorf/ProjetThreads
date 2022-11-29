@@ -21,4 +21,14 @@ public class Coordonnees implements Comparable<Coordonnees> {
         }
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    
+
 }

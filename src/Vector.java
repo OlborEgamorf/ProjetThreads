@@ -77,16 +77,8 @@ public abstract class Vector {
     }
 
     public void setSens() {
-        if (x > objX) {
-            sensX = -1;
-        } else {
-            sensX = 1;
-        }
-        if (y > objY) {
-            sensY = -1;
-        } else {
-            sensY = 1;
-        }
+        sensX = x > objX?-1:1;
+        sensY = y > objY?-1:1;
     }
 
     public int getSensX() {
@@ -147,10 +139,14 @@ public abstract class Vector {
 
     public abstract void glissement();
     public abstract Vector copy();
-    public abstract boolean croisementRectangle(Rectangle rect); 
+    public abstract Coordonnees croisementRectangle(Rectangle rect); 
 
     public static boolean isCoordsNull(double[] coords) {
         return coords[0] == -1 && coords[1] == -1;
+    }
+
+    public static boolean isCoordsNull(Coordonnees coords) {
+        return coords.getX() == -1 && coords.getY() == -1;
     }
 
     public static boolean isCollision(Vector vect1, Vector vect2) {
@@ -171,6 +167,14 @@ public abstract class Vector {
         } else {
             return new VectOblique(position[0], position[1], objPosition[0], objPosition[1], vitesse, timing);
         }
+    }
+
+    public int getSensY() {
+        return sensY;
+    }
+
+    public String toString() {
+        return x+" "+y+" / "+objX+" "+objY;
     }
 }
 
