@@ -1,4 +1,4 @@
-//package src;
+package src;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +21,9 @@ public class Plage {
     private Coeff coeff;
     private Rectangle poste;
     private double maree;
+
+    private Vendeur vendeur = null;
+
     private double multVagues; //[hauteur, vitesse]
 
     Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax, Meteo meteo, Coeff coeff) {
@@ -33,7 +36,7 @@ public class Plage {
         this.threads = new Personne[nbMax];
         this.coeff = coeff;
 
-        this.poste = new Rectangle(new double[]{longueur/2-3,largeur/2+5}, new double[]{longueur/2+3,largeur/2+5}, new double[]{longueur/2+3,largeur/2-5}, new double[]{longueur/2-3,largeur/2-5}, 2);
+        this.poste = new Rectangle(new double[]{longueur / 2 - 3, largeur / 2 + 5}, new double[]{longueur / 2 + 3, largeur / 2 + 5}, new double[]{longueur / 2 + 3, largeur / 2 - 5}, new double[]{longueur / 2 - 3, largeur / 2 - 5}, 2);
 
         setZones();
         this.meteo = meteo;
@@ -43,16 +46,18 @@ public class Plage {
         int apparition = 5000; // coefficient de vitesse d'apparition, en ms
         for (int i = 0; i < threads.length; i++) {
             if (i == 0) {
-                threads[i] = new Sauveteur(i,poste.getCentre(),vent,poste,coeff);
+                threads[i] = new Sauveteur(i, poste.getCentre(), vent, poste, coeff);
                 sauveteurs.add(i);
+            } else if (i == threads.length/2) {
+                threads[i] = new Vendeur(i, new double[] {longueur-1, 1}, vent, new double[] {longueur-1, largeur}, coeff);
             } else {
-                double[] posTest = {0,Math.random() * largeur};
-                threads[i] = new Personne(i,posTest,vent,apparition*i,coeff);
+                double[] posTest = {0, Math.random() * largeur};
+                threads[i] = new Personne(i, posTest, vent, apparition * i, coeff);
             }
         }
         changeVitesseInitiale();
-    }
 
+    }
     public void startAll() {
         for (int i = 0; i < threads.length; i++) {
             threads[i].start();
@@ -149,7 +154,7 @@ public class Plage {
         int z = getZones().length-1;
         int t = 0;
         while (z >= 0) {
-            double x = (Math.random() * ((getZones()[z]-3) - (getZones()[z-1]+3)) + (getZones()[z-1]+3));
+            double x = (Math.random() * ((getZones()[z]-3) - (getZones()[z-1]+3)) + (getZones()[z-1]+3)-5);
             double y = (Math.floor(Math.random() * (((getLargeur()-3) - (getLargeur() - (getLargeur()-3))) + (getLargeur() - (getLargeur()-3)))));
             
             while (y<3){
@@ -247,6 +252,9 @@ public class Plage {
             double[] objPosition = personne.getObjPosition();
             Objectif objectif = personne.getObjectif();
 
+
+
+
             if (personne.getAlive()) {
 
                 if (position[0] >= mer && !personne.getAttributsBaignade()){
@@ -286,7 +294,7 @@ public class Plage {
                                         if (!Vector.isCoordsNull(coords)) {
                                             if (Vector.isCollision(vecteur.copy(),vectorComp.copy())) {
                                                 liste.add(new Coordonnees(coords[0], coords[1]));
-                                            };
+                                            }
                                         }
                                     }
                                 }
@@ -334,6 +342,8 @@ public class Plage {
                     personne.setPositionPlage(null);
                 } else if (etat == Etat.ARRIVEE && personne.getPositionPlage() == null) {
                     placementPlage(personne);
+                } else if (etat == Etat.ACHETER && vendeur != null) {
+                    personne.setObjPosition(new double[]{vendeur.position[0]-1, vendeur.position[1]});
                 } else if (etat == Etat.ATTENTE) {
 
                 } else if (etat == Etat.PARTI) {
