@@ -1,4 +1,4 @@
-//package src;
+package src;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ public class Personne extends Thread {
     protected int age;
     protected double vitesse;
     protected double vitesseNage;
-     
+
     protected Rectangle positionPlage;
     
     protected double[] position;
@@ -223,6 +223,8 @@ public class Personne extends Thread {
                             etat = Etat.REPOS;
                         } else if (objectif == Objectif.PARTIR) {
                             etat = Etat.PARTI;
+                        } else if (objectif == Objectif.ACHETER) {
+                            etat = Etat.ACHETER;
                         } else if (objectif == Objectif.NAGE) {
                             etat = Etat.BAIGNADE;
                         }
@@ -252,8 +254,20 @@ public class Personne extends Thread {
                 }               
 
             } else if (etat == Etat.REPOS) {
-                etat = Etat.ATTENTE;
-                sleeper = 600000/coeff.getCoeff();
+                if (Math.floor(Math.random()) * 15 < 1 ) {
+                    objectif = Objectif.ACHETER;
+                    etat = Etat.PATH;
+                }
+                else {
+                    etat = Etat.ATTENTE;
+                    sleeper = 600000 / coeff.getCoeff();
+                }
+            } else if (etat == Etat.ACHETER){
+                sleeper = 15000;
+                objectif = Objectif.REPOS;
+                etat = Etat.PATH;
+                objPosition = positionPlage.getCentre();
+
 
             } else if (etat == Etat.PLACEMENT && oath) {
                 objectif = Objectif.REPOS;
