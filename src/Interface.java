@@ -1,4 +1,4 @@
-//package src;
+package src;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +10,8 @@ public class Interface extends JPanel {
     private int largeur;
     private int mer;
     private Rectangle poste;
+
+    private Vendeur vendeur = null;
     private Personne[] threads;
     private double zoom = 1;
 
@@ -93,6 +95,13 @@ public class Interface extends JPanel {
                 if (personne instanceof Sauveteur){
                     g.setColor(Color.red);
                     g.fillOval((int) (personne.getPosition()[1]*zoom),(int) (personne.getPosition()[0]*zoom), pixel, pixel);
+                } else if(personne instanceof Vendeur){
+                    g.setColor(Color.green);
+                    g.fillOval((int) (personne.getPosition()[1]*zoom),(int) (personne.getPosition()[0]*zoom), pixel, pixel);
+                    g.setColor(Color.black);
+                    g.fillRect((int) (personne.getPosition()[1]*zoom)+3, (int) (personne.getPosition()[0]*zoom), 2, 3);
+                    g.fillRect((int) (personne.getPosition()[1]*zoom)+4, (int) (personne.getPosition()[0]*zoom), 2, 3);
+                    g.fillRect((int) (personne.getPosition()[1]*zoom)+5, (int) (personne.getPosition()[0]*zoom), 2, 3);
                 }
                 else{
                     if (personne.getEtat() == Etat.NOYADE){
