@@ -59,20 +59,20 @@ public class Interface extends JPanel {
             if (ratioBase>=1){
                 ratioBase = (double) (largeur)/(double) (longueur+mer);
                 a=longueur+mer;
-                b= (int) dimension.getHeight();
+                b= (int) dimension.getHeight()-50;
             }
-            else if (a*4<b)
+            if (a*10<b && (longueur+mer)*10 < dimension.getHeight()-50)
+                zoom = 10;
+            if (a*7<b && (longueur+mer)*7 < dimension.getHeight()-50)
+                zoom = 7;
+            else if (a*4<b && (longueur+mer)*4 < dimension.getHeight()-50)
                 zoom = 4;
-            else if (a*2<b){
-                zoom = 2;}
+            else if (a*2<b && (longueur+mer)*2 < dimension.getHeight()-50)
+                zoom = 2;
             else
                 zoom = 1;
-            if (zoom == 1)
-                frame.setSize((int) (largeur*zoom), (int) ((longueur+mer)*zoom)+40);
-            else if (zoom == 2)
-                frame.setSize((int) (largeur*zoom), (int) ((longueur+mer)*zoom+(mer*ratioBase/zoom))+3);
-            else if (zoom == 4)
-                frame.setSize((int) (largeur*zoom), (int) ((longueur+mer)*zoom+(mer*ratioBase)));
+
+            frame.setSize((int) (largeur*zoom)+14, (int) ((longueur+mer)*zoom+40));
         }
 
         frame.setVisible(true);
