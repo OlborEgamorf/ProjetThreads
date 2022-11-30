@@ -28,7 +28,9 @@ public class Plage {
         this.mer = mer;
         this.threads = new Personne[nbMax];
 
-        this.poste = new Rectangle(new double[]{longueur/2-20,largeur/2+20}, new double[]{longueur/2+20,largeur/2+20}, new double[]{longueur/2+20,largeur/2}, new double[]{longueur/2-20,largeur/2}, 2,-1);
+        this.poste = new Rectangle(new double[]{longueur/2-20,largeur/2+10}, new double[]{longueur/2+20,largeur/2+10}, new double[]{longueur/2+20,largeur/2-10}, new double[]{longueur/2-20,largeur/2-10}, 2,-1);
+
+        System.out.println(poste.getA()[0]+" "+poste.getA()[1]+" | "+poste.getB()[0]+" "+poste.getB()[1]+" | "+poste.getC()[0]+" "+poste.getC()[1]+" | "+poste.getD()[0]+" "+poste.getD()[1]+" | ");
 
         System.out.println((longueur/2-20)+" "+(longueur/2+20));
 
