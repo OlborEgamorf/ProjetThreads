@@ -7,8 +7,8 @@ public class Vendeur extends Personne {
 
     private Personne personne = null;
 
-    public Vendeur(int id, double[] position, int vent, double[] objposition, Coeff coeff) {
-        super(id, position, vent, 1, coeff);
+    public Vendeur(int id, double[] position, int vent, double[] objposition) {
+        super(id, position, vent, 1);
         this.objPosition = objposition;
         this.etat = Etat.PATH;
     }
@@ -50,7 +50,7 @@ public class Vendeur extends Personne {
                         }
                     } else {
                         vecteurCourant.glissement();
-                        setPosition(vecteurCourant.getCoords());
+                        position = vecteurCourant.getCoords();
                     }
                 }
             } else if (etat == Etat.COMMERCE) {

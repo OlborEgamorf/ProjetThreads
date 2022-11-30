@@ -59,7 +59,7 @@ public class VectOblique extends Vector {
                 colX = vectCop.x;
                 colY = vectCop.y;
                 vectCop.glissement();
-            } while ((sensY == 1 && vectCop.x < rect.getD()[1]) || (sensY == -1 && vectCop.x > rect.getA()[1]));
+            } while ((sensY == 1 && vectCop.y < rect.getD()[1]) || (sensY == -1 && vectCop.y > rect.getA()[1]));
 
             return new Coordonnees(colX, colY);
             

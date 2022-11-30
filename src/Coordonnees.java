@@ -31,6 +31,9 @@ public class Coordonnees implements Comparable<Coordonnees> {
         return y;
     }
 
+    public String toString() {
+        return x+" "+y;
+    }
     
 
 }

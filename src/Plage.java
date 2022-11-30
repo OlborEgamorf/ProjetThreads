@@ -30,7 +30,6 @@ public class Plage {
 
         System.out.println(poste.getA()[0]+" "+poste.getA()[1]+" | "+poste.getB()[0]+" "+poste.getB()[1]+" | "+poste.getC()[0]+" "+poste.getC()[1]+" | "+poste.getD()[0]+" "+poste.getD()[1]+" | ");
 
-        System.out.println((longueur/2-20)+" "+(longueur/2+20));
 
         placements.add(poste);
 
@@ -44,10 +43,10 @@ public class Plage {
             if (i == 90909090) {
                 threads[i] = new Sauveteur(i,poste.getCentre(),vent,poste);
                 sauveteurs.add(i);
-            } else if (i == threads.length/2) {
+            } else if (i == 666) {
                 threads[i] = new Vendeur(i, new double[] {longueur-1, 1}, vent, new double[] {longueur-1, largeur});
             } else {
-                double[] posTest = {0,Math.random() * largeur};
+                double[] posTest = {0,largeur * Math.random()};
                 threads[i] = new Personne(i,posTest,vent,apparition*i);
             }
         }
@@ -276,12 +275,14 @@ public class Plage {
             Objectif objectif = personne.getObjectif();
 
 
-
+            System.out.println(i);
 
             if (personne.getAlive()) {
 
                 if (etat == Etat.PATH && personne.getVecteurCourant() == null) {
                     try {
+                        //personne.setObjPosition(new double[]{60,60});
+                        //objPosition = new double[]{60,60};
                         double vitesse = personne.isIntoWater()? personne.getVitesseNage(): personne.getVitesse();
                         //System.out.println(vitesse);
 
@@ -303,41 +304,43 @@ public class Plage {
                             ArrayList<Coordonnees> liste = new ArrayList<>();
                             int sensX = vecteur.getSensX();
                             int sensY = vecteur.getSensY();
+                            if (sensX == -1) {
+                                Collections.reverse(placements);
+                            }
                             for (Rectangle compare : placements) {
-                                if (compare.getIdRect() != personne.getIdPersonne()) {
-                                    Coordonnees coords = vecteur.croisementRectangle(compare);
-                                    if (!Vector.isCoordsNull(coords)) {
-                                        liste.add(coords);
-                                        if (sensX == 1) {
-                                            liste.add(new Coordonnees(compare.getB()[0]+0.5, coords.getY()));
-                                            vecteur = Vector.choixVector(new double[]{compare.getB()[0]+0.5,coords.getY()}, objPosition, vitesse, i);
-                                        } else {
-                                            liste.add(new Coordonnees(compare.getA()[0]-0.5, coords.getY()));
-                                            vecteur = Vector.choixVector(new double[]{compare.getA()[0]-0.5,coords.getY()}, objPosition, vitesse, i);
-                                        }
-                                    }
-                                }
+                                //System.out.println(compare.getIdRect()+" "+personne.getIdPersonne());
 
                                 if (sensY == 1) {
-                                    if (objPosition[1] > compare.getD()[1] && objPosition[1] > compare.getA()[1]) {
+                                    if (objPosition[1] < compare.getD()[1] && objPosition[1] < compare.getA()[1]) {
+                                        //System.out.println("BREAK");
                                         break;
                                     }
                                 } else {
-                                    if (objPosition[1] < compare.getD()[1] && objPosition[1] < compare.getA()[1]) {
+                                    if (objPosition[1] > compare.getD()[1] && objPosition[1] > compare.getA()[1]) {
+                                        //System.out.println("BREAK");
                                         break;
                                     }
                                 }
-                                
+
+                                if (compare.getIdRect() != personne.getIdPersonne()) {
+                                    Coordonnees coords = vecteur.croisementRectangle(compare);
+                                    if (!Vector.isCoordsNull(coords)) {
+                                        //System.out.println(coords);
+                                        liste.add(coords);
+                                        if (sensX == 1) {
+                                            liste.add(new Coordonnees(coords.getX(),compare.getB()[1]+0.5));
+                                            vecteur = Vector.choixVector(new double[]{coords.getX(),compare.getB()[1]+0.5}, objPosition, vitesse, 0);
+                                        } else {
+                                            liste.add(new Coordonnees(coords.getX(),compare.getA()[1]-0.5));
+                                            vecteur = Vector.choixVector(new double[]{coords.getX(),compare.getA()[1]-0.5}, objPosition, vitesse, 0);
+                                        }
+                                    }
+                                }
                             }
 
                             if (liste.isEmpty()) {
                                 personne.addVector(vecteur);
                             } else {
-                                Collections.sort(liste);
-                                if (vecteur.getSensX() == -1) {
-                                    Collections.reverse(liste);
-                                }
-
                                 //System.out.println(personne.getIdPersonne()+" P:"+position[0]+" "+position[1]+" O:"+objPosition[0]+" "+objPosition[1]);
                                 ListIterator<Coordonnees> itLi = liste.listIterator();
                                 while (itLi.hasNext()) {
@@ -351,7 +354,7 @@ public class Plage {
                                     double[] coordsNext = itLi.next().getCoords();
                                     
                                     //System.out.println(personne.getIdPersonne()+" P:"+coordsPrevious[0]+" "+coordsPrevious[1]+" N:"+coordsNext[0]+" "+coordsNext[1]);
-                                    personne.addVector(Vector.choixVector(coordsPrevious, coordsNext, personne.getVitesse(), 2000));
+                                    personne.addVector(Vector.choixVector(coordsPrevious, coordsNext, personne.getVitesse(), 0));
                                     if (!itLi.hasNext()) {
                                         //System.out.println(personne.getIdPersonne()+" P:"+coordsNext[0]+" "+coordsNext[1]+" F:"+objPosition[0]+" "+objPosition[1]);
                                         personne.addVector(Vector.choixVector(coordsNext, objPosition, personne.getVitesse(), 0));
@@ -359,8 +362,8 @@ public class Plage {
                                 }
                             }
 
-                            for (Vector vect : personne.getStackMove()) {
-                                System.out.println(vect);
+                            if (sensX == -1) {
+                                Collections.sort(placements);
                             }
 
                             /*for (Personne compare : threads) {

@@ -2,7 +2,6 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Interface extends JPanel {
     
@@ -11,12 +10,8 @@ public class Interface extends JPanel {
     private int largeur;
     private int mer;
     private Rectangle poste;
-
-    private Vendeur vendeur = null;
     private Personne[] threads;
     private double zoom = 1;
-
-    private ArrayList<Vague> vagues;
 
     public Interface (Plage plage){
         setVisible(true);
@@ -28,7 +23,7 @@ public class Interface extends JPanel {
         largeur = plage.getLargeur();
         poste = plage.getPoste();
         double ratioBase = (double) (longueur+mer)/(double) largeur;
-        if (largeur>dimension.getWidth() || longueur+mer>dimension.getHeight()-10){
+        if (largeur>dimension.getWidth() || longueur+mer>dimension.getHeight()){
             boolean fini = false;
             double i= 1.25;
             if (largeur/dimension.getWidth()>longueur/dimension.getHeight()){
@@ -55,8 +50,8 @@ public class Interface extends JPanel {
         }
         else {
             int a= largeur;
-            int b= (int) dimension.getWidth()-50;
-            if (ratioBase>=1){
+            int b= (int) dimension.getWidth();
+            if (ratioBase>1){
                 ratioBase = (double) (largeur)/(double) (longueur+mer);
                 a=longueur+mer;
                 b= (int) dimension.getHeight()-50;
@@ -84,7 +79,6 @@ public class Interface extends JPanel {
         frame.setContentPane(this);
 
         threads = plage.getThreads();
-        vagues = plage.getVagues();
     }
 
     public void paintComponent(Graphics g){
@@ -92,31 +86,16 @@ public class Interface extends JPanel {
         g.setColor(Color.decode("#FFE333"));
         g.fillRect(0, 0,(int) (largeur*zoom),(int) (longueur*zoom));
         g.setColor(Color.decode("#34a8eb"));
-        g.fillRect(0,(int) (longueur*zoom), (int) (largeur*zoom), (int) (mer*zoom)+3);
+        g.fillRect(0,(int) (longueur*zoom), (int) (largeur*zoom), (int) (mer*zoom));
 
         g.setColor(Color.red);
         g.fillRect((int) (poste.getD()[0]*zoom), (int) (poste.getD()[1]*zoom), (int)((poste.getB()[0]-poste.getA()[0])*zoom), (int)((poste.getA()[1]-poste.getD()[1])*zoom));
-
-        for (Vague vague : vagues){
-            Color newWhite = new Color(Color.white.getRed(), Color.white.getGreen(), Color.white.getBlue(), 127);
-            g.setColor(newWhite);
-            for (int i=0; i<largeur*zoom; i++){
-                g.fillRect(i, (int) (vague.getPositionY()*zoom), 1, vague.getLongueur());
-            }
-        }
 
         for (Personne personne : threads) {
             if (personne.getAlive()) {
                 if (personne instanceof Sauveteur){
                     g.setColor(Color.red);
                     g.fillOval((int) (personne.getPosition()[1]*zoom),(int) (personne.getPosition()[0]*zoom), pixel, pixel);
-                } else if(personne instanceof Vendeur){
-                    g.setColor(Color.green);
-                    g.fillOval((int) (personne.getPosition()[1]*zoom),(int) (personne.getPosition()[0]*zoom), pixel, pixel);
-                    g.setColor(Color.black);
-                    g.fillRect((int) (personne.getPosition()[1]*zoom)+3, (int) (personne.getPosition()[0]*zoom), 2, 3);
-                    g.fillRect((int) (personne.getPosition()[1]*zoom)+4, (int) (personne.getPosition()[0]*zoom), 2, 3);
-                    g.fillRect((int) (personne.getPosition()[1]*zoom)+5, (int) (personne.getPosition()[0]*zoom), 2, 3);
                 }
                 else{
                     if (personne.getEtat() == Etat.NOYADE){

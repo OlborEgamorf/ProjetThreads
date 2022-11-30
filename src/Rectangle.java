@@ -5,7 +5,7 @@ public class Rectangle implements Comparable<Rectangle> {
     private double[] d;
     private double[] centre;    
     private int zone;
-    private int id;
+    private int id = -1;
 
     public Rectangle(double[] a, double[] b, double[] c, double[] d, int zone, int id) {
         this.a = a;
@@ -65,5 +65,6 @@ public class Rectangle implements Comparable<Rectangle> {
     public int getIdRect() {
         return id;
     }
+    
 
 }

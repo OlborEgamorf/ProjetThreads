@@ -12,9 +12,8 @@ public class Vague extends Thread{
     private ArrayList<Vector> stackMove = new ArrayList<Vector>();
     private int longueur;
     private int plagePlusMer;
-    private Coeff coeff;
 
-    public Vague(double hauteur, double vitesse, double force, int longueur, double positionY, double positionMer, int plagePlusMer, Coeff coeff){
+    public Vague(double hauteur, double vitesse, double force, int longueur, double positionY, double positionMer, int plagePlusMer){
         this.hauteur = hauteur;
         this.vitesse = vitesse;
         this.force = force;
@@ -22,8 +21,7 @@ public class Vague extends Thread{
         this.positionY = positionY;
         this.positionMer = positionMer;
         this.plagePlusMer = plagePlusMer;
-        this.coeff = coeff;
-        this.vecteurCourant = Vector.choixVector(new double[]{positionY, 0}, new double[]{positionMer, 0},vitesse/250, coeff,10);
+        this.vecteurCourant = Vector.choixVector(new double[]{positionY, 0}, new double[]{positionMer, 0},vitesse/250,10);
         stackMove.add(vecteurCourant);
     }
 
@@ -55,7 +53,7 @@ public class Vague extends Thread{
         while (!Thread.interrupted()){
             if ((int) (this.positionY) == this.vecteurCourant.objX || (int) (this.positionY) == this.vecteurCourant.objX-1){
                 this.positionY = plagePlusMer;
-                this.vecteurCourant = Vector.choixVector(new double[]{positionY, 0}, new double[]{positionMer, 0},vitesse/250, coeff,10);
+                this.vecteurCourant = Vector.choixVector(new double[]{positionY, 0}, new double[]{positionMer, 0},vitesse/250,10);
                 stackMove.add(vecteurCourant);
                 stackMove.remove(0);
             }
