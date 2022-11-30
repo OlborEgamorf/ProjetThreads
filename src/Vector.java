@@ -3,26 +3,24 @@ public abstract class Vector {
     protected double x, y, objX, objY;
 
     protected double vitesse;
-    protected Coeff coeff;
     
     protected int sensX;
     protected int sensY;
 
     protected int timing;
     
-    public Vector(double x, double y, double objX, double objY, double vitesse, Coeff coeff, int timing) {
+    public Vector(double x, double y, double objX, double objY, double vitesse, int timing) {
         this.x = x;
         this.y = y;
         this.objX = objX;
         this.objY = objY;
         this.vitesse = vitesse;
-        this.coeff = coeff;
         this.timing = timing;
         setSens();
     }
 
     Vector(Vector vect) {
-        this(vect.x,vect.y,vect.objX,vect.objY,vect.vitesse,vect.coeff,vect.timing);
+        this(vect.x,vect.y,vect.objX,vect.objY,vect.vitesse,vect.timing);
     }
 
     public double getX() {
@@ -80,16 +78,8 @@ public abstract class Vector {
     }
 
     public void setSens() {
-        if (x > objX) {
-            sensX = -1;
-        } else {
-            sensX = 1;
-        }
-        if (y > objY) {
-            sensY = -1;
-        } else {
-            sensY = 1;
-        }
+        sensX = x > objX?-1:1;
+        sensY = y > objY?-1:1;
     }
 
     public int getSensX() {
@@ -119,33 +109,9 @@ public abstract class Vector {
                 incY = testY;
             }
 
-        } else if (this instanceof VectHorizontal && vect instanceof VectHorizontal) {
-            if (this.y == vect.y) {
-                incX = x;
-                incY = y;
-            }
-
         } else if (this instanceof VectVertical && vect instanceof VectVertical) {
             if (this.x == vect.x) {
                 incX = x;
-                incY = y;
-            }
-
-        } else if ((this instanceof VectOblique || vect instanceof VectOblique) && ((this instanceof VectHorizontal || vect instanceof VectHorizontal))) {
-            VectOblique vectO;
-            VectHorizontal vectH;
-            if (this instanceof VectOblique) {
-                vectO = (VectOblique)this;
-                vectH = (VectHorizontal)vect;
-            } else {
-                vectH = (VectHorizontal)this;
-                vectO = (VectOblique)vect;
-            }
-
-            double testX = vectH.y/vectO.getM() - vectO.getP();
-
-            if ((vectO.objX >= testX && testX >= vectO.x) || (vectO.objX <= testX && testX <= vectO.x)) {
-                incX = testX;
                 incY = y;
             }
 
@@ -168,31 +134,20 @@ public abstract class Vector {
                 incY = testY;
             }
 
-        } else {
-            VectHorizontal vectH;
-            VectVertical vectV;
-
-            if (this instanceof VectHorizontal) {
-                vectH = (VectHorizontal)this;
-                vectV = (VectVertical)vect;
-            } else {
-                vectV = (VectVertical)this;
-                vectH = (VectHorizontal)vect;
-            }
-
-            if (((vectH.objX >= vectV.x && vectV.x >= vectH.x) || (vectH.objX <= vectV.x && vectV.x <= vectH.x)) && ((vectV.objY >= vectH.y && vectH.y >= vectV.y) || (vectV.objY <= vectH.y && vectH.y <= vectV.y))) {
-                incX = vectV.x;
-                incY = vectH.y;
-            }
         }
         return new double[]{incX,incY};
     }
 
     public abstract void glissement();
     public abstract Vector copy();
+    public abstract Coordonnees croisementRectangle(Rectangle rect); 
 
     public static boolean isCoordsNull(double[] coords) {
         return coords[0] == -1 && coords[1] == -1;
+    }
+
+    public static boolean isCoordsNull(Coordonnees coords) {
+        return coords.getX() == -1 && coords.getY() == -1;
     }
 
     public static boolean isCollision(Vector vect1, Vector vect2) {
@@ -207,16 +162,20 @@ public abstract class Vector {
         return flag;
     }
 
-    public static Vector choixVector(double[] position, double[] objPosition, double vitesse, Coeff coeff, int timing) {
-        new VectOblique(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
-
+    public static Vector choixVector(double[] position, double[] objPosition, double vitesse, int timing) {
         if (position[0] == objPosition[0]) {
-            return new VectVertical(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
-        } else if (position[1] == objPosition[1]) {
-            return new VectHorizontal(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
+            return new VectVertical(position[0], position[1], objPosition[0], objPosition[1], vitesse, timing);
         } else {
-            return new VectOblique(position[0], position[1], objPosition[0], objPosition[1], vitesse, coeff, timing);
+            return new VectOblique(position[0], position[1], objPosition[0], objPosition[1], vitesse, timing);
         }
+    }
+
+    public int getSensY() {
+        return sensY;
+    }
+
+    public String toString() {
+        return x+" "+y+" / "+objX+" "+objY;
     }
 }
 

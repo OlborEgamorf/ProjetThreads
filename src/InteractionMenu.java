@@ -233,7 +233,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         labelChoixFichier.setBounds(325, 0, 250, 50);
 
 
-        File dir = new File("Patterns");
+        File dir = new File("Sauvegardes");
         File[] liste = dir.listFiles();
 
         JComboBox<String> combo = new JComboBox();

@@ -1,13 +1,13 @@
 //package src;
 
 public class Coeff {
-    private int coeff = 30;
+    private static int coeff = 10;
 
-    public void setCoeff(int coeff) {
-        this.coeff = coeff;
+    public static void setCoeff(int coeff) {
+        Coeff.coeff = coeff;
     }
 
-    public int getCoeff() {
+    public static int getCoeff() {
         return coeff;
     }
 }

@@ -95,7 +95,7 @@ public class Interface extends JPanel {
         g.fillRect(0,(int) (longueur*zoom), (int) (largeur*zoom), (int) (mer*zoom)+3);
 
         g.setColor(Color.red);
-        g.fillRect((int) (poste.getD()[1]*zoom), (int) (poste.getD()[0]*zoom), 10, 6);
+        g.fillRect((int) (poste.getD()[0]*zoom), (int) (poste.getD()[1]*zoom), (int)((poste.getB()[0]-poste.getA()[0])*zoom), (int)((poste.getA()[1]-poste.getD()[1])*zoom));
 
         for (Vague vague : vagues){
             Color newWhite = new Color(Color.white.getRed(), Color.white.getGreen(), Color.white.getBlue(), 127);

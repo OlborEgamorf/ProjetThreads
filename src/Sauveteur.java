@@ -2,20 +2,28 @@
 
 public class Sauveteur extends Personne {
 
-    public Sauveteur(int id, double[] position, int vent, Rectangle poste, Coeff coeff) {
-        super(id, position, vent, 1, coeff);
+    private int idSave = -1;
+
+    public Sauveteur(int id, double[] position, int vent, Rectangle poste) {
+        super(id, position, vent, 1);
         positionPlage = poste;
         etat = Etat.REPOS;
+        vitesseNage = 0.2133;
     }
 
     public void setAge() {
         this.age = (int)Math.floor(18 + Math.random() * 8);
     }
 
-    public void sauvetage(double[] position) {
+    public int getIdSave() {
+        return idSave;
+    }
+
+    public void sauvetage(double[] position, int idSave) {
         etat = Etat.PATH;
         objectif = Objectif.SAUVETAGE;
         objPosition = position;
+        this.idSave = idSave;
     }
     
     public void run() {
@@ -47,11 +55,11 @@ public class Sauveteur extends Personne {
 
                 } else {
                     vecteurCourant.glissement();
-                    setPosition(vecteurCourant.getCoords());
+                    position = vecteurCourant.getCoords();
                 }
                 
             } else if (etat == Etat.ATTENTE) {
-                iterStatique += 10*coeff.getCoeff();
+                iterStatique += 10*Coeff.getCoeff();
                 if (iterStatique >= 60000) {
                     tempsPatrouille += 1;
                     if (tempsPatrouille == 10) {
@@ -66,7 +74,7 @@ public class Sauveteur extends Personne {
                 }
 
             } else if (etat == Etat.REPOS) {
-                iterStatique += 10*coeff.getCoeff();
+                iterStatique += 10*Coeff.getCoeff();
                 if (iterStatique >= 1200000) {
                     objectif = Objectif.PATROUILLE;
                     etat = Etat.PATH;
