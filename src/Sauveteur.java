@@ -1,3 +1,5 @@
+//package src;
+
 public class Sauveteur extends Personne {
 
     public Sauveteur(int id, double[] position, int vent, Rectangle poste, Coeff coeff) {

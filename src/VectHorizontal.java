@@ -1,3 +1,5 @@
+//package src;
+
 public class VectHorizontal extends Vector {
 
     public VectHorizontal(double x, double y, double objX, double objY, double vitesse, Coeff coeff, int timing) {

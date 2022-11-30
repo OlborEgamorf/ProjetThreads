@@ -1,3 +1,5 @@
+//package src;
+
 public class Coeff {
     private int coeff = 30;
 

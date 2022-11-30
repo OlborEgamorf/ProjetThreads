@@ -1,3 +1,4 @@
+//package src;
 public class VectOblique extends Vector {
     private double m, p;
 

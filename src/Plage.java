@@ -1,10 +1,6 @@
-package src;
+//package src;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.*;
 
 public class Plage {
 
@@ -20,11 +16,10 @@ public class Plage {
     private Meteo meteo;
     private Coeff coeff;
     private Rectangle poste;
-    private double maree;
-
     private Vendeur vendeur = null;
-
-    private double multVagues; //[hauteur, vitesse]
+    private ArrayList<Vague> vagues = new ArrayList<Vague>();
+    private double[] attributsVagues = new double[3];; //[vitesse, hauteur, force]
+    private double coeffVagues = 1;
 
     Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax, Meteo meteo, Coeff coeff) {
         this.longueur = longueur;
@@ -40,8 +35,8 @@ public class Plage {
 
         setZones();
         this.meteo = meteo;
-        this.maree = 0;
-        setMultVagues();
+        setAttributsVagues();
+        setVagues();
 
         int apparition = 5000; // coefficient de vitesse d'apparition, en ms
         for (int i = 0; i < threads.length; i++) {
@@ -91,24 +86,49 @@ public class Plage {
     public Personne[] getThreads() {
         return threads;
     }
-
-    public void setMultVagues(){
+    public ArrayList<Vague> getVagues(){
+        return vagues;
+    }
+    public void setAttributsVagues(){
         if (meteo == Meteo.Soleil){
-            this.multVagues = Math.random();
+            this.attributsVagues[0] = 1;
+            this.attributsVagues[1] = 0.1;
+            this.attributsVagues[2] = 5;
         }
         else if (meteo == Meteo.Nuageux){
-            this.multVagues = Math.random() * ((2-1)+1);
+            this.attributsVagues[0] = 2;
+            this.attributsVagues[1] = 0.3;
+            this.attributsVagues[2] = 1.5;
+            this.coeffVagues = 10;
         }
-        else if (meteo == Meteo.Pluie){
-            this.multVagues = Math.random() * ((3-2)+2);
+        else{
+            this.attributsVagues[0] = 3;
+            this.attributsVagues[1] = 0.8;
+            this.attributsVagues[2] = 2;
+            this.coeffVagues = 20;
         }
-        if (vent > 25 && vent<60) {
-            this.multVagues *= 2;
-        } else {
-            this.multVagues *= 3;
+        if (vent > 25 && vent<60){
+            this.attributsVagues[0] *= 1.5;
+            this.attributsVagues[1] *= 1.5;
+            this.attributsVagues[2] *= 1.5;
+            this.coeffVagues /= 1.5;
+        }
+        else if (vent > 60){
+            this.attributsVagues[0] *= 2;
+            this.attributsVagues[1] *= 1.5;
+            this.attributsVagues[2] *= 2;
+            this.coeffVagues /= 2;
         }
     }
-
+    public void setVagues(){
+        double a = (mer/coeffVagues);
+        int nbVagues = (int) ((mer/a)/2);
+        for (int i = 0; i<nbVagues; i++){
+            vagues.add(new Vague(attributsVagues[1], attributsVagues[0], attributsVagues[2], 3,(longueur+(i*(mer/coeffVagues))*2)+2, longueur, longueur+mer, coeff));
+        }
+        for (int j = 0; j<vagues.size(); j++)
+            vagues.get(j).start();
+    }
     public void changeVitesseInitiale(){
         if (meteo == Meteo.Pluie){
             for (Personne thread : threads) {
@@ -210,7 +230,7 @@ public class Plage {
         }
     }
 
-    public void attributsBaignade(Personne i, boolean entreOuSort){ //entre == true, sort == false
+    /*public void attributsBaignade(Personne i, boolean entreOuSort){ //entre == true, sort == false
         if (entreOuSort){
             if (multVagues <= 3){
                 i.changeAttribut(1, 1.1);
@@ -240,9 +260,22 @@ public class Plage {
             }
         }
         i.setAttributsBaignade(entreOuSort);
-    }
+    }*/
 
     public void turn() {
+        for (int i = 0; i<vagues.size(); i++) {
+            for (int j = 0; j<threads.length; j++) {
+                if (threads[j].vecteurCourant != null && !threads[j].getAttributsvague() && ((int) threads[j].position[0] == vagues.get(i).getPositionY() || (int) (threads[j].position[0] + 1) == vagues.get(i).getPositionY() || (int) (threads[j].position[0] - 1) == vagues.get(i).getPositionY())) {
+                    threads[j].changeAttribut(1, 0.5);
+                    threads[j].changeAttribut(2, 1.5);
+                    threads[j].setAttributsVague(true);
+                } else if (threads[j].vecteurCourant != null && threads[j].getAttributsvague()) {
+                    threads[j].changeAttribut(1, 1 / 0.5);
+                    threads[j].changeAttribut(2, 1 / 1.5);
+                    threads[j].setAttributsVague(false);
+                }
+            }
+        }
         
         for (int i = 0; i < threads.length; i++) {
 
@@ -256,14 +289,6 @@ public class Plage {
 
 
             if (personne.getAlive()) {
-
-                if (position[0] >= mer && !personne.getAttributsBaignade()){
-                    attributsBaignade(personne, true);
-                }
-
-                if (position[0] < mer && personne.getAttributsBaignade()){
-                    attributsBaignade(personne, false);
-                }
 
                 if (etat == Etat.PATH && personne.getVecteurCourant() == null) {
                     try {

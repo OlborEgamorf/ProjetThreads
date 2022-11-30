@@ -1,7 +1,8 @@
-package src;
+//package src;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Interface extends JPanel {
     
@@ -15,6 +16,8 @@ public class Interface extends JPanel {
     private Personne[] threads;
     private double zoom = 1;
 
+    private ArrayList<Vague> vagues;
+
     public Interface (Plage plage){
         setVisible(true);
         JFrame frame = new JFrame("Plage");
@@ -25,7 +28,7 @@ public class Interface extends JPanel {
         largeur = plage.getLargeur();
         poste = plage.getPoste();
         double ratioBase = (double) (longueur+mer)/(double) largeur;
-        if (largeur>dimension.getWidth() || longueur+mer>dimension.getHeight()){
+        if (largeur>dimension.getWidth() || longueur+mer>dimension.getHeight()-10){
             boolean fini = false;
             double i= 1.25;
             if (largeur/dimension.getWidth()>longueur/dimension.getHeight()){
@@ -52,21 +55,24 @@ public class Interface extends JPanel {
         }
         else {
             int a= largeur;
-            int b= (int) dimension.getWidth();
-            if (ratioBase>1){
+            int b= (int) dimension.getWidth()-50;
+            if (ratioBase>=1){
                 ratioBase = (double) (largeur)/(double) (longueur+mer);
                 a=longueur+mer;
                 b= (int) dimension.getHeight();
             }
-            if (a*10<b)
-                zoom = 10;
             else if (a*4<b)
                 zoom = 4;
-            else if (a*2<b)
-                zoom = 2;
+            else if (a*2<b){
+                zoom = 2;}
             else
                 zoom = 1;
-            frame.setSize((int) (largeur*zoom), (int) ((longueur+mer)*zoom+(mer*ratioBase)));
+            if (zoom == 1)
+                frame.setSize((int) (largeur*zoom), (int) ((longueur+mer)*zoom)+40);
+            else if (zoom == 2)
+                frame.setSize((int) (largeur*zoom), (int) ((longueur+mer)*zoom+(mer*ratioBase/zoom))+3);
+            else if (zoom == 4)
+                frame.setSize((int) (largeur*zoom), (int) ((longueur+mer)*zoom+(mer*ratioBase)));
         }
 
         frame.setVisible(true);
@@ -78,6 +84,7 @@ public class Interface extends JPanel {
         frame.setContentPane(this);
 
         threads = plage.getThreads();
+        vagues = plage.getVagues();
     }
 
     public void paintComponent(Graphics g){
@@ -85,10 +92,18 @@ public class Interface extends JPanel {
         g.setColor(Color.decode("#FFE333"));
         g.fillRect(0, 0,(int) (largeur*zoom),(int) (longueur*zoom));
         g.setColor(Color.decode("#34a8eb"));
-        g.fillRect(0,(int) (longueur*zoom), (int) (largeur*zoom), (int) (mer*zoom));
+        g.fillRect(0,(int) (longueur*zoom), (int) (largeur*zoom), (int) (mer*zoom)+3);
 
         g.setColor(Color.red);
         g.fillRect((int) (poste.getD()[1]*zoom), (int) (poste.getD()[0]*zoom), 10, 6);
+
+        for (Vague vague : vagues){
+            Color newWhite = new Color(Color.white.getRed(), Color.white.getGreen(), Color.white.getBlue(), 127);
+            g.setColor(newWhite);
+            for (int i=0; i<largeur*zoom; i++){
+                g.fillRect(i, (int) (vague.getPositionY()*zoom), 1, vague.getLongueur());
+            }
+        }
 
         for (Personne personne : threads) {
             if (personne.getAlive()) {

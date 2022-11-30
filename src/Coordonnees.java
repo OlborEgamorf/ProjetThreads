@@ -1,3 +1,5 @@
+//package src;
+
 public class Coordonnees implements Comparable<Coordonnees> {
     private double x;
     private double y;

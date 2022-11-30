@@ -1,3 +1,4 @@
+//package src;
 public class VectVertical extends Vector {
 
     public VectVertical(double x, double y, double objX, double objY, double vitesse, Coeff coeff, int timing) {

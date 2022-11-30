@@ -1,4 +1,4 @@
-package src;
+//package src;
 public abstract class Vector {
     protected double x, y, objX, objY;
 

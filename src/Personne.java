@@ -1,4 +1,4 @@
-package src;
+//package src;
 
 import java.util.ArrayList;
 
@@ -29,6 +29,7 @@ public class Personne extends Thread {
 
     protected Coeff coeff;
     private boolean attributsBaignade = false;
+    private boolean attributsVague = false;
     
     Personne(int id, double[] position, int vent, int timing, Coeff coeff) {
         this.position = position; //position spawn
@@ -104,9 +105,15 @@ public class Personne extends Thread {
     public boolean getAttributsBaignade(){
         return attributsBaignade;
     }
+    public boolean getAttributsvague(){
+        return attributsVague;
+    }
 
     public void setAttributsBaignade(boolean booleen){
         attributsBaignade = booleen;
+    }
+    public void setAttributsVague(boolean booleen){
+        attributsVague = booleen;
     }
 
     public void setAlive(boolean isAlive) {
