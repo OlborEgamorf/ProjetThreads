@@ -19,7 +19,7 @@ public class Plage {
     private Vendeur vendeur = null;
     private ArrayList<Vague> vagues = new ArrayList<Vague>();
     private double[] attributsVagues = new double[3];; //[vitesse, hauteur, force]
-    private double coeffVagues = 1;
+    private double coeffVagues = 10;
 
     Plage(int longueur, int largeur, int profondeur, double temperature, int vent, int mer, int nbMax, Meteo meteo, Coeff coeff) {
         this.longueur = longueur;
@@ -91,18 +91,18 @@ public class Plage {
     }
     public void setAttributsVagues(){
         if (meteo == Meteo.Soleil){
-            this.attributsVagues[0] = 1;
+            this.attributsVagues[0] = 4;
             this.attributsVagues[1] = 0.1;
             this.attributsVagues[2] = 5;
         }
         else if (meteo == Meteo.Nuageux){
-            this.attributsVagues[0] = 2;
+            this.attributsVagues[0] = 6;
             this.attributsVagues[1] = 0.3;
             this.attributsVagues[2] = 1.5;
-            this.coeffVagues = 10;
+            this.coeffVagues = 15;
         }
         else{
-            this.attributsVagues[0] = 3;
+            this.attributsVagues[0] = 8;
             this.attributsVagues[1] = 0.8;
             this.attributsVagues[2] = 2;
             this.coeffVagues = 20;
