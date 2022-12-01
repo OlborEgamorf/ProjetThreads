@@ -31,8 +31,8 @@ public abstract class Vector {
         return y;
     }
 
-    public double[] getCoords() {
-        return new double[]{x,y};
+    public Coordonnees getCoords() {
+        return new Coordonnees(x, y);
     }
 
     public double getObjX() {
@@ -43,8 +43,8 @@ public abstract class Vector {
         return objY;
     }
 
-    public double[] getCoordsObj() {
-        return new double[]{objX,objY};
+    public Coordonnees getCoordsObj() {
+        return new Coordonnees(objX, objY);
     }
 
     public double getVitesse() {
@@ -55,18 +55,18 @@ public abstract class Vector {
         return timing;
     }
 
-    public void setCoords(double[] coords) {
-        this.x = coords[0];
-        this.y = coords[1];
+    public void setCoords(Coordonnees coords) {
+        this.x = coords.getX();
+        this.y = coords.getY();
     }
     public void setCoords(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public void setCoordsObj(double[] coords) {
-        this.objX = coords[0];
-        this.objY = coords[1];
+    public void setCoordsObj(Coordonnees coords) {
+        this.objX = coords.getX();
+        this.objY = coords.getY();
     }
     public void setCoordsObj(double x, double y) {
         this.objX = x;
@@ -162,11 +162,11 @@ public abstract class Vector {
         return flag;
     }
 
-    public static Vector choixVector(double[] position, double[] objPosition, double vitesse, int timing) {
-        if (position[0] == objPosition[0]) {
-            return new VectVertical(position[0], position[1], objPosition[0], objPosition[1], vitesse, timing);
+    public static Vector choixVector(Coordonnees position, Coordonnees objPosition, double vitesse, int timing) {
+        if (position.getX() == objPosition.getX()) {
+            return new VectVertical(position.getX(), position.getY(), objPosition.getX(), objPosition.getY(), vitesse, timing);
         } else {
-            return new VectOblique(position[0], position[1], objPosition[0], objPosition[1], vitesse, timing);
+            return new VectOblique(position.getX(), position.getY(), objPosition.getX(), objPosition.getY(), vitesse, timing);
         }
     }
 

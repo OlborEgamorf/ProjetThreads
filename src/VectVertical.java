@@ -14,7 +14,7 @@ public class VectVertical extends Vector {
     } 
 
     public void glissement() {
-        y += sensY*vitesse;
+        y += sensY*vitesse*Coeff.getCoeff();
         if ((sensY == 1 && y > objY) || (sensY == -1 && y < objY)) {
             y = objY;
         }
@@ -22,8 +22,8 @@ public class VectVertical extends Vector {
 
     public Coordonnees croisementRectangle(Rectangle rect) {
         boolean flag = false;
-        for (double i=rect.getA()[0];i<=rect.getB()[0] && !flag;i+=0.1) {
-            if (y+i <= rect.getA()[1] && y+i >= rect.getD()[1]) {
+        for (double i=rect.getA().getX();i<=rect.getB().getX() && !flag;i+=0.1) {
+            if (y+i <= rect.getA().getY() && y+i >= rect.getD().getY()) {
                 flag = true;
             }
         }
@@ -35,7 +35,7 @@ public class VectVertical extends Vector {
                 colX = vectCop.x;
                 colY = vectCop.y;
                 vectCop.glissement();
-            } while ((sensY == 1 && vectCop.x < rect.getD()[1]) || (sensY == -1 && vectCop.x > rect.getA()[1]));
+            } while ((sensY == 1 && vectCop.x < rect.getD().getY()) || (sensY == -1 && vectCop.x > rect.getA().getY()));
 
             return new Coordonnees(colX, colY);
             

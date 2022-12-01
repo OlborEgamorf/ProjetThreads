@@ -6,7 +6,6 @@ import java.awt.event.*;
 import java.awt.font.TextAttribute;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,26 +95,26 @@ public class InteractionMenu extends JFrame implements ActionListener {
         add(prereglagesTexte);
         prereglagesTexte.setBounds(220, 400, 300, 50);
 
-        Object[] taille = new Object[]{"Taille de base", "Petite plage", "Grande plage"};
-        Object[] delimitation = new Object[]{"Délimitation de base", "Délimitation basse", "Délimitation haute"};
-        Object[] individus = new Object[]{"Individus de base", "Peu d'individu", "Beaucoup d'individu"};
-        Object[] temps = new Object[]{"Soleil", "Nuageux", "Pluie"};
-        Object[] vitesse = new Object[]{"Vitesse de base", "Vitesse faible", "Vitesse forte"};
+        String[] taille = new String[]{"Taille de base", "Petite plage", "Grande plage"};
+        String[] delimitation = new String[]{"Délimitation de base", "Délimitation basse", "Délimitation haute"};
+        String[] individus = new String[]{"Individus de base", "Peu d'individu", "Beaucoup d'individu"};
+        String[] temps = new String[]{"Soleil", "Nuageux", "Pluie"};
+        String[] vitesse = new String[]{"Vitesse de base", "Vitesse faible", "Vitesse forte"};
 
 
-        JComboBox<String> comboTaille = new JComboBox(taille);
+        JComboBox<String> comboTaille = new JComboBox<String>(taille);
         comboTaille.setForeground(Color.decode("#7B7878"));
         comboTaille.setBackground(Color.decode("#F7F5F8"));
-        JComboBox<String> comboDelimitation = new JComboBox(delimitation);
+        JComboBox<String> comboDelimitation = new JComboBox<String>(delimitation);
         comboDelimitation.setForeground(Color.decode("#7B7878"));
         comboDelimitation.setBackground(Color.decode("#F7F5F8"));
-        JComboBox<String> comboIndividus = new JComboBox(individus);
+        JComboBox<String> comboIndividus = new JComboBox<String>(individus);
         comboIndividus.setForeground(Color.decode("#7B7878"));
         comboIndividus.setBackground(Color.decode("#F7F5F8"));
-        JComboBox<String> comboTemps = new JComboBox(temps);
+        JComboBox<String> comboTemps = new JComboBox<String>(temps);
         comboTemps.setForeground(Color.decode("#7B7878"));
         comboTemps.setBackground(Color.decode("#F7F5F8"));
-        JComboBox<String> comboVitesse = new JComboBox(vitesse);
+        JComboBox<String> comboVitesse = new JComboBox<String>(vitesse);
         comboVitesse.setForeground(Color.decode("#7B7878"));
         comboVitesse.setBackground(Color.decode("#F7F5F8"));
 
@@ -172,10 +171,10 @@ public class InteractionMenu extends JFrame implements ActionListener {
                     mer.setText("50");
                 }
                 if (comboDelimitation.getSelectedItem().toString().equals("Délimitation basse")) {
-                    mer.setText("100");
+                    mer.setText("30");
                 }
                 if (comboDelimitation.getSelectedItem().toString().equals("Délimitation haute")) {
-                    mer.setText("30");
+                    mer.setText("100");
                 }
             }
         });
@@ -236,7 +235,7 @@ public class InteractionMenu extends JFrame implements ActionListener {
         File dir = new File("Sauvegardes");
         File[] liste = dir.listFiles();
 
-        JComboBox<String> combo = new JComboBox();
+        JComboBox<String> combo = new JComboBox<String>();
         for (File s : liste) {
             combo.addItem(String.valueOf(s));
         }
@@ -248,14 +247,12 @@ public class InteractionMenu extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 StringBuffer ajout = new StringBuffer (String.valueOf(combo.getSelectedItem()));
-                ajout.insert(8,"\\");
+                ajout.insert(11,"/");
                 try
                 {
                     File file = new File(String.valueOf(ajout));
-                    ArrayList fichiers = new ArrayList();
                     FileReader fr = new FileReader(file);
                     BufferedReader br = new BufferedReader(fr);
-                    StringBuffer sb = new StringBuffer();
                     ArrayList<String> liste = new ArrayList<String>();
                     String line;
                     while((line = br.readLine()) != null)

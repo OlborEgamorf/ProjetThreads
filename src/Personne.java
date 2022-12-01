@@ -10,8 +10,8 @@ public class Personne extends Thread {
 
     protected Rectangle positionPlage;
     
-    protected double[] position;
-    protected double[] objPosition;
+    protected Coordonnees position;
+    protected Coordonnees objPosition;
 
     protected Etat etat;
     protected Objectif objectif;
@@ -35,14 +35,14 @@ public class Personne extends Thread {
     private boolean attributsBaignade = false;
     private boolean attributsVague = false;
     
-    Personne(int id, double[] position, int vent, int timing) {
+    Personne(int id, Coordonnees position, int vent, int timing) {
         this.position = position; //position spawn
         this.etat = Etat.ARRIVEE;
         this.id = id;
         this.timing = timing;
 
         this.age = 15 + (int)(Math.random() * 75);
-        this.vitesseNage = (0.83 + Math.random()*0.28);
+        this.vitesseNage = (0.83 + Math.random()*0.28)/100;
 
         setVitesse();
         setStamina();
@@ -72,10 +72,10 @@ public class Personne extends Thread {
         return stackMove;
     }
 
-    public double[] getPosition() {
+    public Coordonnees getPosition() {
         return position;
     }
-    public double[] getObjPosition() {
+    public Coordonnees getObjPosition() {
         return objPosition;
     }
 
@@ -121,7 +121,7 @@ public class Personne extends Thread {
         alive = isAlive;
     }
 
-    public void setObjPosition(double[] nextPosition) {
+    public void setObjPosition(Coordonnees nextPosition) {
         objPosition = nextPosition;
     }
 
@@ -165,6 +165,7 @@ public class Personne extends Thread {
         } else {
             vitesse = 0.94 + Math.random()*0.03;
         }
+        vitesse /= 100;
     }
 
     private void setStamina() {
@@ -212,12 +213,12 @@ public class Personne extends Thread {
         int iterStatique = 0;
 
         while (!Thread.interrupted()) {
-            int sleeper = 1000/Coeff.getCoeff();
+            int sleeper = 10;
             //System.out.println(stamina);
 
             if (etat == Etat.MOUVEMENT && oath) {
 
-                if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
+                if (position.equals(objPosition)) {
                     stackMove.remove(0);
                     if (stackMove.size() == 0) {
                         if (objectif == Objectif.PLACEMENT) {
@@ -248,16 +249,16 @@ public class Personne extends Thread {
                 }
 
                 if (intoWater) {
-                    tempsEau += 1000*Coeff.getCoeff();
-                    stamina -= 0.4;
+                    tempsEau += 10*Coeff.getCoeff();
+                    stamina -= 0.004*Coeff.getCoeff();
                     if (stamina < 15) {
                         etat = Etat.AUSECOURS;
                     }
                 }
 
             } else if (etat == Etat.BAIGNADE) {
-                tempsEau += 1000*Coeff.getCoeff();
-                stamina -= 0.15;
+                tempsEau += 10*Coeff.getCoeff();
+                stamina -= 0.0015*Coeff.getCoeff();
                 if (tempsEau > 600000 || stamina < 25) {
                     objectif = Objectif.REPOS;
                     objPosition = positionPlage.getCentre();
@@ -296,7 +297,7 @@ public class Personne extends Thread {
                 etat = Etat.PATH;
 
             } else if (etat == Etat.NOYADE) {
-                stamina -= 0.1;
+                stamina -= 0.001*Coeff.getCoeff();
 
             } else if (etat == Etat.ATTENTE) {
                 if (nbFoisEau == 0 || Math.floor(Math.random()*(nbFoisEau+1)) == 1) {
@@ -310,7 +311,7 @@ public class Personne extends Thread {
                 placed = false;
                 positionPlage = null;
                 objectif = Objectif.PARTIR;
-                objPosition[0] = 0;
+                objPosition = new Coordonnees(0, objPosition.getY());
                 etat = Etat.PATH;
                 
             } else if (etat == Etat.PATH && vecteurCourant != null) {

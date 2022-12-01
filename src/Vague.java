@@ -21,7 +21,7 @@ public class Vague extends Thread{
         this.positionY = positionY;
         this.positionMer = positionMer;
         this.plagePlusMer = plagePlusMer;
-        this.vecteurCourant = Vector.choixVector(new double[]{positionY, 0}, new double[]{positionMer, 0},vitesse/250,10);
+        this.vecteurCourant = Vector.choixVector(new Coordonnees(0, positionY), new Coordonnees(0, positionMer),vitesse/250,10);
         stackMove.add(vecteurCourant);
     }
 
@@ -51,17 +51,17 @@ public class Vague extends Thread{
 
     public void run(){
         while (!Thread.interrupted()){
-            if ((int) (this.positionY) == this.vecteurCourant.objX || (int) (this.positionY) == this.vecteurCourant.objX-1){
+            if ((int) (this.positionY) == this.vecteurCourant.getObjY() || (int) (this.positionY) == this.vecteurCourant.getObjY()-1){
                 this.positionY = plagePlusMer;
-                this.vecteurCourant = Vector.choixVector(new double[]{positionY, 0}, new double[]{positionMer, 0},vitesse/250,10);
+                this.vecteurCourant = Vector.choixVector(new Coordonnees(0, positionY), new Coordonnees(0, positionMer),vitesse/250,10);
                 stackMove.add(vecteurCourant);
                 stackMove.remove(0);
             }
             else{
                 vecteurCourant.glissement();
-                this.positionY = vecteurCourant.getCoords()[0];
+                this.positionY = vecteurCourant.getCoords().getY();
                 try {
-                    Thread.sleep(150);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

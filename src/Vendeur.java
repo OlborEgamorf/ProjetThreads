@@ -1,13 +1,10 @@
 //package src;
 
-
-import java.sql.SQLOutput;
-
 public class Vendeur extends Personne {
 
     private Personne personne = null;
 
-    public Vendeur(int id, double[] position, int vent, double[] objposition) {
+    public Vendeur(int id, Coordonnees position, int vent, Coordonnees objposition) {
         super(id, position, vent, 1);
         this.objPosition = objposition;
         this.etat = Etat.PATH;
@@ -33,7 +30,7 @@ public class Vendeur extends Personne {
                     vecteurCourant = null;
                     stackMove.clear();
                 } else {
-                    if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
+                    if (position.equals(objPosition)) {
                         if (stackMove.size() == 0) {
                             if (objectif == Objectif.COMMERCE) {
                                 etat = Etat.COMMERCE;
@@ -57,7 +54,7 @@ public class Vendeur extends Personne {
                 sleeper = 15000;
                 objectif = Objectif.VENDRE;
                 etat = Etat.PATH;
-            } else if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
+            } else if (position.equals(objPosition)) {
                 objectif = Objectif.PARTIR;
             } else if (etat == Etat.PATH && vecteurCourant != null) {
                 //System.out.println("Je bouge");

@@ -26,12 +26,18 @@ public class Plage {
         this.mer = mer;
         this.threads = new Personne[nbMax];
 
-        this.poste = new Rectangle(new double[]{longueur/2-20,largeur/2+10}, new double[]{longueur/2+20,largeur/2+10}, new double[]{longueur/2+20,largeur/2-10}, new double[]{longueur/2-20,largeur/2-10}, 2,-1);
+        //this.poste = new Rectangle(new double[]{longueur/2-20,largeur/2+10}, new double[]{longueur/2+20,largeur/2+10}, new double[]{longueur/2+20,largeur/2-10}, new double[]{longueur/2-20,largeur/2-10}, 2,-1);
 
-        System.out.println(poste.getA()[0]+" "+poste.getA()[1]+" | "+poste.getB()[0]+" "+poste.getB()[1]+" | "+poste.getC()[0]+" "+poste.getC()[1]+" | "+poste.getD()[0]+" "+poste.getD()[1]+" | ");
+        //System.out.println(poste.getA()[0]+" "+poste.getA()[1]+" | "+poste.getB()[0]+" "+poste.getB()[1]+" | "+poste.getC()[0]+" "+poste.getC()[1]+" | "+poste.getD()[0]+" "+poste.getD()[1]+" | ");
 
 
-        placements.add(poste);
+        //placements.add(poste);
+
+        this.poste = new Rectangle(3,2,5,0, 2,-1);
+
+        placements.add(new Rectangle(5,8,8,5, mer, nbMax));
+        placements.add(new Rectangle(15,20,20,15, mer, nbMax));
+        placements.add(new Rectangle(40,55,50,40, mer, nbMax));
 
         setZones();
         this.meteo = meteo;
@@ -44,9 +50,9 @@ public class Plage {
                 threads[i] = new Sauveteur(i,poste.getCentre(),vent,poste);
                 sauveteurs.add(i);
             } else if (i == 666) {
-                threads[i] = new Vendeur(i, new double[] {longueur-1, 1}, vent, new double[] {longueur-1, largeur});
+                threads[i] = new Vendeur(i, new Coordonnees(longueur-1, 1), vent, new Coordonnees(longueur-1, largeur));
             } else {
-                double[] posTest = {0,largeur * Math.random()};
+                Coordonnees posTest = new Coordonnees(0, largeur * Math.random());
                 threads[i] = new Personne(i,posTest,vent,apparition*i);
             }
         }
@@ -167,7 +173,7 @@ public class Plage {
                 y = (Math.floor(Math.random() * (((getLargeur()-3) - (getLargeur() - (getLargeur()-3))) + (getLargeur() - (getLargeur()-3)))));
             }
 
-            Rectangle emplacement = new Rectangle(new double[]{x,y}, new double[]{x,y+1}, new double[]{x+1.7,y+1}, new double[]{x+1.7,y}, z, personne.getIdPersonne()); // dimensions serviette de plage
+            Rectangle emplacement = new Rectangle(x, y, x+1.7, y-2, z, personne.getIdPersonne()); // dimensions serviette de plage
 
             boolean flag = true;
             for (Rectangle emp : placements) {
@@ -193,7 +199,7 @@ public class Plage {
         }
     }
 
-    public int closerSave(double x, double y) {
+    public int closerSave(Coordonnees coords) {
         switch (sauveteurs.size()) {
             case 0: {
                 return -1;
@@ -205,9 +211,9 @@ public class Plage {
                 int flag = -1;
                 double min = 15000;
                 for (int i=0;i<sauveteurs.size();i++) {
-                    if (x-threads[i].getPosition()[0]+y-threads[i].getPosition()[1] < min && (threads[i].getEtat() != Etat.SAUVETAGE && threads[i].getObjectif() != Objectif.SAUVETAGE)) {
+                    if (coords.getX()-threads[i].getPosition().getX()+coords.getY()-threads[i].getPosition().getY() < min && (threads[i].getEtat() != Etat.SAUVETAGE && threads[i].getObjectif() != Objectif.SAUVETAGE)) {
                         flag = i;
-                        min = x-threads[i].getPosition()[0]+y-threads[i].getPosition()[1];
+                        min = coords.getX()-threads[i].getPosition().getX()+coords.getY()-threads[i].getPosition().getX();
                     }
                 }
                 return flag;
@@ -254,7 +260,7 @@ public class Plage {
     public void turn() {
         for (int i = 0; i<vagues.size(); i++) {
             for (int j = 0; j<threads.length; j++) {
-                if (threads[j].vecteurCourant != null && !threads[j].getAttributsvague() && ((int) threads[j].position[0] == vagues.get(i).getPositionY() || (int) (threads[j].position[0] + 1) == vagues.get(i).getPositionY() || (int) (threads[j].position[0] - 1) == vagues.get(i).getPositionY())) {
+                if (threads[j].vecteurCourant != null && !threads[j].getAttributsvague() && ((int) threads[j].getPosition().getX() == vagues.get(i).getPositionY() || (int) (threads[j].getPosition().getX() + 1) == vagues.get(i).getPositionY() || (int) (threads[j].getPosition().getX() - 1) == vagues.get(i).getPositionY())) {
                     threads[j].changeAttribut(1, 0.5);
                     threads[j].changeAttribut(2, 1.5);
                     threads[j].setAttributsVague(true);
@@ -270,29 +276,26 @@ public class Plage {
 
             Personne personne = threads[i];
             Etat etat = personne.getEtat();
-            double[] position = personne.getPosition();
-            double[] objPosition = personne.getObjPosition();
+            Coordonnees position = personne.getPosition();
+            Coordonnees objPosition = personne.getObjPosition();
             Objectif objectif = personne.getObjectif();
-
-
-            System.out.println(i);
 
             if (personne.getAlive()) {
 
                 if (etat == Etat.PATH && personne.getVecteurCourant() == null) {
                     try {
+                        //bjPosition = new Coordonnees(60,60);
                         //personne.setObjPosition(new double[]{60,60});
-                        //objPosition = new double[]{60,60};
                         double vitesse = personne.isIntoWater()? personne.getVitesseNage(): personne.getVitesse();
                         //System.out.println(vitesse);
 
                         if (objectif == Objectif.PATROUILLE) {
-                            objPosition = new double[]{zones[1] + Math.random() * (zones[2]-zones[1]),Math.random() * largeur};
+                            objPosition = new Coordonnees(zones[1] + Math.random() * (zones[2]-zones[1]),Math.random() * largeur);
                             //System.out.println(objPosition[0]+" "+objPosition[1]);
                         } else if (objectif == Objectif.BAIGNADE) {
-                            objPosition = new double[]{longueur,position[1]};
+                            objPosition = new Coordonnees(longueur, position.getY());
                         } else if (objectif == Objectif.NAGE) {
-                            objPosition = new double[]{longueur+10 + Math.random()*(mer-10),position[1]};
+                            objPosition = new Coordonnees(longueur+10 + Math.random()*(mer-10),position.getY());
                         }
 
                         if (objectif == Objectif.SAUVETAGE) {
@@ -311,12 +314,12 @@ public class Plage {
                                 //System.out.println(compare.getIdRect()+" "+personne.getIdPersonne());
 
                                 if (sensY == 1) {
-                                    if (objPosition[1] < compare.getD()[1] && objPosition[1] < compare.getA()[1]) {
+                                    if (objPosition.getY() < compare.getD().getY() && objPosition.getY() < compare.getA().getY()) {
                                         //System.out.println("BREAK");
                                         break;
                                     }
                                 } else {
-                                    if (objPosition[1] > compare.getD()[1] && objPosition[1] > compare.getA()[1]) {
+                                    if (objPosition.getY() > compare.getD().getY() && objPosition.getY() > compare.getA().getY()) {
                                         //System.out.println("BREAK");
                                         break;
                                     }
@@ -328,11 +331,11 @@ public class Plage {
                                         //System.out.println(coords);
                                         liste.add(coords);
                                         if (sensX == 1) {
-                                            liste.add(new Coordonnees(coords.getX(),compare.getB()[1]+0.5));
-                                            vecteur = Vector.choixVector(new double[]{coords.getX(),compare.getB()[1]+0.5}, objPosition, vitesse, 0);
+                                            liste.add(new Coordonnees(coords.getX(),compare.getB().getY()+0.5));
+                                            vecteur = Vector.choixVector(new Coordonnees(coords.getX(),compare.getB().getY()+0.5), objPosition, vitesse, 0);
                                         } else {
-                                            liste.add(new Coordonnees(coords.getX(),compare.getA()[1]-0.5));
-                                            vecteur = Vector.choixVector(new double[]{coords.getX(),compare.getA()[1]-0.5}, objPosition, vitesse, 0);
+                                            liste.add(new Coordonnees(coords.getX(),compare.getA().getY()-0.5));
+                                            vecteur = Vector.choixVector(new Coordonnees(coords.getX(),compare.getA().getY()-0.5), objPosition, vitesse, 0);
                                         }
                                     }
                                 }
@@ -344,14 +347,14 @@ public class Plage {
                                 //System.out.println(personne.getIdPersonne()+" P:"+position[0]+" "+position[1]+" O:"+objPosition[0]+" "+objPosition[1]);
                                 ListIterator<Coordonnees> itLi = liste.listIterator();
                                 while (itLi.hasNext()) {
-                                    double[] coordsPrevious;
+                                    Coordonnees coordsPrevious;
                                     if (itLi.hasPrevious()) {
-                                        coordsPrevious = itLi.previous().getCoords();
+                                        coordsPrevious = itLi.previous();
                                         itLi.next();
                                     } else {
                                         coordsPrevious = position;
                                     }
-                                    double[] coordsNext = itLi.next().getCoords();
+                                    Coordonnees coordsNext = itLi.next();
                                     
                                     //System.out.println(personne.getIdPersonne()+" P:"+coordsPrevious[0]+" "+coordsPrevious[1]+" N:"+coordsNext[0]+" "+coordsNext[1]);
                                     personne.addVector(Vector.choixVector(coordsPrevious, coordsNext, personne.getVitesse(), 0));
@@ -387,7 +390,7 @@ public class Plage {
                 } else if (etat == Etat.ARRIVEE && personne.getPositionPlage() == null) {
                     placementPlage(personne);
                 } else if (etat == Etat.ACHETER && vendeur != null) {
-                    personne.setObjPosition(new double[]{vendeur.position[0]-1, vendeur.position[1]});
+                    personne.setObjPosition(new Coordonnees(vendeur.position.getX()-1, vendeur.position.getY()));
                 } else if (etat == Etat.ATTENTE) {
 
                 } else if (etat == Etat.PARTI) {
@@ -395,7 +398,7 @@ public class Plage {
                     personne.interrupt();
 
                 } else if (etat == Etat.AUSECOURS) {
-                    int sauveteur = closerSave(position[0],position[1]);
+                    int sauveteur = closerSave(position);
                     if (sauveteur == -1) {
                         // S'il n'y a pas de sauveteur disponible, RIP !
                     } else {
@@ -404,13 +407,13 @@ public class Plage {
                     }
 
                 } else if (etat == Etat.MOUVEMENT) {
-                    if (position[0] >= longueur && !personne.isIntoWater()) {
+                    if (position.getX() >= longueur && !personne.isIntoWater()) {
                         //attributsBaignade(personne, true);
                         for (Vector vect : personne.getStackMove()) {
                             vect.setVitesse(personne.getVitesseNage());
                         }
                         personne.setIntoWater(true);
-                    } else if (position[0] <= longueur && personne.isIntoWater()) {
+                    } else if (position.getX() <= longueur && personne.isIntoWater()) {
                         //attributsBaignade(personne, false);
                         for (Vector vect : personne.getStackMove()) {
                             vect.setVitesse(personne.getVitesse());

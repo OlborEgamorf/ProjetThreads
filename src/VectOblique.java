@@ -36,7 +36,7 @@ public class VectOblique extends Vector {
 
 
     public void glissement() {
-        x += sensX*Math.sqrt(Math.pow(vitesse,2)/(Math.pow(m,2)+1));
+        x += sensX*Math.sqrt(Math.pow(vitesse*Coeff.getCoeff(),2)/(Math.pow(m,2)+1));
         y = m*x + p;
         if ((sensX == 1 && sensY == 1 && x >= objX && y >= objY) || (sensX == 1 && sensY == -1 && x >= objX && y <= objY) || (sensX == -1 && sensY == 1 && x <= objX && y >= objY) || (sensX == -1 && sensY == -1 && x <= objX && y <= objY)) {
             x = objX;
@@ -46,8 +46,8 @@ public class VectOblique extends Vector {
 
     public Coordonnees croisementRectangle(Rectangle rect) {
         boolean flag = false;
-        for (double i=rect.getA()[0];i<=rect.getB()[0] && !flag;i+=0.1) {
-            if (m*i+p <= rect.getA()[1] && m*i+p >= rect.getD()[1]) {
+        for (double i=rect.getA().getX();i<=rect.getB().getX() && !flag;i+=0.1) {
+            if (m*i+p <= rect.getA().getY() && m*i+p >= rect.getD().getY()) {
                 flag = true;
             }
         }
@@ -59,7 +59,7 @@ public class VectOblique extends Vector {
                 colX = vectCop.x;
                 colY = vectCop.y;
                 vectCop.glissement();
-            } while ((sensY == 1 && vectCop.y < rect.getD()[1]) || (sensY == -1 && vectCop.y > rect.getA()[1]));
+            } while ((sensY == 1 && vectCop.y < rect.getD().getY()) || (sensY == -1 && vectCop.y > rect.getA().getY()));
 
             return new Coordonnees(colX, colY);
             

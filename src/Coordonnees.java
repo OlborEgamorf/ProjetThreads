@@ -12,6 +12,10 @@ public class Coordonnees implements Comparable<Coordonnees> {
     public double[] getCoords() {
         return new double[]{x,y};
     }
+
+    public boolean equals(Coordonnees other) {
+        return x == other.x && y == other.y;
+    }
     
     public int compareTo(Coordonnees coord) {
         if (x > coord.x) {

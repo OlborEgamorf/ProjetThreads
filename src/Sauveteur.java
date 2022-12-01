@@ -4,7 +4,7 @@ public class Sauveteur extends Personne {
 
     private int idSave = -1;
 
-    public Sauveteur(int id, double[] position, int vent, Rectangle poste) {
+    public Sauveteur(int id, Coordonnees position, int vent, Rectangle poste) {
         super(id, position, vent, 1);
         positionPlage = poste;
         etat = Etat.REPOS;
@@ -19,7 +19,7 @@ public class Sauveteur extends Personne {
         return idSave;
     }
 
-    public void sauvetage(double[] position, int idSave) {
+    public void sauvetage(Coordonnees position, int idSave) {
         etat = Etat.PATH;
         objectif = Objectif.SAUVETAGE;
         objPosition = position;
@@ -36,7 +36,7 @@ public class Sauveteur extends Personne {
             int sleeper = 10;
             if (etat == Etat.MOUVEMENT) {
                 //System.out.println(position[0]+" "+objPosition[0]+" "+position[1]+" "+objPosition[1]);
-                if (position[0] == objPosition[0] && position[1] == objPosition[1]) {
+                if (position.equals(objPosition)) {
                     stackMove.remove(0);
                     if (stackMove.size() == 0) {
                         vecteurCourant = null;

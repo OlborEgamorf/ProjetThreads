@@ -1,29 +1,29 @@
 public class Rectangle implements Comparable<Rectangle> {
-    private double[] a;
-    private double[] b;
-    private double[] c;
-    private double[] d;
-    private double[] centre;    
+    private Coordonnees a;
+    private Coordonnees b;
+    private Coordonnees c;
+    private Coordonnees d;
+    private Coordonnees centre;    
     private int zone;
     private int id = -1;
 
-    public Rectangle(double[] a, double[] b, double[] c, double[] d, int zone, int id) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
+    public Rectangle(double ax, double ay, double bx, double dy, int zone, int id) {
+        this.a = new Coordonnees(ax, ay);
+        this.b = new Coordonnees(bx, ay);;
+        this.c = new Coordonnees(bx, dy);;
+        this.d = new Coordonnees(ax, dy);;
         this.zone = zone;
-        this.centre = new double[]{(a[0]+c[0])/2,(a[1]+c[1])/2};
+        this.centre = new Coordonnees((ax+bx)/2,(ay+dy)/2);
         this.id = id;
     }
 
 
     public boolean isIn(Rectangle rect) {
-        return (rect.a[0] >= a[0] && rect.a[0] <= b[0] && rect.a[1] >= d[1] && rect.a[1] <= a[1]) || (rect.b[0] >= a[0] && rect.b[0] <= b[0] && rect.b[1] >= d[1] && rect.b[1] <= a[1]) || (rect.c[0] >= a[0] && rect.c[0] <= b[0] && rect.c[1] >= d[1] && rect.c[1] <= a[1]) || (rect.d[0] >= a[0] && rect.d[0] <= b[0] && rect.d[1] >= d[1] && rect.d[1] <= a[1]);
+        return (rect.a.getX() >= a.getX() && rect.a.getX() <= b.getX() && rect.a.getY() >= d.getY() && rect.a.getY() <= a.getY()) || (rect.b.getX() >= a.getX() && rect.b.getX() <= b.getX() && rect.b.getY() >= d.getY() && rect.b.getY() <= a.getY()) || (rect.c.getX() >= a.getX() && rect.c.getX() <= b.getX() && rect.c.getY() >= d.getY() && rect.c.getY() <= a.getY()) || (rect.d.getX() >= a.getX() && rect.d.getX() <= b.getX() && rect.d.getY() >= d.getY() && rect.d.getY() <= a.getY());
     }
 
 
-    public double[] getCentre() {
+    public Coordonnees getCentre() {
         return centre;
     }
 
@@ -33,29 +33,29 @@ public class Rectangle implements Comparable<Rectangle> {
     }
 
 
-    public double[] getD() {
+    public Coordonnees getD() {
         return d;
     }
 
 
-    public double[] getA() {
+    public Coordonnees getA() {
         return a;
     }
 
 
-    public double[] getB() {
+    public Coordonnees getB() {
         return b;
     }
 
 
-    public double[] getC() {
+    public Coordonnees getC() {
         return c;
     }
 
     public int compareTo(Rectangle other) {
-        if (d[1] > other.d[1]) {
+        if (d.getY() > other.d.getY()) {
             return 1;
-        } else if (d[1] < other.d[1]) {
+        } else if (d.getY() < other.d.getY()) {
             return -1;
         } else {
             return 0;
