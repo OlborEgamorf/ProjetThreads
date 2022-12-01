@@ -106,6 +106,7 @@ public class Interface extends JPanel {
         }
 
         for (Personne personne : threads) {
+            
             if (personne.getAlive()) {
                 if (personne instanceof Sauveteur){
                     g.setColor(Color.red);
@@ -130,16 +131,11 @@ public class Interface extends JPanel {
 
                     if (personne.isPlaced()) {
                         g.setColor(Color.black);
-                        g.fillRect((int) (personne.getPositionPlage().getD().getY()*zoom), (int) (personne.getPositionPlage().getD().getX()*zoom), 2, 3);
+                        g.fillRect((int) (personne.getPositionPlage().getD().getY()*zoom), (int) (personne.getPositionPlage().getD().getX()*zoom),(int)((personne.getPositionPlage().getB().getX()-personne.getPositionPlage().getA().getX())*zoom), (int)((personne.getPositionPlage().getA().getY()-personne.getPositionPlage().getD().getY())*zoom));
                     }
                 }
             }
         }    
-        
-        for (Rectangle place : Plage.placements) {
-            g.setColor(Color.red);
-            g.fillRect((int) (place.getD().getY()*zoom), (int) (place.getD().getX()*zoom), (int)((place.getB().getX()-place.getA().getX())*zoom), (int)((place.getA().getY()-place.getD().getY())*zoom));
-        }
     }
 
     public void turn(){

@@ -13,7 +13,7 @@ public class Plage {
     private ArrayList<Integer> sauveteurs = new ArrayList<Integer>();
     private Meteo meteo;
     private Rectangle poste;
-    private Vendeur vendeur = null;
+    private Vendeur vendeur;
     private ArrayList<Vague> vagues = new ArrayList<Vague>();
     private double[] attributsVagues = new double[3];; //[vitesse, hauteur, force]
     private double coeffVagues = 10;
@@ -24,9 +24,14 @@ public class Plage {
         this.largeur = largeur;
         this.vent = vent;
         this.mer = mer;
-        this.threads = new Personne[nbMax];
 
-        //this.poste = new Rectangle(new double[]{longueur/2-20,largeur/2+10}, new double[]{longueur/2+20,largeur/2+10}, new double[]{longueur/2+20,largeur/2-10}, new double[]{longueur/2-20,largeur/2-10}, 2,-1);
+        if (nbMax > 0) { 
+            this.threads = new Personne[nbMax+1+nbMax/500];
+        }  else {
+            this.threads = new Personne[nbMax+nbMax/500];
+        }
+        
+      //  this.poste = new Rectangle(longueur/2-20,largeur/2+10,longueur/2+20,largeur/2-10, 2,-1);
 
         //System.out.println(poste.getA()[0]+" "+poste.getA()[1]+" | "+poste.getB()[0]+" "+poste.getB()[1]+" | "+poste.getC()[0]+" "+poste.getC()[1]+" | "+poste.getD()[0]+" "+poste.getD()[1]+" | ");
 
@@ -35,9 +40,9 @@ public class Plage {
 
         this.poste = new Rectangle(3,2,5,0, 2,-1);
 
-        placements.add(new Rectangle(5,8,8,5, mer, nbMax));
-        placements.add(new Rectangle(15,20,20,15, mer, nbMax));
-        placements.add(new Rectangle(40,55,50,40, mer, nbMax));
+        //placements.add(new Rectangle(5,8,8,5, mer, nbMax));
+        //placements.add(new Rectangle(15,20,20,15, mer, nbMax));
+        //placements.add(new Rectangle(40,55,50,40, mer, nbMax));
 
         setZones();
         this.meteo = meteo;
@@ -45,17 +50,23 @@ public class Plage {
         setVagues();
 
         int apparition = 5000; // coefficient de vitesse d'apparition, en ms
-        for (int i = 0; i < threads.length; i++) {
-            if (i == 90909090) {
-                threads[i] = new Sauveteur(i,poste.getCentre(),vent,poste);
-                sauveteurs.add(i);
-            } else if (i == 666) {
-                threads[i] = new Vendeur(i, new Coordonnees(longueur-1, 1), vent, new Coordonnees(longueur-1, largeur));
-            } else {
-                Coordonnees posTest = new Coordonnees(0, 0);
-                threads[i] = new Personne(i,posTest,vent,apparition*i);
+        for (int i = 0; i < nbMax; i++) {
+            Coordonnees posTest = new Coordonnees(0, largeur*Math.random());
+            threads[i] = new Personne(i,posTest,vent,apparition*i);
+        }
+
+        if (nbMax >= 500) {
+            for (int i = 0; i < nbMax/500; i++) {
+                threads[i+nbMax] = new Sauveteur(i+nbMax,poste.getCentre(),vent,poste);
+                sauveteurs.add(i+nbMax);
             }
         }
+
+        if (nbMax > 0) {
+            vendeur = new Vendeur(nbMax+nbMax/500, new Coordonnees(longueur-1, 1), vent, new Coordonnees(longueur-1, largeur));
+            threads[nbMax+nbMax/500] = vendeur;
+        }
+
         changeVitesseInitiale();
 
     }
@@ -158,7 +169,7 @@ public class Plage {
         zones = new int[3];
         zones[0] = this.longueur/3;
         zones[1] = 2*(this.longueur/3);
-        zones[2] = this.longueur;
+        zones[2] = this.longueur-10;
         return zones;
     }
 
@@ -221,38 +232,6 @@ public class Plage {
         }
     }
 
-    /*public void attributsBaignade(Personne i, boolean entreOuSort){ //entre == true, sort == false
-        if (entreOuSort){
-            if (multVagues <= 3){
-                i.changeAttribut(1, 1.1);
-                i.changeAttribut(2, 1.1);
-            }
-            else if (multVagues <= 6){
-                i.changeAttribut(1, 1.5);
-                i.changeAttribut(2, 1.5);
-            }
-            else {
-                i.changeAttribut(1, 2);
-                i.changeAttribut(2, 2);
-            }
-        }
-        else {
-            if (multVagues <= 3){
-                i.changeAttribut(1, 1/1.1);
-                i.changeAttribut(2, 1/1.1);
-            }
-            else if (multVagues <= 6){
-                i.changeAttribut(1, 1/1.5);
-                i.changeAttribut(2, 1/1.5);
-            }
-            else {
-                i.changeAttribut(1, 0.5);
-                i.changeAttribut(2, 0.5);
-            }
-        }
-        i.setAttributsBaignade(entreOuSort);
-    }*/
-
     public ArrayList<Vector> checkCroisement(ArrayList<Vector> liste) {
         return liste;
     }
@@ -284,7 +263,7 @@ public class Plage {
 
                 if (etat == Etat.PATH && personne.getVecteurCourant() == null) {
                     try {
-                        objPosition = new Coordonnees(60,60);
+                        //objPosition = new Coordonnees(60,60);
                         //personne.setObjPosition(new double[]{60,60});
                         double vitesse = personne.isIntoWater()? personne.getVitesseNage(): personne.getVitesse();
                         //System.out.println(vitesse);
@@ -296,6 +275,18 @@ public class Plage {
                             objPosition = new Coordonnees(longueur, position.getY());
                         } else if (objectif == Objectif.NAGE) {
                             objPosition = new Coordonnees(longueur+10 + Math.random()*(mer-10),position.getY());
+                        } else if (objectif == Objectif.ACHETER) {
+                            if (!vendeur.containFile(personne)) {
+                                vendeur.addFile(personne);
+                            }
+                            objPosition = new Coordonnees(vendeur.getPosition().getX(), vendeur.getPosition().getY()-vendeur.sizeFile());
+                        } else if (objectif == Objectif.VENDRE) {
+                            for (Personne acheteur : threads) {
+                                if (true) {
+                                //if (Math.floor(Math.random() * 50) == 1) {
+                                    acheteur.setVolonteAcheter(true);
+                                }
+                            }
                         }
 
                         if (objectif == Objectif.SAUVETAGE) {
@@ -396,6 +387,10 @@ public class Plage {
                 } else if (etat == Etat.PARTI) {
                     personne.setAlive(false);
                     personne.interrupt();
+                    if (personne == vendeur) {
+                        vendeur = new Vendeur(i, new Coordonnees(longueur-1, 1), vent, new Coordonnees(longueur-1, largeur));
+                        threads[i] = vendeur;
+                    }
 
                 } else if (etat == Etat.AUSECOURS) {
                     int sauveteur = closerSave(position);
@@ -407,13 +402,13 @@ public class Plage {
                     }
 
                 } else if (etat == Etat.MOUVEMENT) {
-                    if (position.getX() >= longueur && !personne.isIntoWater()) {
+                    if (position.getX() > longueur && !personne.isIntoWater()) {
                         //attributsBaignade(personne, true);
                         for (Vector vect : personne.getStackMove()) {
                             vect.setVitesse(personne.getVitesseNage());
                         }
                         personne.setIntoWater(true);
-                    } else if (position.getX() <= longueur && personne.isIntoWater()) {
+                    } else if (position.getX() < longueur && personne.isIntoWater()) {
                         //attributsBaignade(personne, false);
                         for (Vector vect : personne.getStackMove()) {
                             vect.setVitesse(personne.getVitesse());

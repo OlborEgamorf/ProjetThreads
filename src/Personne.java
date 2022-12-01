@@ -22,6 +22,8 @@ public class Personne extends Thread {
     protected boolean placed = false;
     protected boolean intoWater = false;
 
+    protected boolean volonteAcheter = false;
+
     protected final int timing;
 
     protected int nbFoisEau = 0;
@@ -186,6 +188,10 @@ public class Personne extends Thread {
         staminaMax = stamina;
     }
 
+    public void setVolonteAcheter(boolean volonte) {
+        this.volonteAcheter = volonte;
+    }
+
     public void changeAttribut(int x, double y) {
         if (x == 1) {
             for (Vector vector : stackMove)
@@ -215,6 +221,7 @@ public class Personne extends Thread {
         while (!Thread.interrupted()) {
             int sleeper = 10;
             //System.out.println(stamina);
+            //System.out.println(etat);
 
             if (etat == Etat.MOUVEMENT && oath) {
 
@@ -227,14 +234,20 @@ public class Personne extends Thread {
                             objectif = Objectif.NAGE;
                             etat = Etat.PATH;
                         } else if (objectif == Objectif.REPOS) {
-                            etat = Etat.REPOS;
+                            if (volonteAcheter) {
+                                objectif = Objectif.ACHETER;
+                                etat = Etat.PATH;
+                            } else {
+                                etat = Etat.REPOS;
+                            }
                         } else if (objectif == Objectif.PARTIR) {
                             etat = Etat.PARTI;
                         } else if (objectif == Objectif.ACHETER) {
-                            etat = Etat.ACHETER;
+                            etat = Etat.ENFILE;
                         } else if (objectif == Objectif.NAGE) {
                             etat = Etat.BAIGNADE;
                         }
+
                         vecteurCourant = null;
                     } else {
                         vecteurCourant = stackMove.get(0);
@@ -245,7 +258,7 @@ public class Personne extends Thread {
                 } else {
                     vecteurCourant.glissement();
                     position = vecteurCourant.getCoords();
-                    stamina -= 0.2;
+                    stamina -= 0.002*Coeff.getCoeff();
                 }
 
                 if (intoWater) {
@@ -259,33 +272,35 @@ public class Personne extends Thread {
             } else if (etat == Etat.BAIGNADE) {
                 tempsEau += 10*Coeff.getCoeff();
                 stamina -= 0.0015*Coeff.getCoeff();
-                if (tempsEau > 600000 || stamina < 25) {
+                if (tempsEau > 300000 || stamina < 25) {
                     objectif = Objectif.REPOS;
                     objPosition = positionPlage.getCentre();
                     etat = Etat.PATH;
                     nbFoisEau++;
+                    tempsEau = 0;
                 }
 
             } else if (etat == Etat.REPOS) {
-                if (Math.floor(Math.random()) * 15 < 1 ) {
-                    objectif = Objectif.ACHETER;
-                    etat = Etat.PATH;
-                } else {
-                    iterStatique += 1000*Coeff.getCoeff();
-                    if (stamina < staminaMax) {
-                        stamina += 0.1;
-                    }
-                    if (iterStatique > 600000 && stamina > staminaMax/2) {
-                        etat = Etat.ATTENTE;
-                        iterStatique = 0;
-                    }
+                iterStatique += 10*Coeff.getCoeff();
+                if (stamina < staminaMax) {
+                    stamina += 0.1;
                 }
-            } else if (etat == Etat.ACHETER){
-                sleeper = 15000;
-                objectif = Objectif.REPOS;
-                etat = Etat.PATH;
-                objPosition = positionPlage.getCentre();
+                if (iterStatique > 600000 && stamina > staminaMax/2) {
+                    etat = Etat.ATTENTE;
+                    iterStatique = 0;
+                }
 
+            } else if (etat == Etat.ACHETER){
+                iterStatique += 10*Coeff.getCoeff();
+                if (stamina < staminaMax) {
+                    stamina += 0.1;
+                }
+                if (iterStatique > 40000) {
+                    objPosition = positionPlage.getCentre();
+                    objectif = Objectif.REPOS;
+                    etat = Etat.PATH;
+                    volonteAcheter = false;
+                }
 
             } else if (etat == Etat.PLACEMENT) {
                 placed = true;

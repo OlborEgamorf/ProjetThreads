@@ -35,7 +35,7 @@ public class VectVertical extends Vector {
                 colX = vectCop.x;
                 colY = vectCop.y;
                 vectCop.glissement();
-            } while ((sensY == 1 && vectCop.x < rect.getD().getY()) || (sensY == -1 && vectCop.x > rect.getA().getY()));
+            } while ((sensY == 1 && vectCop.y < rect.getD().getY()) || (sensY == -1 && vectCop.y > rect.getA().getY()));
 
             return new Coordonnees(colX, colY);
             
