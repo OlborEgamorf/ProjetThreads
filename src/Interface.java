@@ -134,7 +134,12 @@ public class Interface extends JPanel {
                     }
                 }
             }
-        }        
+        }    
+        
+        for (Rectangle place : Plage.placements) {
+            g.setColor(Color.red);
+            g.fillRect((int) (place.getD().getX()*zoom), (int) (place.getD().getY()*zoom), (int)((place.getB().getX()-place.getA().getX())*zoom), (int)((place.getA().getY()-place.getD().getY())*zoom));
+        }
     }
 
     public void turn(){

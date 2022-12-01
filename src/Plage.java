@@ -17,7 +17,7 @@ public class Plage {
     private ArrayList<Vague> vagues = new ArrayList<Vague>();
     private double[] attributsVagues = new double[3];; //[vitesse, hauteur, force]
     private double coeffVagues = 10;
-    private ArrayList<Rectangle> placements = new ArrayList<Rectangle>();
+    public static ArrayList<Rectangle> placements = new ArrayList<Rectangle>();
 
     Plage(int longueur, int largeur, int vent, int mer, int nbMax, Meteo meteo) {
         this.longueur = longueur;
@@ -52,7 +52,7 @@ public class Plage {
             } else if (i == 666) {
                 threads[i] = new Vendeur(i, new Coordonnees(longueur-1, 1), vent, new Coordonnees(longueur-1, largeur));
             } else {
-                Coordonnees posTest = new Coordonnees(0, largeur * Math.random());
+                Coordonnees posTest = new Coordonnees(0, 0);
                 threads[i] = new Personne(i,posTest,vent,apparition*i);
             }
         }
@@ -284,7 +284,7 @@ public class Plage {
 
                 if (etat == Etat.PATH && personne.getVecteurCourant() == null) {
                     try {
-                        //bjPosition = new Coordonnees(60,60);
+                        objPosition = new Coordonnees(60,60);
                         //personne.setObjPosition(new double[]{60,60});
                         double vitesse = personne.isIntoWater()? personne.getVitesseNage(): personne.getVitesse();
                         //System.out.println(vitesse);
