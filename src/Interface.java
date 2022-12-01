@@ -95,7 +95,7 @@ public class Interface extends JPanel {
         g.fillRect(0,(int) (longueur*zoom), (int) (largeur*zoom), (int) (mer*zoom)+3);
 
         g.setColor(Color.red);
-        g.fillRect((int) (poste.getD().getX()*zoom), (int) (poste.getD().getY()*zoom), (int)((poste.getB().getX()-poste.getA().getX())*zoom), (int)((poste.getA().getY()-poste.getD().getY())*zoom));
+        g.fillRect((int) (poste.getD().getY()*zoom), (int) (poste.getD().getX()*zoom), (int)((poste.getB().getX()-poste.getA().getX())*zoom), (int)((poste.getA().getY()-poste.getD().getY())*zoom));
 
         for (Vague vague : vagues){
             Color newWhite = new Color(Color.white.getRed(), Color.white.getGreen(), Color.white.getBlue(), 127);
@@ -138,7 +138,7 @@ public class Interface extends JPanel {
         
         for (Rectangle place : Plage.placements) {
             g.setColor(Color.red);
-            g.fillRect((int) (place.getD().getX()*zoom), (int) (place.getD().getY()*zoom), (int)((place.getB().getX()-place.getA().getX())*zoom), (int)((place.getA().getY()-place.getD().getY())*zoom));
+            g.fillRect((int) (place.getD().getY()*zoom), (int) (place.getD().getX()*zoom), (int)((place.getB().getX()-place.getA().getX())*zoom), (int)((place.getA().getY()-place.getD().getY())*zoom));
         }
     }
 
