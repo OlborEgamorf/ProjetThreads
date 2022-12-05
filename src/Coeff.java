@@ -1,7 +1,7 @@
 //package src;
 
 public class Coeff {
-    private static int coeff = 10;
+    private static int coeff = 1;
 
     public static void setCoeff(int coeff) {
         Coeff.coeff = coeff;

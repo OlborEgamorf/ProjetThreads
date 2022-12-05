@@ -49,7 +49,6 @@ public class Personne extends Thread implements Comparable<Personne> {
         setVitesse();
         setStamina();
 
-        stamina = 20;
         //System.out.println(vitesse+" "+vitesseNage+" "+age);
         //setProbaNoyade(vent);
     }

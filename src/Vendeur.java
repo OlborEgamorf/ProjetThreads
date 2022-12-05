@@ -10,7 +10,7 @@ public class Vendeur extends Personne {
     private ArrayList<Personne> arrive = new ArrayList<Personne>();
 
     public Vendeur(int id, Coordonnees position, int vent, Coordonnees objposition) {
-        super(id, position, vent, 1200000);
+        super(id, position, vent, 12000000);
         this.objPosition = objposition;
         this.etat = Etat.PATH;
         this.vitesse /= 3;

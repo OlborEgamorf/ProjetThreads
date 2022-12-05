@@ -32,7 +32,7 @@ public class Plage {
         this.mer = mer;
         this.nbPersonnes = nbMax+1+nbMax/1;
 
-        this.poste = new Rectangle(3,2,5,0, 2,-1);
+        this.poste = new Rectangle(longueur/2-5, largeur/2+3, longueur/2+5, largeur/2-3, 1, -1);
         placements.add(poste);
 
         setZones();
@@ -279,10 +279,19 @@ public class Plage {
 
                         personne.setObjPosition(objPosition);
 
-                        if (objectif == Objectif.SAUVETAGE) {
-                            Vector vecteur = Vector.choixVector(position, objPosition, 0.0055555555, 0);
+                        if (objectif == Objectif.EVACUATION) {
+                            Vector vecteur = Vector.choixVector(position, objPosition, 0.055555555, 0);
                             personne.addVector(vecteur);
                             
+                        } else if (objectif == Objectif.SAUVETAGE) {
+                            Vector vecteur;
+                            if (objPosition == null) {
+                                vecteur = Vector.choixVector(position, new Coordonnees(longueur-3, position.getY()), 0.01, 0);
+                            } else {
+                                vecteur = Vector.choixVector(position, objPosition, 0.01, 0);
+                            }   
+                            personne.addVector(vecteur);
+
                         } else {
                             Vector vecteur = Vector.choixVector(position, objPosition, vitesse, 0);
                             ArrayList<Coordonnees> liste = new ArrayList<>();
@@ -364,7 +373,7 @@ public class Plage {
                     if (sauveteur == null) {
                         // S'il n'y a pas de sauveteur disponible, RIP !
                     } else {
-                        sauveteur.sauvetage(position,personne.getIdPersonne());
+                        sauveteur.sauvetage(position,personne);
                     }
 
                 } else if (etat == Etat.MOUVEMENT) {

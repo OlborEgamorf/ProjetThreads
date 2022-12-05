@@ -2,28 +2,28 @@
 
 public class Sauveteur extends Personne {
 
-    private int idSave = -1;
+    private Personne sauve = null;
 
     public Sauveteur(int id, Coordonnees position, int vent, Rectangle poste) {
         super(id, position, vent, 1);
         positionPlage = poste;
         etat = Etat.REPOS;
-        vitesseNage = 0.002133;
+        vitesseNage = 0.02133;
     }
 
     public void setAge() {
         this.age = (int)Math.floor(18 + Math.random() * 8);
     }
 
-    public int getIdSave() {
-        return idSave;
+    public Personne getSauve() {
+        return sauve;
     }
 
-    public void sauvetage(Coordonnees position, int idSave) {
+    public void sauvetage(Coordonnees position, Personne sauve) {
         etat = Etat.PATH;
-        objectif = Objectif.SAUVETAGE;
+        objectif = Objectif.EVACUATION;
         objPosition = position;
-        this.idSave = idSave;
+        this.sauve = sauve;
     }
     
     public void run() {
@@ -42,11 +42,16 @@ public class Sauveteur extends Personne {
                         vecteurCourant = null;
                         if (objectif == Objectif.PATROUILLE) {
                             etat = Etat.ATTENTE;
-                        } else if (objectif == Objectif.SAUVETAGE) {
-                            etat = Etat.SAUVETAGE;
+                        } else if (objectif == Objectif.EVACUATION) {
+                            etat = Etat.EVACUATION;
                         } else if (objectif == Objectif.REPOS) {
                             etat = Etat.REPOS;
+                        } else if (objectif == Objectif.SAUVETAGE) {
+                            etat = Etat.SAUVETAGE;
                         }
+
+                        vecteurCourant = null;
+                        objPosition = null;
                     } else {
                         vecteurCourant = stackMove.get(0);
                         objPosition = vecteurCourant.getCoordsObj();
@@ -56,6 +61,9 @@ public class Sauveteur extends Personne {
                 } else {
                     vecteurCourant.glissement();
                     position = vecteurCourant.getCoords();
+                    if (objectif == Objectif.SAUVETAGE) {
+                        sauve.position = vecteurCourant.getCoords();
+                    }
                 }
                 
             } else if (etat == Etat.ATTENTE) {
@@ -83,6 +91,36 @@ public class Sauveteur extends Personne {
 
             } else if (etat == Etat.PATH && vecteurCourant != null) {
                 etat = Etat.MOUVEMENT;
+            } else if (etat == Etat.EVACUATION) {
+                objectif = Objectif.SAUVETAGE;
+                etat = Etat.PATH;
+            } else if (etat == Etat.SAUVETAGE) {
+                if (position.getX() < 0) {
+                    sauve = null;
+                    objectif = Objectif.REPOS;
+                    etat = Etat.PATH;
+                } else {
+                    iterStatique += 10*Coeff.getCoeff();
+                    if (iterStatique >= 60000) {
+                        if (sauve.stamina > 0) {
+                            sauve.objectif = Objectif.REPOS;
+                            sauve.objPosition = sauve.positionPlage.getCentre();
+                            sauve.etat = Etat.PATH;
+                            sauve = null;
+                            objectif = Objectif.REPOS;
+                            objPosition = positionPlage.getCentre();
+                            etat = Etat.PATH;
+                        } else {
+                            System.out.println("DEADGE");
+                            objectif = Objectif.SAUVETAGE;
+                            objPosition = new Coordonnees(-5, position.getY());
+                            etat = Etat.PATH;
+                        }
+
+                        iterStatique = 0;
+                    }
+                }
+                
             }
 
             oath = false;
