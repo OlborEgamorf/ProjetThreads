@@ -8,7 +8,7 @@ public class Sauveteur extends Personne {
         super(id, position, vent, 1);
         positionPlage = poste;
         etat = Etat.REPOS;
-        vitesseNage = 0.2133;
+        vitesseNage = 0.002133;
     }
 
     public void setAge() {

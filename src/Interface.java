@@ -13,7 +13,7 @@ public class Interface extends JPanel {
     private Rectangle poste;
 
     private Vendeur vendeur = null;
-    private Personne[] threads;
+    private ArrayList<Personne> threads;
     private double zoom = 1;
 
     private ArrayList<Vague> vagues;

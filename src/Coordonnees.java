@@ -1,4 +1,4 @@
-//package src;
+// source : Projet S3, rédigé par moi-même
 
 public class Coordonnees implements Comparable<Coordonnees> {
     private double x;
@@ -7,10 +7,6 @@ public class Coordonnees implements Comparable<Coordonnees> {
     Coordonnees(double x, double y) {
         this.x = x;
         this.y = y;
-    }
-
-    public double[] getCoords() {
-        return new double[]{x,y};
     }
 
     public boolean equals(Coordonnees other) {

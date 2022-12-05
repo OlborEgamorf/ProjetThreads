@@ -2,7 +2,7 @@
 
 import java.util.ArrayList;
 
-public class Personne extends Thread {
+public class Personne extends Thread implements Comparable<Personne> {
     protected int age;
     
     protected double vitesse;
@@ -49,6 +49,7 @@ public class Personne extends Thread {
         setVitesse();
         setStamina();
 
+        stamina = 20;
         //System.out.println(vitesse+" "+vitesseNage+" "+age);
         //setProbaNoyade(vent);
     }
@@ -223,7 +224,7 @@ public class Personne extends Thread {
             //System.out.println(stamina);
             //System.out.println(etat);
 
-            if (etat == Etat.MOUVEMENT && oath) {
+            if (etat == Etat.MOUVEMENT && oath && objPosition != null) {
 
                 if (position.equals(objPosition)) {
                     stackMove.remove(0);
@@ -243,12 +244,14 @@ public class Personne extends Thread {
                         } else if (objectif == Objectif.PARTIR) {
                             etat = Etat.PARTI;
                         } else if (objectif == Objectif.ACHETER) {
-                            etat = Etat.ENFILE;
+                            etat = Etat.ARRIVACHAT;
                         } else if (objectif == Objectif.NAGE) {
                             etat = Etat.BAIGNADE;
+                        } else if (objectif == Objectif.FILE) {
+                            etat = Etat.ENFILE;
                         }
-
                         vecteurCourant = null;
+                        objPosition = null;
                     } else {
                         vecteurCourant = stackMove.get(0);
                         objPosition = vecteurCourant.getCoordsObj();
@@ -256,9 +259,14 @@ public class Personne extends Thread {
                     }
 
                 } else {
-                    vecteurCourant.glissement();
-                    position = vecteurCourant.getCoords();
-                    stamina -= 0.002*Coeff.getCoeff();
+                    try {
+                        vecteurCourant.glissement();
+                        position = vecteurCourant.getCoords();
+                        stamina -= 0.002*Coeff.getCoeff();
+                    } catch (NullPointerException point){
+
+                    }
+                    
                 }
 
                 if (intoWater) {
@@ -289,12 +297,14 @@ public class Personne extends Thread {
                     etat = Etat.ATTENTE;
                     iterStatique = 0;
                 }
+                if (volonteAcheter) {
+                    objectif = Objectif.ACHETER;
+                    etat = Etat.PATH;
+                    iterStatique = 0;
+                }
 
             } else if (etat == Etat.ACHETER){
                 iterStatique += 10*Coeff.getCoeff();
-                if (stamina < staminaMax) {
-                    stamina += 0.1;
-                }
                 if (iterStatique > 40000) {
                     objPosition = positionPlage.getCentre();
                     objectif = Objectif.REPOS;
@@ -342,6 +352,16 @@ public class Personne extends Thread {
                 System.out.println(id+" : interrompu");
             }
 
+        }
+    }
+
+    public int compareTo(Personne other) {
+        if (other.position.getY() > position.getY()) {
+            return -1;
+        } else if (other.position.getY() < position.getY()) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 }
